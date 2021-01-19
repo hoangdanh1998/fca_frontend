@@ -1,0 +1,26 @@
+{
+  "phone_mail": {
+    "subject": "GEEK Up - Next step of Adventure",
+    "greeting": "Hi [applicationName],\n\n",
+    "body": "In the progress of processing your application, we’d love to have a phone discussion, which is around 30-minute long, to learn about your background and expectation for a career opportunity.\n\nTo make it more convenient for you, let provide us your available time frames by <a href=\"[productLink]/application/slot-table\">chosing here</a>.\n\nPlease complete your booking before [3_days_from_email_send_date]. After receiving your response, we will contact you again for confirmation.\n\nIf you need support, do not hesitate to reach out.",
+    "closing": "\n\nFrom Geeks team,"
+  },
+  "f2f_interview_mail": {
+    "subject": "GEEK Up - Next step of Adventure",
+    "greeting": "Hi [applicationName],\n\n",
+    "body": "It was lovely to get to know about you via our last phone discussion. We’d love to invite you to our office for a Face-to-face meeting, which is around 2 hour long, to learn further about your professional experience.\n\nLet provide us your available time frames by <a href=\"[productLink]/application/slot-table\">chosing here</a>.\n\nYour booking should be completed before [3_days_from_email_send_date]. After receiving your response, we will contact you again for confirmation.\n\nIf you need support, do not hesitate to reach out.",
+    "closing": "\n\nFrom Geeks team,"
+  },
+  "observation_day_mail": {
+    "subject": "GEEK Up - Next step of Adventure",
+    "greeting": "Hi [applicationName],\n\n",
+    "body": "Thank you for your time joining our face-to-face interview. As mentioned, we’d love to have you experiencing a normal day at our team. This will give you an idea of how our business is running, as well as what it would be like to be a member of GEEK Up.\n\nLet provide us your available time frames by <a href=\"[productLink]/application/slot-table\">chosing here</a>.\n\nYour booking should be completed before [3_days_from_email_send_date]. After receive your response, we will contact you again for confirmation.\n\nIf you need any support, do not hesitate to reach out.",
+    "closing": "\n\nFrom Geeks team,"
+  },
+  "offer_email": {
+    "subject": "GEEK Up - Next step of Adventure",
+    "greeting": "Hi [applicationName],\n\n",
+    "body": "",
+    "closing": "\n\nFrom Geeks team,"
+  }
+}

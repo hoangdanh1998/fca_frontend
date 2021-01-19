@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="61px" height="50px" viewBox="0 0 61 50" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 62 (101010) - https://sketch.com -->
+    <title>7E70F4C4-F28E-469E-97DB-5000270E061B</title>
+    <desc>Created with sketchtool.</desc>
+    <defs>
+        <linearGradient x1="2.04166667%" y1="74.9027338%" x2="100.666667%" y2="23.69876%" id="linearGradient-1">
+            <stop stop-color="#FFD178" offset="40%"></stop>
+            <stop stop-color="#33B3AA" stop-opacity="0" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="25.3333333%" y1="110.174977%" x2="120.166667%" y2="32.7213758%" id="linearGradient-2">
+            <stop stop-color="#42E5D5" offset="0%"></stop>
+            <stop stop-color="#33B3AA" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="0200_Screening-CV" transform="translate(-1155.000000, -566.000000)">
+            <g id="Group-14" transform="translate(556.000000, 128.000000)">
+                <g id="hiring_deco_right" transform="translate(599.000000, 438.000000)">
+                    <path d="M40.2463294,45.7463835 C47.0662674,38.9135682 48.7248214,17 40.2463294,17 C31.7678374,17 25.9002256,35.6418579 5.09837521,43.2102444 C-15.7034752,50.7786309 33.4263914,52.5791988 40.2463294,45.7463835 Z" id="Path" fill="url(#linearGradient-1)"></path>
+                    <path d="M58.9360917,15.0764505 C63.5335629,10.3976743 59.6945468,0 54.7969632,0 C49.9986747,0 50.3452712,9.38810207 43.5441387,12.0760935 C36.7430062,14.7640849 54.3386204,19.7552267 58.9360917,15.0764505 Z" id="Path" fill="url(#linearGradient-2)" style="mix-blend-mode: multiply;"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

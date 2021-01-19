@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="12px" viewBox="0 0 16 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 61 (101010) - https://sketch.com -->
+    <title>727E7193-0EE2-4FFC-B7E6-EDF2188BC2B5</title>
+    <desc>Created with sketchtool.</desc>
+    <g id="UI" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="0101_login_show_pass" transform="translate(-843.000000, -416.000000)">
+            <g id="Group-5" transform="translate(556.000000, 173.000000)">
+                <g id="Group">
+                    <g id="Group-99-Copy" transform="translate(25.000000, 211.000000)">
+                        <g id="icon_eye_hide" transform="translate(262.000000, 30.000000)">
+                            <g id="b-preview">
+                                <g id="Ic/16/invisibility">
+                                    <g id="icon_eye_show">
+                                        <rect id="Rectangle" x="0" y="0" width="16" height="16"></rect>
+                                        <g id="preview" transform="translate(0.000000, 2.000000)" fill="#05A69E" fill-rule="nonzero">
+                                            <path d="M7.975,12 C11.575,12 14.375,8.9 15.575,7.1 C16.075,6.4 16.075,5.5 15.575,4.8 C14.375,3.1 11.575,0 7.975,0 C4.375,0 1.575,3.1 0.375,4.9 C-0.125,5.6 -0.125,6.5 0.375,7.1 C1.575,8.9 4.375,12 7.975,12 Z M7.975,3 C9.675,3 10.975,4.3 10.975,6 C10.975,7.7 9.675,9 7.975,9 C6.275,9 4.975,7.7 4.975,6 C4.975,4.3 6.275,3 7.975,3 Z" id="Shape"></path>
+                                        </g>
+                                    </g>
+                                </g>
+                                <g id="Ic/16/invisibility"></g>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
