@@ -86,7 +86,8 @@ class ManagementLayout extends React.Component {
           // )}
           menuHeaderRender={() => (
             <div>
-              <img src={Logo} alt="talaria logo" className={styles.adminLayoutLogo} />
+              <h1 className={styles.adminLayoutLogo}></h1>
+              <h1 className={styles.adminLayoutLogo}>Fast Coffee Management</h1>
             </div>
           )}
           // breadcrumbRender={(routers = []) => [

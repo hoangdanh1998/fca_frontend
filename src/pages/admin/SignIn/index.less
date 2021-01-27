@@ -11,9 +11,12 @@
 }
 
 .logo {
-  width: 89px;
-  height: 80px;
-  margin: 0 auto;
+  width: 100%;
+  font-size: 30px;
+  font-weight: bold;
+  color: #603a18;
+  font-family: 'Open Sans', sans-serif;
+  text-transform: uppercase;
   text-align: center;
 }
 
@@ -23,7 +26,7 @@
   input {
     width: 100%;
     height: 50px;
-    padding: 0 15px;
+    // padding: 0 15px;
     font-size: 14px;
     font-family: 'Open Sans', sans-serif;
   }
@@ -43,7 +46,12 @@
   font-size: 15px;
   line-height: 48px;
   text-transform: uppercase;
-  background-color: #2aaeb7;
+  background-color: #603a18;
   border-radius: 3px;
-  box-shadow: 0 0 4px 0 #61d8cb;
+  // box-shadow: 0 0 4px 0 #e6d7ab;
+  &:hover
+  &:focus {
+    background-color: #e6d7ab;
+    background: #e6d7ab;
+  }
 }

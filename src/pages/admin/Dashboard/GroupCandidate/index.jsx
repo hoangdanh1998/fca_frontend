@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'dva';
-import HeaderLayout from '@/components/Header';
+import HeaderLayout from '@/components/atom/Header';
 import TableGroupCandidate from '@/components/TableGroupCandidate';
 import styles from './index.less';
 

@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import TableDashboard from './TableDashboard/TableDashboard';
 
 import styles from './TalentManagement.less';
-import HeaderLayout from '@/components/Header';
+import HeaderLayout from '@/components/atom/Header';
 
 @connect(({ admin, loading }) => ({
   admin,

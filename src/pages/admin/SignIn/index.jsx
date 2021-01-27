@@ -19,9 +19,7 @@ class AdminSignIn extends React.Component {
   render() {
     return (
       <div className={styles.rectangle}>
-        <div className={styles.logo}>
-          <img src={LogoImage} alt="Logo Geek Up" />
-        </div>
+        <h1 className={styles.logo}>Fast Coffee</h1>
         <Form
           id="admin-login-form"
           className={styles.loginForm}

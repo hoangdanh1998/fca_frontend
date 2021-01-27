@@ -2,6 +2,7 @@ import React from 'react';
 import { Input, Radio } from 'antd';
 import { connect } from 'dva';
 import styles from './index.less';
+import { PARTNER_STATUS } from '../../utils/constants';
 
 @connect(({ admin, loading }) => {
   return {
@@ -66,7 +67,7 @@ class FilterContacts extends React.Component {
       <div>
         <Input.Search
           allowClear
-          placeholder="Search by Name, Email or Phone"
+          placeholder="Search by Name or Phone"
           onPressEnter={this.search}
           className={styles.search}
           style={{ width: '416px' }}
@@ -78,17 +79,17 @@ class FilterContacts extends React.Component {
             value={currentState}
             onChange={this.onChangeFilterContact}
           >
-            <Radio.Button className={styles.btnFilter} value="ACTIVE">
-              Active
-            </Radio.Button>
-            <Radio.Button className={styles.btnFilter} value="ARCHIVE">
-              Archive
-            </Radio.Button>
             <Radio.Button className={styles.btnFilter} value="">
-              All
+              ALL
             </Radio.Button>
-            <Radio.Button className={styles.btnFilter} value="Duplicate">
-              Duplicate
+            <Radio.Button className={styles.btnFilter} value={PARTNER_STATUS.PROCESS}>
+              {PARTNER_STATUS.PROCESS}
+            </Radio.Button>
+            <Radio.Button className={styles.btnFilter} value={PARTNER_STATUS.APPROVED}>
+              {PARTNER_STATUS.APPROVED}
+            </Radio.Button>
+            <Radio.Button className={styles.btnFilter} value={PARTNER_STATUS.REJECTED}>
+              {PARTNER_STATUS.REJECTED}
             </Radio.Button>
           </Radio.Group>
         </div>
