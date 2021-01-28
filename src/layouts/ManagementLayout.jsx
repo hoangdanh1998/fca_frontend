@@ -6,7 +6,6 @@ import { Link } from 'umi';
 import { connect } from 'dva';
 import Authorized from '@/utils/Authorized';
 import { Helmet } from 'react-helmet-async';
-import Logo from '../../public/logo_talaria.svg';
 import styles from './ManagementLayout.less';
 import AdminSignOut from './LogOut/LogOut';
 import defaultSettings from '../../config/defaultSettings';

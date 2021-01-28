@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import { Button, Form, Modal, Upload, message } from 'antd';
 import { InboxOutlined } from '@ant-design/icons';
 import fileTemplate from '../../../../public/Template/ListContact.xlsx';
-import styles from './ContactManagement.less';
+import styles from './index.less';
 
 const { Dragger } = Upload;
 

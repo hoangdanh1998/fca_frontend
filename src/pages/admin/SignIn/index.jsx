@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'dva';
 import { Form, Icon, Input, Button } from 'antd';
 import styles from './index.less';
-import LogoImage from '../../../../public/LogoTalariaAdmin.svg';
 
 @connect()
 class AdminSignIn extends React.Component {
