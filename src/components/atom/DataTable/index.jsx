@@ -94,13 +94,14 @@ class DataTable extends React.Component {
   render() {
     // const { listContact, currentState, totalContact } = this.props;
     // const renderedListContact = listContact.map(contact => ({ ...contact, key: contact.id }));
-    const { columnList, dataList, totalRecords, isView, isEdit, isDelete } = this.props;
+    const { columnList, dataList, totalRecords } = this.props;
     return (
       <div>
         <div>
           <div>
             <Table
               dataSource={dataList}
+              columns={columnList}
               pagination={{
                 current: this.state.skip,
                 pageSize: this.state.PAGE_SIZE,
@@ -113,26 +114,7 @@ class DataTable extends React.Component {
                 this.props.isLoadingTableContact ||
                 this.props.isLoadingGetAllContacts
               }
-            >
-              {/* {columnList.forEach(column => {
-                console.log(column.title);
-                <Column title={column.title} dataIndex={column.dataIndex} key={column.key} />;
-              })} */}
-              <Column title="Store Name" dataIndex="storeName" key="storeName" />;
-              <Column
-                title="Action"
-                dataIndex="action"
-                key="action"
-                render={() => {
-                  <div>
-                    <EyeOutlined style={{ visible: { isView } }} />
-                    <EditOutlined style={{ visible: { isEdit } }} />
-                    <DeleteOutlined style={{ visible: { isDelete } }} />
-                  </div>;
-                }}
-              />
-              ;
-            </Table>
+            ></Table>
           </div>
         </div>
       </div>

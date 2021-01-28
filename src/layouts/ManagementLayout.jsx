@@ -106,6 +106,7 @@ class ManagementLayout extends React.Component {
           // ]}
           siderWidth={240}
           collapsed={false}
+          fixSiderbar={true}
           onCollapse={this.handleMenuCollapse}
           menuItemRender={this.menuItemRender}
           menuDataRender={menuDataRender}
