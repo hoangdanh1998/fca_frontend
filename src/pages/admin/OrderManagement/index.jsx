@@ -1,19 +1,19 @@
 import React from 'react';
 import { connect } from 'dva';
 import { Button } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
 import DrawerForm from '@/components/NewContact/contact';
 import TableContact from '@/components/TableContact';
 import ContactModal from './importFileModal';
+import FilterContacts from '@/components/TableContact/FilterContact';
 import HeaderLayout from '@/components/atom/Header';
 import styles from './index.less';
-import StatusFilter from '../../../components/atom/StatusFilter/index.jsx';
-import InsertButton from '../../../components/atom/InsertButton/index.jsx';
 
 @connect(({ admin, loading }) => ({
   fetchCurrentAdmin: loading.effects['admin/saveCurrentAdmin'],
   visibleContact: admin.visibleCreateContact,
 }))
-class ContactManagement extends React.Component {
+class OrderManagement extends React.Component {
   state = { contactID: '', visibleMergeContact: false };
 
   showDrawer = () => {
@@ -77,18 +77,23 @@ class ContactManagement extends React.Component {
         <div className={styles.applicationManagementContainer}>
           <div className={styles.applicationHeader}>
             <div>
-              <StatusFilter filterFor="partner" />
+              <FilterContacts />
             </div>
             <div className={styles.applicationManagementHeader}>
-              {/* <Button
-                // style={{ transform: 'translate(6%,-270%)' }}
-                style={{ transform: 'translate(6%,-270%)', backgroundColor: '#603a18' }}
+              <Button
+                style={{ transform: 'translate(6%,-270%)' }}
                 type="primary"
                 onClick={this.showDrawerCreate}
               >
-                Create
-              </Button> */}
-              <InsertButton onClick={this.showDrawerCreate} />
+                <PlusOutlined size="small" /> Create New Contact
+              </Button>
+              <Button
+                style={{ transform: 'translate(22%,-270%)' }}
+                onClick={this.showAddModal}
+                type="primary"
+              >
+                Import
+              </Button>
             </div>
           </div>
           <ContactModal
@@ -112,4 +117,4 @@ class ContactManagement extends React.Component {
   }
 }
 
-export default ContactManagement;
+export default OrderManagement;

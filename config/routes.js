@@ -22,12 +22,19 @@ export default [
         authority: ['admin'],
         routes: [
           {
-            name: 'Contact Management',
+            name: 'Partner Management',
             path: '/administration/contact-management',
             component: './admin/ContactManagement',
             iconPath: '/fast.svg',
             authority: ['admin'],
-          }
+          },
+          {
+            name: 'Order Management',
+            path: '/administration/order-management',
+            component: './admin/OrderManagement',
+            iconPath: '/fast.svg',
+            authority: ['admin'],
+          },
         ],
       },
       {

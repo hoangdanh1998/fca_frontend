@@ -1,6 +1,6 @@
 {
-  "name": "Talaria",
-  "short_name": "Talaria",
+  "name": "Fast Coffee",
+  "short_name": "Fast Coffee",
   "display": "standalone",
   "start_url": "./?utm_source=homescreen",
   "theme_color": "#002140",

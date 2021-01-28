@@ -32,7 +32,7 @@ defaultAntd = defaultAntd.default || defaultAntd;
 const localeInfo = {
   'en-US': {
     messages: {
-      ...((locale) => locale.__esModule ? locale.default : locale)(require('/Users/hoang-danhnguyen/Documents/kltn/fca_frontend/src/locales/en-US.js')),
+      ...((locale) => locale.__esModule ? locale.default : locale)(require('/Users/pkimanh03/Documents/capstone/fca_frontend/src/locales/en-US.js')),
     },
     locale: 'en-US',
     antd: require('antd/es/locale-provider/en_US'),

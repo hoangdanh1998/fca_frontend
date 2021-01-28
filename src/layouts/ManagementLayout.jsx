@@ -6,7 +6,6 @@ import { Link } from 'umi';
 import { connect } from 'dva';
 import Authorized from '@/utils/Authorized';
 import { Helmet } from 'react-helmet-async';
-import Logo from '../../public/logo_talaria.svg';
 import styles from './ManagementLayout.less';
 import AdminSignOut from './LogOut/LogOut';
 import defaultSettings from '../../config/defaultSettings';
@@ -86,7 +85,8 @@ class ManagementLayout extends React.Component {
           // )}
           menuHeaderRender={() => (
             <div>
-              <img src={Logo} alt="talaria logo" className={styles.adminLayoutLogo} />
+              <h1 className={styles.adminLayoutLogo}></h1>
+              <h1 className={styles.adminLayoutLogo}>Fast Coffee Management</h1>
             </div>
           )}
           // breadcrumbRender={(routers = []) => [
