@@ -2,7 +2,7 @@ import React from 'react';
 import { Input, Radio } from 'antd';
 import { connect } from 'dva';
 import styles from './index.less';
-import { PARTNER_STATUS_ARRAY, ORDER_STATUS_ARRAY } from '../../../utils/constants';
+import { PARTNER_STATUS_ARRAY, ORDER_STATUS_ARRAY } from '../../../../config/constants';
 
 // @connect(({ admin, loading }) => {
 //   return {
@@ -61,13 +61,13 @@ class StatusFilter extends React.Component {
   //   };
 
   render() {
-    const { filterFor } = this.props;
+    const { statusList, searchKeyword } = this.props;
 
     return (
       <div>
         <Input.Search
           allowClear
-          placeholder="Search by Name or Phone"
+          placeholder={`Search by ${searchKeyword}`}
           onPressEnter={this.search}
           className={styles.search}
           style={{ width: '416px' }}
@@ -77,7 +77,7 @@ class StatusFilter extends React.Component {
           <Radio.Group
             style={{ display: 'flex' }}
             defaultValue={'ALL'}
-            options={filterFor == 'order' ? ORDER_STATUS_ARRAY : PARTNER_STATUS_ARRAY}
+            options={statusList}
             onChange={this.onChangeFilterContact}
             optionType="button"
           >

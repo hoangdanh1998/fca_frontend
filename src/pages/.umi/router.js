@@ -60,8 +60,8 @@ const routes = [
       : require('../../layouts/BasicLayout').default,
     routes: [
       {
-        path: '/administration',
-        name: 'Administration',
+        path: '/fca-management',
+        name: 'FCA Management',
         component: __IS_BROWSER
           ? _dvaDynamic({
               component: () =>
@@ -74,22 +74,22 @@ const routes = [
         routes: [
           {
             name: 'Partner Management',
-            path: '/administration/contact-management',
+            path: '/fca-management/partner-management',
             component: __IS_BROWSER
               ? _dvaDynamic({
                   component: () =>
-                    import(/* webpackChunkName: "p__admin__ContactManagement" */ '../admin/ContactManagement'),
+                    import(/* webpackChunkName: "p__admin__PartnerManagement" */ '../admin/PartnerManagement'),
                   LoadingComponent: require('/Users/pkimanh03/Documents/capstone/fca_frontend/src/components/PageLoading/index')
                     .default,
                 })
-              : require('../admin/ContactManagement').default,
+              : require('../admin/PartnerManagement').default,
             iconPath: '/fast.svg',
             authority: ['admin'],
             exact: true,
           },
           {
             name: 'Order Management',
-            path: '/administration/order-management',
+            path: '/fca-management/order-management',
             component: __IS_BROWSER
               ? _dvaDynamic({
                   component: () =>
