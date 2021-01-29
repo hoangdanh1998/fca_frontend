@@ -1,6 +1,7 @@
 import React from 'react';
+import moment from 'moment';
 import { connect } from 'dva';
-import { Select, Popconfirm, Tooltip } from 'antd';
+import { Select, DatePicker, Space } from 'antd';
 import DrawerForm from '@/components/NewContact/contact';
 import ContactModal from '@/components/DataTable';
 import TableContact from '@/components/DataTable/index';
@@ -23,7 +24,7 @@ class PartnerManagement extends React.Component {
     contactID: '',
     visibleMergeContact: false,
     visibleChangeStatus: false,
-    newStatus: '',
+    visibleChangeExpirationDate: false,
     partner: {},
   };
 
@@ -81,7 +82,6 @@ class PartnerManagement extends React.Component {
   handleStatusChange = (value, record) => {
     this.setState({
       visibleChangeStatus: true,
-      // newStatus: value,
       partner: {
         storeName: record.storeName,
         from: record.storeStatus,
@@ -91,9 +91,26 @@ class PartnerManagement extends React.Component {
       },
     });
   };
-  hideModal = () => {
+  handleExpirationDateChange = (value, record) => {
+    this.setState({
+      visibleChangeExpirationDate: true,
+      partner: {
+        storeName: record.storeName,
+        from: record.expirationDate,
+        to: moment(value).format('DD/MM/YYYY'),
+        title: 'expiration date',
+        visible: true,
+      },
+    });
+  };
+  hideModalStatus = () => {
     this.setState({
       visibleChangeStatus: false,
+    });
+  };
+  hideModalExpirationDate = () => {
+    this.setState({
+      visibleChangeExpirationDate: false,
     });
   };
 
@@ -104,50 +121,60 @@ class PartnerManagement extends React.Component {
         title: 'Store Name',
         dataIndex: 'storeName',
         key: 'storeName',
+        width: '20%',
       },
       {
         title: 'Store Address',
         dataIndex: 'storeAddress',
         key: 'storeAddress',
+        width: '40%',
       },
       {
         title: 'Status',
         dataIndex: 'storeStatus',
         key: 'storeStatus',
         render: (text, record, index) => (
-          <>
-            {' '}
-            <Select
-              size="small"
-              defaultValue={record.storeStatus}
-              onChange={value => {
-                this.handleStatusChange(value, record);
-              }}
-              style={{ width: '100%' }}
-              options={PARTNER_STATUS_OPTIONS}
-            />
-            {/* {this.hideModal}
-            {this.state.visibleChangeStatus ? (
-              <ConfirmationPopup message={this.state.partner}></ConfirmationPopup>
-            ) : null} */}
-          </>
+          <Select
+            size="small"
+            defaultValue={record.storeStatus}
+            onChange={value => {
+              this.handleStatusChange(value, record);
+            }}
+            style={{ width: '100%' }}
+            options={PARTNER_STATUS_OPTIONS}
+          />
         ),
       },
       {
         title: 'Expiration Date',
         dataIndex: 'expirationDate',
         key: 'expirationDate',
+        render: (text, record, index) => (
+          <DatePicker
+            style={{ width: '100%' }}
+            defaultValue={moment(record.expirationDate, 'DD/MM/YYYY')}
+            format="DD/MM/YYYY"
+            onChange={value => {
+              console.log('onchange');
+              this.handleExpirationDateChange(value, record);
+            }}
+          />
+        ),
       },
       {
         title: 'Action',
         dataIndex: 'action',
         key: 'action',
         render: () => (
-          <>
-            <EyeOutlined />
-            <EditOutlined />
-            <DeleteOutlined />
-          </>
+          <Space direction="horizontal">
+            <div>
+              <EyeOutlined size="small" />
+            </div>
+            <div>
+              <EditOutlined size="small" />
+            </div>
+            {/* <DeleteOutlined /> */}
+          </Space>
         ),
       },
     ];
@@ -166,17 +193,17 @@ class PartnerManagement extends React.Component {
             </div>
           </div>
           {this.state.visibleChangeStatus ? (
-            <ConfirmationPopup message={this.state.partner}></ConfirmationPopup>
+            <ConfirmationPopup
+              message={this.state.partner}
+              hideModal={this.hideModalStatus}
+            ></ConfirmationPopup>
           ) : null}
-          {this.hideModal}
-          {/* 
-          {visibleContact ? (
-            <DrawerForm
-              cancel={this.handleCancel}
-              contactID={this.state.contactID}
-              deleteID={this.handleHandleID}
-            />
-          ) : null} */}
+          {this.state.visibleChangeExpirationDate ? (
+            <ConfirmationPopup
+              message={this.state.partner}
+              hideModal={this.hideModalExpirationDate}
+            ></ConfirmationPopup>
+          ) : null}
           <DataTable columnList={columnList} dataList={PARTNER_LIST} totalRecords={30} />
         </div>
       </>

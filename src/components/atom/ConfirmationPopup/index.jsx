@@ -28,8 +28,8 @@ class ConfirmationPopup extends React.Component {
       <Modal
         title="CONFIRMATION"
         visible={this.state.visible}
-        onOk={this.hideModal}
-        onCancel={this.hideModal}
+        onOk={this.props.hideModal}
+        onCancel={this.props.hideModal}
         style={{ textAlign: 'center', width: '50%' }}
         okText="yes"
         cancelText="no"

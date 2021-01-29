@@ -1,6 +1,7 @@
 // APPLICATION BACKGROUND COLOR
 export const LIGHT_BACKGROUND_COLOR = '#e6d7ab';
 export const DARK_BACKGROUND_COLOR = '#603a18';
+export const DEFAULT_OLD_COLOR = '#33b3ab';
 export const APPLICATION_TITLE_FONT_FAMILY = "'Open Sans', sans-serif";
 // OBJECT STATUS
 export const PARTNER_STATUS = {

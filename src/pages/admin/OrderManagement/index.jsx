@@ -72,7 +72,7 @@ class OrderManagement extends React.Component {
     return (
       <>
         <div className={styles.wrapHeader}>
-          <HeaderLayout page="contact-management" title="Partner Management" />
+          <HeaderLayout page="partner-management" title="Partner Management" />
         </div>
         <div className={styles.applicationManagementContainer}>
           <div className={styles.applicationHeader}>
