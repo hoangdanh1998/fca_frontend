@@ -1,8 +1,6 @@
 import React from 'react';
-import { Input, Radio } from 'antd';
+import { Input } from 'antd';
 import { connect } from 'dva';
-import styles from './index.less';
-import { PARTNER_STATUS_ARRAY, ORDER_STATUS_ARRAY } from '../../../../config/constants';
 
 // @connect(({ admin, loading }) => {
 //   return {
@@ -15,7 +13,7 @@ import { PARTNER_STATUS_ARRAY, ORDER_STATUS_ARRAY } from '../../../../config/con
 //     currentState: admin.currentState,
 //   };
 // })
-class StatusFilter extends React.Component {
+class SearchText extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -61,20 +59,21 @@ class StatusFilter extends React.Component {
   //   };
 
   render() {
-    const { statusList } = this.props;
+    const { searchKeyword } = this.props;
 
     return (
-      <div className={styles.containerFilter}>
-        <Radio.Group
-          style={{ display: 'flex' }}
-          defaultValue={'ALL'}
-          options={statusList}
-          onChange={this.onChangeFilterContact}
-          optionType="button"
-        ></Radio.Group>
+      <div>
+        <Input.Search
+          allowClear
+          placeholder={`Search by ${searchKeyword}`}
+          onPressEnter={this.search}
+          // className={styles.search}
+          style={{ width: '100%' }}
+          //   loading={this.props.isLoadingSearchContact}
+        />
       </div>
     );
   }
 }
 
-export default StatusFilter;
+export default SearchText;

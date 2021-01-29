@@ -2,82 +2,26 @@ import React from 'react';
 import moment from 'moment';
 import { connect } from 'dva';
 import { Select, DatePicker, Space } from 'antd';
-import DrawerForm from '@/components/NewContact/contact';
-import ContactModal from '@/components/DataTable';
-import TableContact from '@/components/DataTable/index';
 import DataTable from '../../../components/atom/DataTable/index';
 import HeaderLayout from '@/components/atom/Header';
 import StatusFilter from '../../../components/atom/StatusFilter/index.jsx';
-import InsertButton from '../../../components/atom/InsertButton/index.jsx';
+import SearchText from '../../../components/atom/SearchText/index.jsx';
 import ConfirmationPopup from '../../../components/atom/ConfirmationPopup/index.jsx';
 import { PARTNER_STATUS_ARRAY, PARTNER_STATUS_OPTIONS } from '../../../../config/constants';
 import { PARTNER_LIST } from '../../../../config/seedingData';
-import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
+import { EditOutlined, EyeOutlined } from '@ant-design/icons';
 import styles from './index.less';
 
-@connect(({ admin, loading }) => ({
-  fetchCurrentAdmin: loading.effects['admin/saveCurrentAdmin'],
-  visibleContact: admin.visibleCreateContact,
-}))
+// @connect(({ admin, loading }) => ({
+//   fetchCurrentAdmin: loading.effects['admin/saveCurrentAdmin'],
+//   visibleContact: admin.visibleCreateContact,
+// }))
 class PartnerManagement extends React.Component {
   state = {
-    // contactID: '',
-    // visibleMergeContact: false,
     visibleChangeStatus: false,
     visibleChangeExpirationDate: false,
     partner: {},
   };
-
-  // showDrawer = () => {
-  //   const { dispatch } = this.props;
-  //   dispatch({
-  //     type: 'admin/handleVisibleCreateContact',
-  //     payload: true,
-  //   });
-  // };
-
-  // showDrawerCreate = () => {
-  //   const { dispatch } = this.props;
-  //   this.setState({
-  //     contactID: '',
-  //   });
-  //   dispatch({
-  //     type: 'admin/handleVisibleCreateContact',
-  //     payload: true,
-  //   });
-  // };
-
-  // handleCancel = () => {
-  //   const { dispatch } = this.props;
-  //   dispatch({
-  //     type: 'admin/handleVisibleCreateContact',
-  //     payload: false,
-  //   });
-  // };
-
-  // showAddModal = () => {
-  //   this.setState({
-  //     modalAddVisible: true,
-  //   });
-  // };
-
-  // showContactID = ID => {
-  //   this.setState({
-  //     contactID: ID,
-  //   });
-  // };
-
-  // handleHandleID = () => {
-  //   this.setState({
-  //     contactID: '',
-  //   });
-  // };
-
-  // mergeContact = () => {
-  //   this.setState({
-  //     visibleMergeContact: true,
-  //   });
-  // };
 
   handleStatusChange = (value, record) => {
     this.setState({
@@ -117,13 +61,13 @@ class PartnerManagement extends React.Component {
   render() {
     const columnList = [
       {
-        title: 'Store Name',
+        title: 'Name',
         dataIndex: 'storeName',
         key: 'storeName',
         width: '20%',
       },
       {
-        title: 'Store Address',
+        title: 'Address',
         dataIndex: 'storeAddress',
         key: 'storeAddress',
         width: '40%',
@@ -154,7 +98,6 @@ class PartnerManagement extends React.Component {
             defaultValue={moment(record.expirationDate, 'DD/MM/YYYY')}
             format="DD/MM/YYYY"
             onChange={value => {
-              console.log('onchange');
               this.handleExpirationDateChange(value, record);
             }}
           />
@@ -184,11 +127,13 @@ class PartnerManagement extends React.Component {
         <div className={styles.applicationManagementContainer}>
           <div className={styles.applicationHeader}>
             <div>
-              <StatusFilter statusList={PARTNER_STATUS_ARRAY} searchKeyword="name, address" />
+              {/* <Space direction="horizontal">
+                <SearchText searchKeyword="name, phone" />
+                <SearchText searchKeyword="name, phone" />
+              </Space> */}
+              <SearchText searchKeyword="name, phone" />
+              <StatusFilter statusList={PARTNER_STATUS_ARRAY} />
             </div>
-            {/* <div className={styles.applicationManagementHeader}>
-              <InsertButton onClick={this.showDrawerCreate} />
-            </div> */}
           </div>
           {this.state.visibleChangeStatus ? (
             <ConfirmationPopup
