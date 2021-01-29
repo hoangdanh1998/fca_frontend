@@ -16,21 +16,21 @@ export default [
     component: '../layouts/BasicLayout',
     routes: [
       {
-        path: '/administration',
-        name: 'Administration',
+        path: '/fca-management',
+        name: 'FCA Management',
         component: '../layouts/ManagementLayout',
         authority: ['admin'],
         routes: [
           {
             name: 'Partner Management',
-            path: '/administration/contact-management',
-            component: './admin/ContactManagement',
+            path: '/fca-management/partner-management',
+            component: './admin/PartnerManagement',
             iconPath: '/fast.svg',
             authority: ['admin'],
           },
           {
             name: 'Order Management',
-            path: '/administration/order-management',
+            path: '/fca-management/order-management',
             component: './admin/OrderManagement',
             iconPath: '/fast.svg',
             authority: ['admin'],

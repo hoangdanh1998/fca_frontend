@@ -2,7 +2,7 @@ import React from 'react';
 import { Input, Radio } from 'antd';
 import { connect } from 'dva';
 import styles from './index.less';
-import { PARTNER_STATUS } from '../../utils/constants';
+import { PARTNER_STATUS } from '../../../config/constants';
 
 @connect(({ admin, loading }) => {
   return {

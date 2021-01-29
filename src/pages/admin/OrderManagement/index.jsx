@@ -3,9 +3,9 @@ import { connect } from 'dva';
 import { Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import DrawerForm from '@/components/NewContact/contact';
-import TableContact from '@/components/TableContact';
+import TableContact from '@/components/DataTable';
 import ContactModal from './importFileModal';
-import FilterContacts from '@/components/TableContact/FilterContact';
+import FilterContacts from '@/components/DataTable/FilterContact';
 import HeaderLayout from '@/components/atom/Header';
 import styles from './index.less';
 
@@ -72,7 +72,7 @@ class OrderManagement extends React.Component {
     return (
       <>
         <div className={styles.wrapHeader}>
-          <HeaderLayout page="contact-management" title="Partner Management" />
+          <HeaderLayout page="partner-management" title="Partner Management" />
         </div>
         <div className={styles.applicationManagementContainer}>
           <div className={styles.applicationHeader}>
