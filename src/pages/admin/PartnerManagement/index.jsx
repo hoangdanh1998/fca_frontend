@@ -21,63 +21,63 @@ import styles from './index.less';
 }))
 class PartnerManagement extends React.Component {
   state = {
-    contactID: '',
-    visibleMergeContact: false,
+    // contactID: '',
+    // visibleMergeContact: false,
     visibleChangeStatus: false,
     visibleChangeExpirationDate: false,
     partner: {},
   };
 
-  showDrawer = () => {
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'admin/handleVisibleCreateContact',
-      payload: true,
-    });
-  };
+  // showDrawer = () => {
+  //   const { dispatch } = this.props;
+  //   dispatch({
+  //     type: 'admin/handleVisibleCreateContact',
+  //     payload: true,
+  //   });
+  // };
 
-  showDrawerCreate = () => {
-    const { dispatch } = this.props;
-    this.setState({
-      contactID: '',
-    });
-    dispatch({
-      type: 'admin/handleVisibleCreateContact',
-      payload: true,
-    });
-  };
+  // showDrawerCreate = () => {
+  //   const { dispatch } = this.props;
+  //   this.setState({
+  //     contactID: '',
+  //   });
+  //   dispatch({
+  //     type: 'admin/handleVisibleCreateContact',
+  //     payload: true,
+  //   });
+  // };
 
-  handleCancel = () => {
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'admin/handleVisibleCreateContact',
-      payload: false,
-    });
-  };
+  // handleCancel = () => {
+  //   const { dispatch } = this.props;
+  //   dispatch({
+  //     type: 'admin/handleVisibleCreateContact',
+  //     payload: false,
+  //   });
+  // };
 
-  showAddModal = () => {
-    this.setState({
-      modalAddVisible: true,
-    });
-  };
+  // showAddModal = () => {
+  //   this.setState({
+  //     modalAddVisible: true,
+  //   });
+  // };
 
-  showContactID = ID => {
-    this.setState({
-      contactID: ID,
-    });
-  };
+  // showContactID = ID => {
+  //   this.setState({
+  //     contactID: ID,
+  //   });
+  // };
 
-  handleHandleID = () => {
-    this.setState({
-      contactID: '',
-    });
-  };
+  // handleHandleID = () => {
+  //   this.setState({
+  //     contactID: '',
+  //   });
+  // };
 
-  mergeContact = () => {
-    this.setState({
-      visibleMergeContact: true,
-    });
-  };
+  // mergeContact = () => {
+  //   this.setState({
+  //     visibleMergeContact: true,
+  //   });
+  // };
 
   handleStatusChange = (value, record) => {
     this.setState({
@@ -115,7 +115,6 @@ class PartnerManagement extends React.Component {
   };
 
   render() {
-    const { visibleContact } = this.props;
     const columnList = [
       {
         title: 'Store Name',
@@ -173,7 +172,6 @@ class PartnerManagement extends React.Component {
             <div>
               <EditOutlined size="small" />
             </div>
-            {/* <DeleteOutlined /> */}
           </Space>
         ),
       },
@@ -188,9 +186,9 @@ class PartnerManagement extends React.Component {
             <div>
               <StatusFilter statusList={PARTNER_STATUS_ARRAY} searchKeyword="name, address" />
             </div>
-            <div className={styles.applicationManagementHeader}>
+            {/* <div className={styles.applicationManagementHeader}>
               <InsertButton onClick={this.showDrawerCreate} />
-            </div>
+            </div> */}
           </div>
           {this.state.visibleChangeStatus ? (
             <ConfirmationPopup
