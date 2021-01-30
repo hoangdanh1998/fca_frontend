@@ -1,6 +1,6 @@
 export default {
   navTheme: 'dark',
-  primaryColor: '#1890ff',
+  primaryColor: '#e6d7ab',
   layout: 'sidemenu',
   contentWidth: 'Fluid',
   fixedHeader: false,
@@ -10,7 +10,7 @@ export default {
   menu: {
     locale: true,
   },
-  title: 'Talaria',
+  title: 'Fast Coffee',
   pwa: false,
   iconfontUrl: '',
 };

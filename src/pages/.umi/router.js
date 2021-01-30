@@ -8,7 +8,7 @@ import {
 import dynamic from 'umi/dynamic';
 import renderRoutes from 'umi/lib/renderRoutes';
 import history from '@@/history';
-import RendererWrapper0 from '/Users/hoang-danhnguyen/Documents/kltn/fca_frontend/src/pages/.umi/LocaleWrapper.jsx';
+import RendererWrapper0 from '/app/src/pages/.umi/LocaleWrapper.jsx';
 import { routerRedux, dynamic as _dvaDynamic } from 'dva';
 
 const Router = routerRedux.ConnectedRouter;
@@ -20,7 +20,7 @@ const routes = [
       ? _dvaDynamic({
           component: () =>
             import(/* webpackChunkName: "layouts__AdminLayout" */ '../../layouts/AdminLayout'),
-          LoadingComponent: require('/Users/hoang-danhnguyen/Documents/kltn/fca_frontend/src/components/PageLoading/index')
+          LoadingComponent: require('/app/src/components/PageLoading/index')
             .default,
         })
       : require('../../layouts/AdminLayout').default,
@@ -32,7 +32,7 @@ const routes = [
           ? _dvaDynamic({
               component: () =>
                 import(/* webpackChunkName: "p__admin__SignIn" */ '../admin/SignIn'),
-              LoadingComponent: require('/Users/hoang-danhnguyen/Documents/kltn/fca_frontend/src/components/PageLoading/index')
+              LoadingComponent: require('/app/src/components/PageLoading/index')
                 .default,
             })
           : require('../admin/SignIn').default,
@@ -41,7 +41,7 @@ const routes = [
       {
         component: () =>
           React.createElement(
-            require('/Users/hoang-danhnguyen/Documents/kltn/fca_frontend/node_modules/umi-build-dev/lib/plugins/404/NotFound.js')
+            require('/app/node_modules/umi-build-dev/lib/plugins/404/NotFound.js')
               .default,
             { pagesPath: 'src/pages', hasRoutesInConfig: true },
           ),
@@ -54,35 +54,50 @@ const routes = [
       ? _dvaDynamic({
           component: () =>
             import(/* webpackChunkName: "layouts__BasicLayout" */ '../../layouts/BasicLayout'),
-          LoadingComponent: require('/Users/hoang-danhnguyen/Documents/kltn/fca_frontend/src/components/PageLoading/index')
+          LoadingComponent: require('/app/src/components/PageLoading/index')
             .default,
         })
       : require('../../layouts/BasicLayout').default,
     routes: [
       {
-        path: '/administration',
-        name: 'Administration',
+        path: '/fca-management',
+        name: 'FCA Management',
         component: __IS_BROWSER
           ? _dvaDynamic({
               component: () =>
                 import(/* webpackChunkName: "layouts__ManagementLayout" */ '../../layouts/ManagementLayout'),
-              LoadingComponent: require('/Users/hoang-danhnguyen/Documents/kltn/fca_frontend/src/components/PageLoading/index')
+              LoadingComponent: require('/app/src/components/PageLoading/index')
                 .default,
             })
           : require('../../layouts/ManagementLayout').default,
         authority: ['admin'],
         routes: [
           {
-            name: 'Contact Management',
-            path: '/administration/contact-management',
+            name: 'Partner Management',
+            path: '/fca-management/partner-management',
             component: __IS_BROWSER
               ? _dvaDynamic({
                   component: () =>
-                    import(/* webpackChunkName: "p__admin__ContactManagement" */ '../admin/ContactManagement'),
-                  LoadingComponent: require('/Users/hoang-danhnguyen/Documents/kltn/fca_frontend/src/components/PageLoading/index')
+                    import(/* webpackChunkName: "p__admin__PartnerManagement" */ '../admin/PartnerManagement'),
+                  LoadingComponent: require('/app/src/components/PageLoading/index')
                     .default,
                 })
-              : require('../admin/ContactManagement').default,
+              : require('../admin/PartnerManagement').default,
+            iconPath: '/fast.svg',
+            authority: ['admin'],
+            exact: true,
+          },
+          {
+            name: 'Order Management',
+            path: '/fca-management/order-management',
+            component: __IS_BROWSER
+              ? _dvaDynamic({
+                  component: () =>
+                    import(/* webpackChunkName: "p__admin__OrderManagement" */ '../admin/OrderManagement'),
+                  LoadingComponent: require('/app/src/components/PageLoading/index')
+                    .default,
+                })
+              : require('../admin/OrderManagement').default,
             iconPath: '/fast.svg',
             authority: ['admin'],
             exact: true,
@@ -90,7 +105,7 @@ const routes = [
           {
             component: () =>
               React.createElement(
-                require('/Users/hoang-danhnguyen/Documents/kltn/fca_frontend/node_modules/umi-build-dev/lib/plugins/404/NotFound.js')
+                require('/app/node_modules/umi-build-dev/lib/plugins/404/NotFound.js')
                   .default,
                 { pagesPath: 'src/pages', hasRoutesInConfig: true },
               ),
@@ -102,7 +117,7 @@ const routes = [
           ? _dvaDynamic({
               component: () =>
                 import(/* webpackChunkName: "p__404" */ '../404'),
-              LoadingComponent: require('/Users/hoang-danhnguyen/Documents/kltn/fca_frontend/src/components/PageLoading/index')
+              LoadingComponent: require('/app/src/components/PageLoading/index')
                 .default,
             })
           : require('../404').default,
@@ -111,7 +126,7 @@ const routes = [
       {
         component: () =>
           React.createElement(
-            require('/Users/hoang-danhnguyen/Documents/kltn/fca_frontend/node_modules/umi-build-dev/lib/plugins/404/NotFound.js')
+            require('/app/node_modules/umi-build-dev/lib/plugins/404/NotFound.js')
               .default,
             { pagesPath: 'src/pages', hasRoutesInConfig: true },
           ),
@@ -122,7 +137,7 @@ const routes = [
     component: __IS_BROWSER
       ? _dvaDynamic({
           component: () => import(/* webpackChunkName: "p__404" */ '../404'),
-          LoadingComponent: require('/Users/hoang-danhnguyen/Documents/kltn/fca_frontend/src/components/PageLoading/index')
+          LoadingComponent: require('/app/src/components/PageLoading/index')
             .default,
         })
       : require('../404').default,
@@ -131,7 +146,7 @@ const routes = [
   {
     component: () =>
       React.createElement(
-        require('/Users/hoang-danhnguyen/Documents/kltn/fca_frontend/node_modules/umi-build-dev/lib/plugins/404/NotFound.js')
+        require('/app/node_modules/umi-build-dev/lib/plugins/404/NotFound.js')
           .default,
         { pagesPath: 'src/pages', hasRoutesInConfig: true },
       ),

@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'dva';
 import { Form, Icon, Input, Button } from 'antd';
 import styles from './index.less';
-import LogoImage from '../../../../public/LogoTalariaAdmin.svg';
 
 @connect()
 class AdminSignIn extends React.Component {
@@ -19,9 +18,7 @@ class AdminSignIn extends React.Component {
   render() {
     return (
       <div className={styles.rectangle}>
-        <div className={styles.logo}>
-          <img src={LogoImage} alt="Logo Geek Up" />
-        </div>
+        <h1 className={styles.logo}>Fast Coffee</h1>
         <Form
           id="admin-login-form"
           className={styles.loginForm}

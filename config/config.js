@@ -11,7 +11,15 @@ const { ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION, REACT_APP_ENV } = pro
 const isAntDesignProPreview = ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION === 'site';
 
 const apiconfig = apiconfigs[REACT_APP_ENV || env.REACT_APP_ENV];
-const { BASE_API_URL, REGISTER_URL, GEEKUP_MAIL, PRODUCT_URL, DEV_URL, SENTRY, S3_PUBLIC_BUCKET } = apiconfig;
+const {
+  BASE_API_URL,
+  REGISTER_URL,
+  GEEKUP_MAIL,
+  PRODUCT_URL,
+  DEV_URL,
+  SENTRY,
+  S3_PUBLIC_BUCKET,
+} = apiconfig;
 
 if (isAntDesignProPreview) {
   plugins.push([
@@ -33,7 +41,7 @@ export default {
   // Theme for antd: https://ant.design/docs/react/customize-theme-cn
   theme: {
     'layout-header-background': '#373D48',
-    'primary-color': '#33B3AB',
+    'primary-color': '#603a18',
   },
   define: {
     REACT_APP_ENV: REACT_APP_ENV || env.REACT_APP_ENV,

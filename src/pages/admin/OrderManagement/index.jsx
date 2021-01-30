@@ -3,17 +3,17 @@ import { connect } from 'dva';
 import { Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import DrawerForm from '@/components/NewContact/contact';
-import TableContact from '@/components/TableContact';
+import TableContact from '@/components/DataTable';
 import ContactModal from './importFileModal';
-import FilterContacts from '@/components/TableContact/FilterContact';
-import HeaderLayout from '@/components/Header';
-import styles from './ContactManagement.less';
+import FilterContacts from '@/components/DataTable/FilterContact';
+import HeaderLayout from '@/components/atom/Header';
+import styles from './index.less';
 
 @connect(({ admin, loading }) => ({
   fetchCurrentAdmin: loading.effects['admin/saveCurrentAdmin'],
   visibleContact: admin.visibleCreateContact,
 }))
-class ContactManagement extends React.Component {
+class OrderManagement extends React.Component {
   state = { contactID: '', visibleMergeContact: false };
 
   showDrawer = () => {
@@ -72,7 +72,7 @@ class ContactManagement extends React.Component {
     return (
       <>
         <div className={styles.wrapHeader}>
-          <HeaderLayout page="contact-management" title="Contact Management" />
+          <HeaderLayout page="partner-management" title="Partner Management" />
         </div>
         <div className={styles.applicationManagementContainer}>
           <div className={styles.applicationHeader}>
@@ -117,4 +117,4 @@ class ContactManagement extends React.Component {
   }
 }
 
-export default ContactManagement;
+export default OrderManagement;

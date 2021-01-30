@@ -24,7 +24,7 @@ export default () => (
           textAlign: 'center',
         }}
       >
-        <SmileTwoTone /> Talaria <HeartTwoTone twoToneColor="#eb2f96" /> You
+        <SmileTwoTone /> Fast Coffee <HeartTwoTone twoToneColor="#eb2f96" /> You
       </Typography.Title>
     </Card>
     <p
