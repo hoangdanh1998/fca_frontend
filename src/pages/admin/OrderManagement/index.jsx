@@ -51,9 +51,6 @@ class OrderManagement extends React.Component {
         title: 'Order Date',
         dataIndex: 'createdDate',
         key: 'createdDate',
-        // render: (text, record, index) => {
-        //   moment(record.createdDate, 'DD/MM/YYYY');
-        // },
       },
       {
         title: 'Action',
@@ -79,7 +76,7 @@ class OrderManagement extends React.Component {
         <div className={styles.applicationManagementContainer}>
           <div className={styles.applicationHeader}>
             <div>
-              <SearchText searchKeyword="customer phone" />
+              <SearchText searchKeyword="customer phone, partner name" />
             </div>
           </div>
           {this.state.visibleCancelOrder ? (

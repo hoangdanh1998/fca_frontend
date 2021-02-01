@@ -20,7 +20,13 @@ class CancelOrderModal extends React.Component {
     ];
     const { visible, hideModal } = this.props;
     return (
-      <Modal style={{ textAlign: 'center' }} title="CANCEL ORDER" visible={visible} footer={null}>
+      <Modal
+        style={{ textAlign: 'center' }}
+        title="CANCEL ORDER"
+        visible={visible}
+        footer={null}
+        onCancel={hideModal}
+      >
         <Form onFinish={this.onSubmit} labelCol={{ span: 6 }} wrapperCol={{ span: 16 }}>
           <Form.Item name="requestBy" label="Request by" rules={[{ required: true }]}>
             <Select placeholder="" allowClear options={requestByList}></Select>
@@ -36,20 +42,18 @@ class CancelOrderModal extends React.Component {
           <Form.Item name="note" label="Note">
             <Input.TextArea />
           </Form.Item>
-          automatically refund the order amount to the customer if there is no feedback
+          <p style={{ fontSize: 12 }}>
+            automatically refund the order amount to the customer if there is no feedback
+          </p>
           <Space direction="horizontal">
             <Form.Item>
-              <Button type="primary" style={{ width: '30%', float: 'right' }} htmlType="submit">
-                OK
+              <Button htmlType="button" onClick={hideModal}>
+                Cancel
               </Button>
             </Form.Item>
             <Form.Item>
-              <Button
-                htmlType="button"
-                style={{ width: '30%', float: 'right' }}
-                onClick={hideModal}
-              >
-                Cancel
+              <Button type="primary" htmlType="submit">
+                OK
               </Button>
             </Form.Item>
           </Space>

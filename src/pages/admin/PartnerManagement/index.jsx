@@ -7,7 +7,11 @@ import HeaderLayout from '@/components/atom/Header';
 import StatusFilter from '../../../components/atom/StatusFilter/index.jsx';
 import SearchText from '../../../components/atom/SearchText/index.jsx';
 import ConfirmationPopup from '../../../components/atom/ConfirmationPopup/index.jsx';
-import { PARTNER_STATUS_ARRAY, PARTNER_STATUS_OPTIONS } from '../../../../config/constants';
+import {
+  PARTNER_STATUS_ARRAY,
+  PARTNER_STATUS_OPTIONS,
+  DATE_FORMAT,
+} from '../../../../config/constants';
 import { PARTNER_LIST } from '../../../../config/seedingData';
 import { EditOutlined, EyeOutlined } from '@ant-design/icons';
 import styles from './index.less';
@@ -41,7 +45,7 @@ class PartnerManagement extends React.Component {
       partner: {
         storeName: record.storeName,
         from: record.expirationDate,
-        to: moment(value).format('DD/MM/YYYY'),
+        to: moment(value).format(DATE_FORMAT),
         title: 'expiration date',
         visible: true,
       },
@@ -95,8 +99,8 @@ class PartnerManagement extends React.Component {
         render: (text, record, index) => (
           <DatePicker
             style={{ width: '100%' }}
-            defaultValue={moment(record.expirationDate, 'DD/MM/YYYY')}
-            format="DD/MM/YYYY"
+            defaultValue={moment(record.expirationDate, DATE_FORMAT)}
+            format={DATE_FORMAT}
             onChange={value => {
               this.handleExpirationDateChange(value, record);
             }}
@@ -127,10 +131,6 @@ class PartnerManagement extends React.Component {
         <div className={styles.applicationManagementContainer}>
           <div className={styles.applicationHeader}>
             <div>
-              {/* <Space direction="horizontal">
-                <SearchText searchKeyword="name, phone" />
-                <SearchText searchKeyword="name, phone" />
-              </Space> */}
               <SearchText searchKeyword="name, phone" />
               <StatusFilter statusList={PARTNER_STATUS_ARRAY} />
             </div>
