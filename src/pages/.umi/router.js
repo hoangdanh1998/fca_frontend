@@ -83,7 +83,6 @@ const routes = [
                     .default,
                 })
               : require('../admin/PartnerManagement').default,
-            iconPath: '/fast.svg',
             authority: ['admin'],
             exact: true,
           },
@@ -98,7 +97,6 @@ const routes = [
                     .default,
                 })
               : require('../admin/OrderManagement').default,
-            iconPath: '/fast.svg',
             authority: ['admin'],
             exact: true,
           },
