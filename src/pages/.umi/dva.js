@@ -20,9 +20,9 @@ export function _onCreate() {
     app.use(plugin);
   });
   
-  app.model({ namespace: 'admin', ...(require('/app/src/models/admin.js').default) });
-app.model({ namespace: 'global', ...(require('/app/src/models/global.js').default) });
-app.model({ namespace: 'setting', ...(require('/app/src/models/setting.js').default) });
+  app.model({ namespace: 'admin', ...(require('/Users/pkimanh03/Documents/capstone/fca_frontend/src/models/admin.js').default) });
+app.model({ namespace: 'global', ...(require('/Users/pkimanh03/Documents/capstone/fca_frontend/src/models/global.js').default) });
+app.model({ namespace: 'setting', ...(require('/Users/pkimanh03/Documents/capstone/fca_frontend/src/models/setting.js').default) });
   return app;
 }
 
