@@ -1,116 +1,88 @@
 import React from 'react';
 import { connect } from 'dva';
-import { Button } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
-import DrawerForm from '@/components/NewContact/contact';
-import TableContact from '@/components/DataTable';
-import ContactModal from './importFileModal';
-import FilterContacts from '@/components/DataTable/FilterContact';
+import { Space } from 'antd';
+import { DeleteOutlined, EyeOutlined } from '@ant-design/icons';
+import DataTable from '../../../components/atom/DataTable/index';
+import SearchText from '../../../components/atom/SearchText/index.jsx';
 import HeaderLayout from '@/components/atom/Header';
+import CancelOrderModal from '../OrderManagement/CancelOrderModal/index.jsx';
 import styles from './index.less';
+import { ORDER_LIST } from '../../../../config/seedingData';
 
 @connect(({ admin, loading }) => ({
   fetchCurrentAdmin: loading.effects['admin/saveCurrentAdmin'],
   visibleContact: admin.visibleCreateContact,
 }))
 class OrderManagement extends React.Component {
-  state = { contactID: '', visibleMergeContact: false };
+  state = { visibleCancelOrder: false };
 
-  showDrawer = () => {
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'admin/handleVisibleCreateContact',
-      payload: true,
-    });
-  };
-
-  showDrawerCreate = () => {
-    const { dispatch } = this.props;
+  handleVisibleCancelOrder = () => {
     this.setState({
-      contactID: '',
-    });
-    dispatch({
-      type: 'admin/handleVisibleCreateContact',
-      payload: true,
+      visibleCancelOrder: true,
     });
   };
 
-  handleCancel = () => {
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'admin/handleVisibleCreateContact',
-      payload: false,
-    });
-  };
-
-  showAddModal = () => {
+  hideModal = () => {
     this.setState({
-      modalAddVisible: true,
-    });
-  };
-
-  showContactID = ID => {
-    this.setState({
-      contactID: ID,
-    });
-  };
-
-  handleHandleID = () => {
-    this.setState({
-      contactID: '',
-    });
-  };
-
-  mergeContact = () => {
-    this.setState({
-      visibleMergeContact: true,
+      visibleCancelOrder: false,
     });
   };
 
   render() {
-    const { visibleContact } = this.props;
+    const columnList = [
+      {
+        title: 'Customer Phone',
+        dataIndex: 'customerPhone',
+        key: 'customerPhone',
+        width: '20%',
+      },
+      {
+        title: 'Partner Store',
+        dataIndex: 'partnerStore',
+        key: 'partnerStore',
+        width: '40%',
+      },
+      {
+        title: 'Status',
+        dataIndex: 'status',
+        key: 'status',
+      },
+      {
+        title: 'Order Date',
+        dataIndex: 'createdDate',
+        key: 'createdDate',
+      },
+      {
+        title: 'Action',
+        dataIndex: 'action',
+        key: 'action',
+        render: () => (
+          <Space direction="horizontal">
+            <div>
+              <EyeOutlined size="small" />
+            </div>
+            <div>
+              <DeleteOutlined onClick={this.handleVisibleCancelOrder} size="small" />
+            </div>
+          </Space>
+        ),
+      },
+    ];
     return (
       <>
         <div className={styles.wrapHeader}>
-          <HeaderLayout page="partner-management" title="Partner Management" />
+          <HeaderLayout page="partner-management" title="Order Management" />
         </div>
         <div className={styles.applicationManagementContainer}>
           <div className={styles.applicationHeader}>
             <div>
-              <FilterContacts />
-            </div>
-            <div className={styles.applicationManagementHeader}>
-              <Button
-                style={{ transform: 'translate(6%,-270%)' }}
-                type="primary"
-                onClick={this.showDrawerCreate}
-              >
-                <PlusOutlined size="small" /> Create New Contact
-              </Button>
-              <Button
-                style={{ transform: 'translate(22%,-270%)' }}
-                onClick={this.showAddModal}
-                type="primary"
-              >
-                Import
-              </Button>
+              <SearchText searchKeyword="customer phone, partner name" />
             </div>
           </div>
-          <ContactModal
-            {...this.state}
-            cancel={() => this.setState({ modalAddVisible: false })}
-            onReload={this.onReloadTable}
-          />
-
-          {visibleContact ? (
-            <DrawerForm
-              cancel={this.handleCancel}
-              contactID={this.state.contactID}
-              deleteID={this.handleHandleID}
-            />
+          {this.state.visibleCancelOrder ? (
+            <CancelOrderModal visible={this.state.visibleCancelOrder} hideModal={this.hideModal} />
           ) : null}
-
-          <TableContact onShowInfor={this.showDrawer} getContactID={this.showContactID} />
+          <DataTable columnList={columnList} dataList={ORDER_LIST} totalRecords={30} />
         </div>
       </>
     );

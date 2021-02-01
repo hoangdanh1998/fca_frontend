@@ -8,7 +8,7 @@ import {
 import dynamic from 'umi/dynamic';
 import renderRoutes from 'umi/lib/renderRoutes';
 import history from '@@/history';
-import RendererWrapper0 from '/app/src/pages/.umi/LocaleWrapper.jsx';
+import RendererWrapper0 from '/Users/pkimanh03/Documents/capstone/fca_frontend/src/pages/.umi/LocaleWrapper.jsx';
 import { routerRedux, dynamic as _dvaDynamic } from 'dva';
 
 const Router = routerRedux.ConnectedRouter;
@@ -20,7 +20,7 @@ const routes = [
       ? _dvaDynamic({
           component: () =>
             import(/* webpackChunkName: "layouts__AdminLayout" */ '../../layouts/AdminLayout'),
-          LoadingComponent: require('/app/src/components/PageLoading/index')
+          LoadingComponent: require('/Users/pkimanh03/Documents/capstone/fca_frontend/src/components/PageLoading/index')
             .default,
         })
       : require('../../layouts/AdminLayout').default,
@@ -32,7 +32,7 @@ const routes = [
           ? _dvaDynamic({
               component: () =>
                 import(/* webpackChunkName: "p__admin__SignIn" */ '../admin/SignIn'),
-              LoadingComponent: require('/app/src/components/PageLoading/index')
+              LoadingComponent: require('/Users/pkimanh03/Documents/capstone/fca_frontend/src/components/PageLoading/index')
                 .default,
             })
           : require('../admin/SignIn').default,
@@ -41,7 +41,7 @@ const routes = [
       {
         component: () =>
           React.createElement(
-            require('/app/node_modules/umi-build-dev/lib/plugins/404/NotFound.js')
+            require('/Users/pkimanh03/Documents/capstone/fca_frontend/node_modules/umi-build-dev/lib/plugins/404/NotFound.js')
               .default,
             { pagesPath: 'src/pages', hasRoutesInConfig: true },
           ),
@@ -54,7 +54,7 @@ const routes = [
       ? _dvaDynamic({
           component: () =>
             import(/* webpackChunkName: "layouts__BasicLayout" */ '../../layouts/BasicLayout'),
-          LoadingComponent: require('/app/src/components/PageLoading/index')
+          LoadingComponent: require('/Users/pkimanh03/Documents/capstone/fca_frontend/src/components/PageLoading/index')
             .default,
         })
       : require('../../layouts/BasicLayout').default,
@@ -66,7 +66,7 @@ const routes = [
           ? _dvaDynamic({
               component: () =>
                 import(/* webpackChunkName: "layouts__ManagementLayout" */ '../../layouts/ManagementLayout'),
-              LoadingComponent: require('/app/src/components/PageLoading/index')
+              LoadingComponent: require('/Users/pkimanh03/Documents/capstone/fca_frontend/src/components/PageLoading/index')
                 .default,
             })
           : require('../../layouts/ManagementLayout').default,
@@ -79,7 +79,7 @@ const routes = [
               ? _dvaDynamic({
                   component: () =>
                     import(/* webpackChunkName: "p__admin__PartnerManagement" */ '../admin/PartnerManagement'),
-                  LoadingComponent: require('/app/src/components/PageLoading/index')
+                  LoadingComponent: require('/Users/pkimanh03/Documents/capstone/fca_frontend/src/components/PageLoading/index')
                     .default,
                 })
               : require('../admin/PartnerManagement').default,
@@ -94,7 +94,7 @@ const routes = [
               ? _dvaDynamic({
                   component: () =>
                     import(/* webpackChunkName: "p__admin__OrderManagement" */ '../admin/OrderManagement'),
-                  LoadingComponent: require('/app/src/components/PageLoading/index')
+                  LoadingComponent: require('/Users/pkimanh03/Documents/capstone/fca_frontend/src/components/PageLoading/index')
                     .default,
                 })
               : require('../admin/OrderManagement').default,
@@ -105,7 +105,7 @@ const routes = [
           {
             component: () =>
               React.createElement(
-                require('/app/node_modules/umi-build-dev/lib/plugins/404/NotFound.js')
+                require('/Users/pkimanh03/Documents/capstone/fca_frontend/node_modules/umi-build-dev/lib/plugins/404/NotFound.js')
                   .default,
                 { pagesPath: 'src/pages', hasRoutesInConfig: true },
               ),
@@ -117,7 +117,7 @@ const routes = [
           ? _dvaDynamic({
               component: () =>
                 import(/* webpackChunkName: "p__404" */ '../404'),
-              LoadingComponent: require('/app/src/components/PageLoading/index')
+              LoadingComponent: require('/Users/pkimanh03/Documents/capstone/fca_frontend/src/components/PageLoading/index')
                 .default,
             })
           : require('../404').default,
@@ -126,7 +126,7 @@ const routes = [
       {
         component: () =>
           React.createElement(
-            require('/app/node_modules/umi-build-dev/lib/plugins/404/NotFound.js')
+            require('/Users/pkimanh03/Documents/capstone/fca_frontend/node_modules/umi-build-dev/lib/plugins/404/NotFound.js')
               .default,
             { pagesPath: 'src/pages', hasRoutesInConfig: true },
           ),
@@ -137,7 +137,7 @@ const routes = [
     component: __IS_BROWSER
       ? _dvaDynamic({
           component: () => import(/* webpackChunkName: "p__404" */ '../404'),
-          LoadingComponent: require('/app/src/components/PageLoading/index')
+          LoadingComponent: require('/Users/pkimanh03/Documents/capstone/fca_frontend/src/components/PageLoading/index')
             .default,
         })
       : require('../404').default,
@@ -146,7 +146,7 @@ const routes = [
   {
     component: () =>
       React.createElement(
-        require('/app/node_modules/umi-build-dev/lib/plugins/404/NotFound.js')
+        require('/Users/pkimanh03/Documents/capstone/fca_frontend/node_modules/umi-build-dev/lib/plugins/404/NotFound.js')
           .default,
         { pagesPath: 'src/pages', hasRoutesInConfig: true },
       ),

@@ -218,6 +218,7 @@ export const PARTNER_LIST = [
     storeAddress: '8795 Forster Court',
     storeStatus: 'ACCEPTED',
     expirationDate: '01/09/2020',
+    createdDate: '01/09/2020',
   },
   {
     id: 2,
@@ -225,6 +226,7 @@ export const PARTNER_LIST = [
     storeAddress: '00871 Sloan Avenue',
     storeStatus: 'PROCESS',
     expirationDate: '25/07/2020',
+    createdDate: '25/07/2020',
   },
   {
     id: 3,
@@ -233,6 +235,7 @@ export const PARTNER_LIST = [
     storeAddress: '95 Sunnyside Center',
     storeStatus: 'PROCESS',
     expirationDate: '28/10/2020',
+    createdDate: '28/10/2020',
   },
   {
     id: 4,
@@ -240,6 +243,7 @@ export const PARTNER_LIST = [
     storeAddress: '9 Meadow Vale Trail',
     storeStatus: 'PROCESS',
     expirationDate: '24/12/2020',
+    createdDate: '24/12/2020',
   },
   {
     id: 5,
@@ -247,13 +251,15 @@ export const PARTNER_LIST = [
     storeAddress: '74 Summit Alley',
     storeStatus: 'ACCEPTED',
     expirationDate: '15/04/2020',
+    createdDate: '15/04/2020',
   },
   {
     id: 6,
     storeName: 'Cyclanthera pedata (L.) Schrad.',
     storeAddress: '10085 Columbus Avenue',
     storeStatus: 'ACCEPTED',
-    expirationDate: '30/07/2020',
+    expirationDate: '15/04/2020',
+    createdDate: '15/04/2020',
   },
   {
     id: 7,
@@ -261,6 +267,7 @@ export const PARTNER_LIST = [
     storeAddress: '2981 Carey Court',
     storeStatus: 'ACCEPTED',
     expirationDate: '15/02/2020',
+    createdDate: '15/02/2020',
   },
   {
     id: 8,
@@ -268,6 +275,7 @@ export const PARTNER_LIST = [
     storeAddress: '4 Aberg Pass',
     storeStatus: 'ACCEPTED',
     expirationDate: '21/05/2020',
+    createdDate: '21/05/2020',
   },
   {
     id: 9,
@@ -275,6 +283,7 @@ export const PARTNER_LIST = [
     storeAddress: '3 Garrison Circle',
     storeStatus: 'ACCEPTED',
     expirationDate: '25/01/2021',
+    createdDate: '25/01/2021',
   },
   {
     id: 10,
@@ -282,6 +291,8 @@ export const PARTNER_LIST = [
     storeAddress: '24180 Pennsylvania Street',
     storeStatus: 'ACCEPTED',
     expirationDate: '12/06/2020',
+    createdDate: '12/06/2020',
+    createdDate: '12/06/2020',
   },
   {
     id: 11,
@@ -289,6 +300,7 @@ export const PARTNER_LIST = [
     storeAddress: '1 Pierstorff Terrace',
     storeStatus: 'ACCEPTED',
     expirationDate: '02/06/2020',
+    createdDate: '12/06/2020',
   },
   {
     id: 12,
@@ -296,6 +308,7 @@ export const PARTNER_LIST = [
     storeAddress: '495 Forest Run Lane',
     storeStatus: 'ACCEPTED',
     expirationDate: '30/07/2020',
+    createdDate: '12/06/2020',
   },
   {
     id: 13,
@@ -303,6 +316,7 @@ export const PARTNER_LIST = [
     storeAddress: '3 Loeprich Lane',
     storeStatus: 'PROCESS',
     expirationDate: '30/12/2020',
+    createdDate: '12/06/2020',
   },
   {
     id: 14,
@@ -310,6 +324,7 @@ export const PARTNER_LIST = [
     storeAddress: '93935 Spohn Place',
     storeStatus: 'ACCEPTED',
     expirationDate: '31/03/2020',
+    createdDate: '12/06/2020',
   },
   {
     id: 15,
@@ -317,6 +332,7 @@ export const PARTNER_LIST = [
     storeAddress: '8231 Mitchell Plaza',
     storeStatus: 'REJECTED',
     expirationDate: '27/09/2020',
+    createdDate: '12/06/2020',
   },
   {
     id: 16,
@@ -324,6 +340,7 @@ export const PARTNER_LIST = [
     storeAddress: '186 Tony Trail',
     storeStatus: 'ACCEPTED',
     expirationDate: '03/03/2020',
+    createdDate: '12/06/2020',
   },
   {
     id: 17,
@@ -331,6 +348,7 @@ export const PARTNER_LIST = [
     storeAddress: '5 Fair Oaks Way',
     storeStatus: 'ACCEPTED',
     expirationDate: '18/03/2020',
+    createdDate: '12/06/2020',
   },
   {
     id: 18,
@@ -338,6 +356,7 @@ export const PARTNER_LIST = [
     storeAddress: '3184 Sheridan Alley',
     storeStatus: 'REJECTED',
     expirationDate: '26/09/2020',
+    createdDate: '12/06/2020',
   },
   {
     id: 19,
@@ -345,6 +364,7 @@ export const PARTNER_LIST = [
     storeAddress: '88334 Stone Corner Court',
     storeStatus: 'ACCEPTED',
     expirationDate: '20/11/2020',
+    createdDate: '12/06/2020',
   },
   {
     id: 20,
@@ -352,6 +372,7 @@ export const PARTNER_LIST = [
     storeAddress: '44513 Welch Pass',
     storeStatus: 'REJECTED',
     expirationDate: '03/05/2020',
+    createdDate: '12/06/2020',
   },
   {
     id: 21,
@@ -359,6 +380,7 @@ export const PARTNER_LIST = [
     storeAddress: '5 Dexter Pass',
     storeStatus: 'ACCEPTED',
     expirationDate: '14/10/2020',
+    createdDate: '12/06/2020',
   },
   {
     id: 22,
@@ -366,6 +388,7 @@ export const PARTNER_LIST = [
     storeAddress: '98417 Fair Oaks Alley',
     storeStatus: 'ACCEPTED',
     expirationDate: '19/12/2020',
+    createdDate: '12/06/2020',
   },
   {
     id: 23,
@@ -373,6 +396,7 @@ export const PARTNER_LIST = [
     storeAddress: '644 Mayfield Street',
     storeStatus: 'REJECTED',
     expirationDate: '01/06/2020',
+    createdDate: '12/06/2020',
   },
   {
     id: 24,
@@ -380,6 +404,7 @@ export const PARTNER_LIST = [
     storeAddress: '0609 Oak Valley Court',
     storeStatus: 'ACCEPTED',
     expirationDate: '14/06/2020',
+    createdDate: '12/06/2020',
   },
   {
     id: 25,
@@ -387,6 +412,7 @@ export const PARTNER_LIST = [
     storeAddress: '74711 Cascade Parkway',
     storeStatus: 'ACCEPTED',
     expirationDate: '14/05/2020',
+    createdDate: '12/06/2020',
   },
   {
     id: 26,
@@ -394,6 +420,7 @@ export const PARTNER_LIST = [
     storeAddress: '95993 Grim Junction',
     storeStatus: 'ACCEPTED',
     expirationDate: '28/11/2020',
+    createdDate: '12/06/2020',
   },
   {
     id: 27,
@@ -401,6 +428,7 @@ export const PARTNER_LIST = [
     storeAddress: '0 Myrtle Road',
     storeStatus: 'ACCEPTED',
     expirationDate: '17/01/2021',
+    createdDate: '12/06/2020',
   },
   {
     id: 28,
@@ -408,6 +436,7 @@ export const PARTNER_LIST = [
     storeAddress: '397 Oxford Junction',
     storeStatus: 'REJECTED',
     expirationDate: '15/05/2020',
+    createdDate: '12/06/2020',
   },
   {
     id: 29,
@@ -415,6 +444,7 @@ export const PARTNER_LIST = [
     storeAddress: '549 Messerschmidt Circle',
     storeStatus: 'ACCEPTED',
     expirationDate: '28/02/2020',
+    createdDate: '12/06/2020',
   },
   {
     id: 30,
@@ -422,5 +452,6 @@ export const PARTNER_LIST = [
     storeAddress: '38 Maple Wood Park',
     storeStatus: 'ACCEPTED',
     expirationDate: '17/07/2020',
+    createdDate: '12/06/2020',
   },
 ];
