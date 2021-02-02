@@ -67,7 +67,7 @@ class FilterContacts extends React.Component {
       <div>
         <Input.Search
           allowClear
-          placeholder="Search by Name or Phone"
+          placeholder="Enter Name or Phone"
           onPressEnter={this.search}
           className={styles.search}
           style={{ width: '416px' }}

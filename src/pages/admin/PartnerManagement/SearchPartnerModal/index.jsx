@@ -1,8 +1,8 @@
-import { Button, Form, Input, Space, DatePicker, Radio } from 'antd';
+import { Button, Form, Input, Space, Radio } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
-import { DATE_FORMAT, ORDER_STATUS_ARRAY } from '../../../../../config/constants';
+import { DATE_FORMAT, PARTNER_STATUS_ARRAY } from '../../../../../config/constants';
 
-class SearchOrderModal extends React.Component {
+class SearchPartnerModal extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -20,10 +20,7 @@ class SearchOrderModal extends React.Component {
       <Form onFinish={this.onSubmit}>
         <Space direction="horizontal" style={{ display: 'flex' }}>
           <Form.Item style={{ width: '100%' }} name="keyword">
-            <Input allowClear placeholder="Enter customer phone, partner store" />
-          </Form.Item>
-          <Form.Item style={{ width: '100%' }} name="orderDate">
-            <DatePicker allowClear format={DATE_FORMAT} />
+            <Input allowClear placeholder="Enter partner store" />
           </Form.Item>
           <Form.Item>
             <Button type="primary" htmlType="submit">
@@ -35,7 +32,7 @@ class SearchOrderModal extends React.Component {
           <Radio.Group
             style={{ display: 'flex' }}
             defaultValue={'ALL'}
-            options={ORDER_STATUS_ARRAY}
+            options={PARTNER_STATUS_ARRAY}
             onChange={this.handleChangeFilter}
             optionType="button"
           ></Radio.Group>
@@ -44,4 +41,4 @@ class SearchOrderModal extends React.Component {
     );
   }
 }
-export default SearchOrderModal;
+export default SearchPartnerModal;

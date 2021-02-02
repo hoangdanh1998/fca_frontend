@@ -3,10 +3,11 @@ import { connect } from 'dva';
 import { Space, DatePicker } from 'antd';
 import { DeleteOutlined, EyeOutlined } from '@ant-design/icons';
 import DataTable from '../../../components/atom/DataTable/index';
-import SearchText from '../../../components/atom/SearchText/index.jsx';
+import SearchText from '../PartnerManagement/SearchPartnerModal/index.jsx';
 import HeaderLayout from '@/components/atom/Header';
 import StatusFilter from '../../../components/atom/StatusFilter/index.jsx';
 import CancelOrderModal from '../OrderManagement/CancelOrderModal/index.jsx';
+import SearchOrderModal from '../OrderManagement/SearchOrderModal/index.jsx';
 import styles from './index.less';
 import { ORDER_LIST } from '../../../../config/seedingData';
 import { ORDER_STATUS_ARRAY, DATE_FORMAT } from '../../../../config/constants';
@@ -80,15 +81,18 @@ class OrderManagement extends React.Component {
           <HeaderLayout page="order-management" title="Order Management" />
         </div> */}
         <div direction="horizontal" className={styles.applicationManagementContainer}>
-          <Space direction="horizontal" className={styles.applicationHeader}>
+          {/* <Space direction="horizontal" className={styles.applicationHeader}>
             <SearchText searchKeyword="customer phone, partner store" />
-            {/* <SearchText searchKeyword="customer phone, partner name" /> */}
             <DatePicker style={{ width: '100%' }} format={DATE_FORMAT} />
-          </Space>
+          </Space> */}
+          {/* <div className={styles.applicationHeader}> */}
+          {/* <SearchOrderModal /> */}
+          {/* </div> */}
 
-          <div>
-            <StatusFilter statusList={ORDER_STATUS_ARRAY} />
-          </div>
+          <Space direction="vertical" className={styles.applicationHeader}>
+            <SearchOrderModal />
+            {/* <StatusFilter statusList={ORDER_STATUS_ARRAY} /> */}
+          </Space>
           {this.state.visibleCancelOrder ? (
             <CancelOrderModal visible={this.state.visibleCancelOrder} hideModal={this.hideModal} />
           ) : null}
