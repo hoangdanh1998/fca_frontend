@@ -11,7 +11,7 @@ const AdminLayout = props => {
   } else if (window.location.pathname === '/admin') {
     const authorityJson = JSON.parse(authority);
     if (authorityJson && authorityJson.length && authorityJson[0] === 'admin') {
-      router.push('/administration/contact-management');
+      router.push('/fca-management/partner-management');
     } else if (authorityJson && authorityJson.length && authorityJson[0] === 'application') {
       router.push('/application/dashboard');
     } else {

@@ -11,12 +11,12 @@ class HeaderLayout extends React.Component {
   render() {
     return (
       <div className={styles.headerlayout}>
-        <Link className={styles.Link} to={`/administration/${this.props.page}`}>
+        <Link className={styles.Link} to={`/fca-management/${this.props.page}`}>
           {this.props.title}
           {this.props.detail}
         </Link>
 
-        <div className={styles.child}>{this.props.children}</div>
+        {/* <div className={styles.child}>{this.props.children}</div> */}
       </div>
     );
   }

@@ -52,28 +52,17 @@ class ManagementLayout extends React.Component {
         return Authorized.check(item.authority, localItem, null);
       });
     return (
-      <div className={styles.adminLayoutContainer}>
-        <Helmet>
-          <title>{title}</title>
-        </Helmet>
+      <div>
         <ProLayout
-          headerRender={() => null}
-          menuHeaderRender={() => (
-            <div>
-              <h1 className={styles.adminLayoutLogo}></h1>
-              <h1 className={styles.adminLayoutLogo}>Fast Coffee Management</h1>
-            </div>
-          )}
+          title={defaultSettings.title}
           siderWidth={240}
           collapsed={false}
           fixSiderbar={true}
-          onCollapse={this.handleMenuCollapse}
           menuItemRender={this.menuItemRender}
           menuDataRender={menuDataRender}
           {...this.props}
         >
           {this.props.children}
-          {/* <AdminSignOut /> */}
         </ProLayout>
         {/* <AdminSignOut /> */}
       </div>
