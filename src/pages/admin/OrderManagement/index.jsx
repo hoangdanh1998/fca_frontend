@@ -1,13 +1,15 @@
 import React from 'react';
 import { connect } from 'dva';
-import { Space } from 'antd';
+import { Space, DatePicker } from 'antd';
 import { DeleteOutlined, EyeOutlined } from '@ant-design/icons';
 import DataTable from '../../../components/atom/DataTable/index';
 import SearchText from '../../../components/atom/SearchText/index.jsx';
 import HeaderLayout from '@/components/atom/Header';
+import StatusFilter from '../../../components/atom/StatusFilter/index.jsx';
 import CancelOrderModal from '../OrderManagement/CancelOrderModal/index.jsx';
 import styles from './index.less';
 import { ORDER_LIST } from '../../../../config/seedingData';
+import { ORDER_STATUS_ARRAY, DATE_FORMAT } from '../../../../config/constants';
 
 @connect(({ admin, loading }) => ({
   fetchCurrentAdmin: loading.effects['admin/saveCurrentAdmin'],
@@ -59,10 +61,14 @@ class OrderManagement extends React.Component {
         render: () => (
           <Space direction="horizontal">
             <div>
-              <EyeOutlined size="small" />
+              <EyeOutlined className={styles.icon} size="small" />
             </div>
             <div>
-              <DeleteOutlined onClick={this.handleVisibleCancelOrder} size="small" />
+              <DeleteOutlined
+                className={styles.icon}
+                onClick={this.handleVisibleCancelOrder}
+                size="small"
+              />
             </div>
           </Space>
         ),
@@ -70,14 +76,18 @@ class OrderManagement extends React.Component {
     ];
     return (
       <>
-        <div className={styles.wrapHeader}>
-          <HeaderLayout page="partner-management" title="Order Management" />
-        </div>
-        <div className={styles.applicationManagementContainer}>
-          <div className={styles.applicationHeader}>
-            <div>
-              <SearchText searchKeyword="customer phone, partner name" />
-            </div>
+        {/* <div className={styles.wrapHeader}>
+          <HeaderLayout page="order-management" title="Order Management" />
+        </div> */}
+        <div direction="horizontal" className={styles.applicationManagementContainer}>
+          <Space direction="horizontal" className={styles.applicationHeader}>
+            <SearchText searchKeyword="customer phone, partner store" />
+            {/* <SearchText searchKeyword="customer phone, partner name" /> */}
+            <DatePicker style={{ width: '100%' }} format={DATE_FORMAT} />
+          </Space>
+
+          <div>
+            <StatusFilter statusList={ORDER_STATUS_ARRAY} />
           </div>
           {this.state.visibleCancelOrder ? (
             <CancelOrderModal visible={this.state.visibleCancelOrder} hideModal={this.hideModal} />

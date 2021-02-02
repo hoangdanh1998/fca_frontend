@@ -1,8 +1,9 @@
 import React from 'react';
-import { Table, Tag, message, Popconfirm, Tooltip } from 'antd';
+import { Table } from 'antd';
 import { connect } from 'dva';
 import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
 import moment from 'moment';
+import styles from './index.less';
 
 const { Column } = Table;
 @connect(({ admin, loading }) => {
@@ -100,6 +101,7 @@ class DataTable extends React.Component {
         <div>
           <div>
             <Table
+              className={styles.table}
               dataSource={dataList}
               columns={columnList}
               pagination={{

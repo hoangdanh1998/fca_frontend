@@ -114,10 +114,10 @@ class PartnerManagement extends React.Component {
         render: () => (
           <Space direction="horizontal">
             <div>
-              <EyeOutlined size="small" />
+              <EyeOutlined className={styles.icon} size="small" />
             </div>
             <div>
-              <EditOutlined size="small" />
+              <EditOutlined className={styles.icon} size="small" />
             </div>
           </Space>
         ),
@@ -125,9 +125,9 @@ class PartnerManagement extends React.Component {
     ];
     return (
       <>
-        <div className={styles.wrapHeader}>
+        {/* <div className={styles.wrapHeader}>
           <HeaderLayout page="partner-management" title="Partner Management" />
-        </div>
+        </div> */}
         <div className={styles.applicationManagementContainer}>
           <div className={styles.applicationHeader}>
             <div>
