@@ -41,7 +41,7 @@ export default {
   // Theme for antd: https://ant.design/docs/react/customize-theme-cn
   theme: {
     'layout-header-background': '#373D48',
-    'primary-color': '#603a18',
+    'primary-color': '#1890ff',
   },
   define: {
     REACT_APP_ENV: REACT_APP_ENV || env.REACT_APP_ENV,

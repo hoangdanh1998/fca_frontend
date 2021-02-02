@@ -3,6 +3,7 @@ import { Table, Tag, message, Popconfirm, Tooltip } from 'antd';
 import { connect } from 'dva';
 import { DeleteOutlined } from '@ant-design/icons';
 import moment from 'moment';
+import { DATE_FORMAT } from '../../../config/constants';
 
 const { Column } = Table;
 @connect(({ admin, loading }) => {
@@ -155,7 +156,7 @@ class TableContact extends React.Component {
                     return moment(firstDate.updatedAt) - moment(secondDate.updatedAt);
                   }}
                   sortDirections={['descend', 'ascend']}
-                  render={date => <span>{moment(date).format('DD/MM/YYYY')}</span>}
+                  render={date => <span>{moment(date).format(DATE_FORMAT)}</span>}
                 />
                 {currentState !== 'ARCHIVE' && (
                   <Column

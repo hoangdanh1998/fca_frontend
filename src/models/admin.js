@@ -42,7 +42,7 @@ const Model = {
         yield setToken(response.token.accessToken);
         yield setAuthority('admin');
         yield reloadAuthorized();
-        router.push('/administration/contact-management');
+        router.push('/fca-management/partner-management');
       }
     },
 
@@ -161,7 +161,6 @@ const Model = {
   },
 
   reducers: {
-    
     resetFields(state, { payload }) {
       return {
         ...state,
@@ -169,12 +168,10 @@ const Model = {
       };
     },
 
-    
     saveCurrentAdmin(state, action) {
       return { ...state, currentAdmin: action.payload || {} };
     },
-    
-    
+
     handleGetContact(state, { payload }) {
       return {
         ...state,
