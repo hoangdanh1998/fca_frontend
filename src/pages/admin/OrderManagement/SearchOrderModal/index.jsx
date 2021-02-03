@@ -8,7 +8,6 @@ class SearchOrderModal extends React.Component {
   }
   onSubmit = values => {
     console.log('values', values);
-    // console.log('filterForm', this.handleChangeFilter);
   };
 
   handleChangeFilter = values => {
@@ -19,11 +18,15 @@ class SearchOrderModal extends React.Component {
     return (
       <Form onFinish={this.onSubmit}>
         <Space direction="horizontal" style={{ display: 'flex' }}>
-          <Form.Item style={{ width: '100%' }} name="keyword">
-            <Input allowClear placeholder="Enter customer phone, partner store" />
+          <Form.Item name="keyword">
+            <Input
+              style={{ width: 300 }}
+              allowClear
+              placeholder="Enter customer phone, partner store"
+            />
           </Form.Item>
-          <Form.Item style={{ width: '100%' }} name="orderDate">
-            <DatePicker allowClear format={DATE_FORMAT} />
+          <Form.Item name="orderDate">
+            <DatePicker style={{ width: 300 }} allowClear format={DATE_FORMAT} />
           </Form.Item>
           <Form.Item>
             <Button type="primary" htmlType="submit">
