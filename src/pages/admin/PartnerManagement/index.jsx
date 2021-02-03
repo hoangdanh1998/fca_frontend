@@ -5,8 +5,9 @@ import { Select, DatePicker, Space } from 'antd';
 import DataTable from '../../../components/atom/DataTable/index';
 import HeaderLayout from '@/components/atom/Header';
 import StatusFilter from '../../../components/atom/StatusFilter/index.jsx';
-import SearchText from '../../../components/atom/SearchText/index.jsx';
+import SearchText from './SearchPartnerModal/index.jsx';
 import ConfirmationPopup from '../../../components/atom/ConfirmationPopup/index.jsx';
+import SearchPartnerModal from '../PartnerManagement/SearchPartnerModal/index.jsx';
 import {
   PARTNER_STATUS_ARRAY,
   PARTNER_STATUS_OPTIONS,
@@ -129,11 +130,14 @@ class PartnerManagement extends React.Component {
           <HeaderLayout page="partner-management" title="Partner Management" />
         </div> */}
         <div className={styles.applicationManagementContainer}>
-          <div className={styles.applicationHeader}>
+          {/* <div className={styles.applicationHeader}>
             <div>
               <SearchText searchKeyword="name, phone" />
               <StatusFilter statusList={PARTNER_STATUS_ARRAY} />
             </div>
+          </div> */}
+          <div className={styles.applicationHeader}>
+            <SearchPartnerModal />
           </div>
           {this.state.visibleChangeStatus ? (
             <ConfirmationPopup
