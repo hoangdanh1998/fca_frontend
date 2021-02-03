@@ -1,8 +1,6 @@
 import React from 'react';
-import { Input, Radio } from 'antd';
-import { connect } from 'dva';
+import { Radio } from 'antd';
 import styles from './index.less';
-import { PARTNER_STATUS_ARRAY, ORDER_STATUS_ARRAY } from '../../../../config/constants';
 
 // @connect(({ admin, loading }) => {
 //   return {
@@ -64,15 +62,15 @@ class StatusFilter extends React.Component {
     const { statusList } = this.props;
 
     return (
-      <div className={styles.containerFilter}>
-        <Radio.Group
-          style={{ display: 'flex' }}
-          defaultValue={'ALL'}
-          options={statusList}
-          onChange={this.onChangeFilterContact}
-          optionType="button"
-        ></Radio.Group>
-      </div>
+      // <div className={styles.containerFilter}>
+      <Radio.Group
+        style={{ display: 'flex' }}
+        defaultValue={'ALL'}
+        options={statusList}
+        onChange={this.onChangeFilterContact}
+        optionType="button"
+      ></Radio.Group>
+      // </div>
     );
   }
 }
