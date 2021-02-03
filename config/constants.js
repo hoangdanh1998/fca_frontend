@@ -56,3 +56,22 @@ export const ORDER_STATUS_ARRAY = [
   ORDER_STATUS.CANCELLATION,
   ORDER_STATUS.CLOSURE,
 ];
+// LICENSE TYPE
+export const LICENSE_PACKAGE = [
+  {
+    label: '1 month',
+    value: 1,
+  },
+  {
+    label: '3 months',
+    value: 3,
+  },
+  {
+    label: '6 months',
+    value: 6,
+  },
+  {
+    label: '12 months',
+    value: 12,
+  },
+];

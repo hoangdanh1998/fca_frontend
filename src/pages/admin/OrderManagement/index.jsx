@@ -81,17 +81,8 @@ class OrderManagement extends React.Component {
           <HeaderLayout page="order-management" title="Order Management" />
         </div> */}
         <div direction="horizontal" className={styles.applicationManagementContainer}>
-          {/* <Space direction="horizontal" className={styles.applicationHeader}>
-            <SearchText searchKeyword="customer phone, partner store" />
-            <DatePicker style={{ width: '100%' }} format={DATE_FORMAT} />
-          </Space> */}
-          {/* <div className={styles.applicationHeader}> */}
-          {/* <SearchOrderModal /> */}
-          {/* </div> */}
-
           <Space direction="vertical" className={styles.applicationHeader}>
             <SearchOrderModal />
-            {/* <StatusFilter statusList={ORDER_STATUS_ARRAY} /> */}
           </Space>
           {this.state.visibleCancelOrder ? (
             <CancelOrderModal visible={this.state.visibleCancelOrder} hideModal={this.hideModal} />
