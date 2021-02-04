@@ -12,9 +12,8 @@ class ExpandLicenseModal extends React.Component {
 
   state = {
     visible: this.props.visible,
-    startDate: moment(this.props.storeLicense.licenseFrom, DATE_FORMAT).add(1, 'days'),
+    startDate: moment(this.props.storeLicense.licenseFrom, DATE_FORMAT),
     endDate: moment(this.props.storeLicense.licenseFrom, DATE_FORMAT)
-      .add(1, 'days')
       .add(1, 'months'),
     package: 1,
   };
@@ -23,6 +22,7 @@ class ExpandLicenseModal extends React.Component {
     const value = e.target.value;
     this.setState({
       package: value,
+      endDate: moment(this.state.startDate, DATE_FORMAT).add(value, 'months')
     });
   };
 
@@ -30,6 +30,7 @@ class ExpandLicenseModal extends React.Component {
     console.log('change start date', value.format(DATE_FORMAT));
     this.setState({
       startDate: value,
+      endDate: moment(value, DATE_FORMAT).add(this.state.package, 'months') 
     });
   };
 
@@ -57,7 +58,6 @@ class ExpandLicenseModal extends React.Component {
         <Form
           initialValues={{
             startDate: this.state.startDate,
-            endDate: this.state.endDate,
             package: 1,
           }}
           onFinish={this.onSubmit}
@@ -77,10 +77,11 @@ class ExpandLicenseModal extends React.Component {
                 }}
               />
             </Form.Item>
-            <Form.Item className={styles.formItem} name="endDate" label="To">
+            <Form.Item className={styles.formItem} label="To">
               <DatePicker
                 placeholder="Expiration date"
                 allowClear={false}
+                value={this.state.endDate}
                 open={false}
                 inputReadOnly={true}
                 format={DATE_FORMAT}
