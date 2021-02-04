@@ -109,6 +109,7 @@ class PartnerManagement extends React.Component {
             allowClear={false}
             style={{ width: '100%' }}
             open={false}
+            inputReadOnly={true}
             hideDisabledOptions={true}
             defaultValue={moment(record.expirationDate, DATE_FORMAT)}
             format={DATE_FORMAT}

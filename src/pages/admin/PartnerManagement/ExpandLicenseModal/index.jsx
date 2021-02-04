@@ -10,63 +10,31 @@ class ExpandLicenseModal extends React.Component {
     super(props);
   }
 
-  state = { visible: this.props.visible, endDate: this.props.storeLicense.licenseTo, package: 1 };
+  state = {
+    visible: this.props.visible,
+    startDate: moment(this.props.storeLicense.licenseFrom, DATE_FORMAT).add(1, 'days'),
+    endDate: moment(this.props.storeLicense.licenseFrom, DATE_FORMAT)
+      .add(1, 'days')
+      .add(1, 'months'),
+    package: 1,
+  };
 
   handleChangePackage = e => {
     const value = e.target.value;
-    console.log('values', value);
-    switch (value) {
-      case 1:
-        console.log('1 month');
-        this.setState({
-          //   endDate: moment(this.props.storeLicense.licenseTo, DATE_FORMAT)
-          //     .add({ days: 1, months: 1 })
-          //     .format(DATE_FORMAT),
-          package: value,
-        });
-        break;
-      case 3:
-        console.log('3 month');
-        this.setState({
-          //   endDate: moment(this.props.storeLicense.licenseTo, DATE_FORMAT)
-          //     .add({ days: 1, months: 3 })
-          //     .format(DATE_FORMAT),
-          package: value,
-        });
-        break;
-      case 6:
-        console.log('6 month');
-        this.setState({
-          //   endDate: moment(this.props.storeLicense.licenseTo, DATE_FORMAT)
-          //     .add({ days: 1, months: 6 })
-          //     .format(DATE_FORMAT),
-          package: value,
-        });
-        break;
-      case 12:
-        console.log('12 month');
-        this.setState({
-          //   endDate: moment(this.props.storeLicense.licenseTo, DATE_FORMAT)
-          //     .add({ days: 1, months: 12 })
-          //     .format(DATE_FORMAT),
-          package: value,
-        });
-        break;
-      default:
-        this.setState({
-          //   endDate: moment(this.props.storeLicense.licenseTo, DATE_FORMAT)
-          //     .add({ days: 1, months: 1 })
-          //     .format(DATE_FORMAT),
-          package: 1,
-        });
-        break;
-    }
-    // this.setState({ endDate: moment(value).format(DATE_FORMAT) });
-    console.log('state', this.state.endDate);
+    this.setState({
+      package: value,
+    });
+  };
+
+  handleChangeStartDate = value => {
+    console.log('change start date', value.format(DATE_FORMAT));
+    this.setState({
+      startDate: value,
+    });
   };
 
   onSubmit = values => {
-    console.log('values', values);
+    console.log('valuesss', values);
   };
 
   render() {
@@ -77,64 +45,51 @@ class ExpandLicenseModal extends React.Component {
         visible={this.state.visible}
         onOk={hideModal}
         onCancel={hideModal}
-        style={{ textAlign: 'center', width: '50%' }}
+        className={styles.modal}
         footer={null}
       >
-        <p style={{ fontSize: 12 }}>
+        <p className={styles.message}>
           <b>{storeLicense.storeName}</b> has license
         </p>
-        <p style={{ fontSize: 12 }}>
+        <p className={styles.message}>
           from <b>{storeLicense.licenseFrom}</b> to <b>{storeLicense.licenseTo}</b>
         </p>
-        <Form onFinish={this.onSubmit}>
-          <Space
-            direction="horizontal"
-            style={{ display: 'flex', justifyContent: 'space-between' }}
-          >
+        <Form
+          initialValues={{
+            startDate: this.state.startDate,
+            endDate: this.state.endDate,
+            package: 1,
+          }}
+          onFinish={this.onSubmit}
+        >
+          <Space direction="horizontal" className={styles.space}>
             <Form.Item
-              //   initialValue={() => {
-              //     return moment(storeLicense.licenseFrom, DATE_FORMAT).add(1, 'd');
-              //   }}
-              style={{ width: '100%' }}
-              name="from"
+              className={styles.formItem}
+              name="startDate"
               label="From"
               rules={[{ required: true }]}
             >
               <DatePicker
+                allowClear={false}
                 format={DATE_FORMAT}
-                defaultValue={
-                  moment(storeLicense.licenseFrom, DATE_FORMAT).add(1, 'd')
-                  //   .format(DATE_FORMAT)
-                }
+                onChange={value => {
+                  this.handleChangeStartDate(value);
+                }}
               />
             </Form.Item>
-            <Form.Item
-              initialValue={moment(storeLicense.licenseFrom, DATE_FORMAT).add({
-                days: 1,
-                months: 1,
-              })}
-              style={{ width: '100%' }}
-              name="to"
-              label="To"
-              rules={[{ required: true }]}
-            >
+            <Form.Item className={styles.formItem} name="endDate" label="To">
               <DatePicker
+                placeholder="Expiration date"
+                allowClear={false}
+                open={false}
+                inputReadOnly={true}
                 format={DATE_FORMAT}
-                defaultValue={
-                  moment(storeLicense.licenseFrom, DATE_FORMAT).add({
-                    days: 1,
-                    months: this.state.package,
-                  })
-                  //   .format(DATE_FORMAT)
-                }
               />
             </Form.Item>
           </Space>
-          <Form.Item name="orderStatus">
+          <Form.Item name="package" label="Package">
             <Radio.Group
-              style={{ width: '100%' }}
-              //   size="middle"
-              defaultValue={1}
+              className={styles.radio}
               options={LICENSE_PACKAGE}
               onChange={this.handleChangePackage}
               optionType="button"
