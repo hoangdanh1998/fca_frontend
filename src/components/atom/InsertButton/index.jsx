@@ -11,12 +11,10 @@ class InsertButton extends React.Component {
 
   render() {
     return (
-      //   <div>
       <Button type="primary" className={styles.insertButton}>
-        <PlusOutlined size="small" />
+        <PlusOutlined size="small" style={{ color: 'white' }} />
         Create
       </Button>
-      //   </div>
     );
   }
 }
