@@ -2,11 +2,12 @@ import React from 'react';
 import moment from 'moment';
 import { router } from 'umi';
 import { connect } from 'dva';
-import { Select, DatePicker, Space } from 'antd';
+import { Select, Tooltip, Space, Switch } from 'antd';
 import DataTable from '../../../components/atom/DataTable/index';
 import HeaderLayout from '@/components/atom/Header';
 import ConfirmationPopup from '../../../components/atom/ConfirmationPopup/index.jsx';
 import SearchPartnerModal from '../PartnerManagement/SearchPartnerModal/index.jsx';
+import CloseStoreModal from '../PartnerManagement/CloseStoreModal/index.jsx';
 import { PARTNER_STATUS_OPTIONS, DATE_FORMAT } from '../../../../config/constants';
 import { PARTNER_LIST } from '../../../../config/seedingData';
 import { EditOutlined, EyeOutlined } from '@ant-design/icons';
@@ -20,8 +21,10 @@ class PartnerManagement extends React.Component {
   state = {
     visibleChangeStatus: false,
     visibleChangeExpirationDate: false,
+    visibleChangeOpenClose: false,
     partner: {},
     partnerLicense: {},
+    openedStore: {},
   };
 
   handleViewPartner = () => {
@@ -45,6 +48,23 @@ class PartnerManagement extends React.Component {
     });
   };
 
+  handleOpenCloseStore = (checked, record) => {
+    this.setState({
+      visibleChangeOpenClose: true,
+      openedStore: {
+        storeName: record.storeName,
+        storeId: record.storeName,
+        isOpen: checked,
+        undoneOrder: 5,
+      },
+    });
+  };
+  hideModalOpenCloseStore = () => {
+    this.setState({
+      visibleChangeOpenClose: false,
+    });
+  };
+
   render() {
     const columnList = [
       {
@@ -53,6 +73,20 @@ class PartnerManagement extends React.Component {
           return index + 1;
         },
         width: '5%',
+      },
+      {
+        title: 'Opening',
+        render: (text, record, index) => (
+          <Tooltip placement="top" title="Open/Close Store">
+            <Switch
+              checkedChildren="Open"
+              unCheckedChildren="Close"
+              checked={true}
+              onChange={checked => this.handleOpenCloseStore(checked, record)}
+            />
+          </Tooltip>
+        ),
+        // width: '5%',
       },
       {
         title: 'Name',
@@ -94,13 +128,13 @@ class PartnerManagement extends React.Component {
         dataIndex: 'action',
         key: 'action',
         render: () => (
-          <Space direction="horizontal">
-            <div>
+          <Space direction="horizontal" style={{ display: 'flex' }}>
+            <Tooltip placement="top" title="View Partner's details">
               <EyeOutlined className={styles.icon} size="small" onClick={this.handleViewPartner} />
-            </div>
-            <div>
+            </Tooltip>
+            <Tooltip placement="top" title="Edit Partner">
               <EditOutlined className={styles.icon} size="small" />
-            </div>
+            </Tooltip>
           </Space>
         ),
       },
@@ -119,6 +153,14 @@ class PartnerManagement extends React.Component {
               message={this.state.partner}
               hideModal={this.hideModalStatus}
             ></ConfirmationPopup>
+          ) : null}
+          {this.state.visibleChangeOpenClose ? (
+            <CloseStoreModal
+              storeName={this.state.openedStore.storeName}
+              undoneOrder={this.state.openedStore.undoneOrder}
+              isOpen={this.state.openedStore.isOpen}
+              hideModal={this.hideModalOpenCloseStore}
+            ></CloseStoreModal>
           ) : null}
           <DataTable columnList={columnList} dataList={PARTNER_LIST} totalRecords={30} />
         </div>
