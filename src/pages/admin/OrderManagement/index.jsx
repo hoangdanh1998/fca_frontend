@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'dva';
+import moment from 'moment';
 import { Space, DatePicker } from 'antd';
 import { DeleteOutlined, EyeOutlined } from '@ant-design/icons';
 import DataTable from '../../../components/atom/DataTable/index';
@@ -65,6 +66,7 @@ class OrderManagement extends React.Component {
         title: 'Order Date',
         dataIndex: 'createdDate',
         key: 'createdDate',
+        sorter: (a, b) => moment(a.createdDate, DATE_FORMAT) - moment(b.createdDate, DATE_FORMAT),
       },
       {
         title: 'Action',

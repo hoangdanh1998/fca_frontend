@@ -132,6 +132,7 @@ class ItemManagement extends React.Component {
         dataIndex: 'createdDate',
         key: 'createdDate',
         width: '10%',
+        sorter: (a, b) => moment(a.createdDate, DATE_FORMAT) - moment(b.createdDate, DATE_FORMAT),
       },
     ];
     return (

@@ -42,12 +42,14 @@ class LicenseManagement extends React.Component {
         dataIndex: 'startDate',
         key: 'startDate',
         width: '25%',
+        sorter: (a, b) => moment(a.createdDate, DATE_FORMAT) - moment(b.createdDate, DATE_FORMAT),
       },
       {
         title: 'End Date',
         dataIndex: 'endDate',
         key: 'endDate',
         width: '25%',
+        sorter: (a, b) => moment(a.createdDate, DATE_FORMAT) - moment(b.createdDate, DATE_FORMAT),
       },
       {
         title: 'Price',
@@ -60,6 +62,7 @@ class LicenseManagement extends React.Component {
         dataIndex: 'createdDate',
         key: 'createdDate',
         width: '25%',
+        sorter: (a, b) => moment(a.createdDate, DATE_FORMAT) - moment(b.createdDate, DATE_FORMAT),
       },
     ];
     return (
