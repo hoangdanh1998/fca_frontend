@@ -1,5 +1,6 @@
 import React from 'react';
 import moment from 'moment';
+import { router } from 'umi';
 import { connect } from 'dva';
 import { Select, DatePicker, Space } from 'antd';
 import DataTable from '../../../components/atom/DataTable/index';
@@ -58,6 +59,9 @@ class PartnerManagement extends React.Component {
         licenseTo: record.expirationDate,
       },
     });
+  };
+  handleViewPartner = () => {
+    router.push('/fca-management/partner-management/partner-information');
   };
   hideModalStatus = () => {
     this.setState({
@@ -126,7 +130,7 @@ class PartnerManagement extends React.Component {
         render: () => (
           <Space direction="horizontal">
             <div>
-              <EyeOutlined className={styles.icon} size="small" />
+              <EyeOutlined className={styles.icon} size="small" onClick={this.handleViewPartner} />
             </div>
             <div>
               <EditOutlined className={styles.icon} size="small" />
