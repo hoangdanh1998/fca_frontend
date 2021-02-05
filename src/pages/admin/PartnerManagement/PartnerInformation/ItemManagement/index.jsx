@@ -65,6 +65,13 @@ class ItemManagement extends React.Component {
   render() {
     const columnList = [
       {
+        title: 'No.',
+        render: (text, object, index) => {
+          return index + 1;
+        },
+        width: '5%',
+      },
+      {
         title: 'Item Name',
         dataIndex: 'itemName',
         key: 'itemName',
@@ -125,6 +132,7 @@ class ItemManagement extends React.Component {
         dataIndex: 'createdDate',
         key: 'createdDate',
         width: '10%',
+        sorter: (a, b) => moment(a.createdDate, DATE_FORMAT) - moment(b.createdDate, DATE_FORMAT),
       },
     ];
     return (

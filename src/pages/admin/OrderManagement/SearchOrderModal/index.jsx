@@ -1,49 +1,53 @@
+import moment from 'moment';
 import { Button, Form, Input, Space, DatePicker, Radio } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
-import { DATE_FORMAT, ORDER_STATUS_ARRAY } from '../../../../../config/constants';
+import { DATE_FORMAT, ORDER_STATUS_FILTER } from '../../../../../config/constants';
 
 class SearchOrderModal extends React.Component {
   constructor(props) {
     super(props);
   }
-  onSubmit = values => {
-    console.log('values', values);
+  handlePressSearch = e => {
+    console.log('press', e.target.value);
+  };
+  handleClickSearch = (value, event) => {
+    console.log('click', value);
+  };
+  handleChangeFilter = value => {
+    console.log('filter', value.target.value);
+  };
+  handleChangeDate = value => {
+    console.log('date', moment(value, DATE_FORMAT).format(DATE_FORMAT));
   };
 
-  handleChangeFilter = values => {
-    console.log('filter', values);
-    this.onSubmit;
-  };
   render() {
     return (
-      <Form onFinish={this.onSubmit}>
+      <Space direction="vertical">
         <Space direction="horizontal" style={{ display: 'flex' }}>
-          <Form.Item name="keyword">
-            <Input
-              style={{ width: 300 }}
-              allowClear
-              placeholder="Enter customer phone, partner store"
-            />
-          </Form.Item>
-          <Form.Item name="orderDate">
-            <DatePicker style={{ width: 300 }} allowClear format={DATE_FORMAT} />
-          </Form.Item>
-          <Form.Item>
-            <Button type="primary" htmlType="submit">
-              <SearchOutlined style={{ color: 'white' }} />
-            </Button>
-          </Form.Item>
+          <Input.Search
+            onPressEnter={this.handlePressSearch}
+            onSearch={this.handleClickSearch}
+            style={{ width: 300 }}
+            allowClear
+            placeholder="Enter customer phone"
+          />
+          <DatePicker
+            style={{ width: 300 }}
+            defaultValue={moment()}
+            onChange={this.handleChangeDate}
+            allowClear
+            format={DATE_FORMAT}
+          />
         </Space>
-        <Form.Item name="orderStatus">
-          <Radio.Group
-            style={{ display: 'flex' }}
-            defaultValue={'ALL'}
-            options={ORDER_STATUS_ARRAY}
-            onChange={this.handleChangeFilter}
-            optionType="button"
-          ></Radio.Group>
-        </Form.Item>
-      </Form>
+        <Radio.Group
+          style={{ display: 'flex' }}
+          defaultValue={'ALL'}
+          options={ORDER_STATUS_FILTER}
+          onChange={this.handleChangeFilter}
+          optionType="button"
+        />
+        <br />
+      </Space>
     );
   }
 }

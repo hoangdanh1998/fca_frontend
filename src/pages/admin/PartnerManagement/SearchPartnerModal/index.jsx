@@ -1,42 +1,43 @@
 import { Button, Form, Input, Space, Radio } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
-import { PARTNER_STATUS_ARRAY } from '../../../../../config/constants';
+import { PARTNER_STATUS_FILTER } from '../../../../../config/constants';
 
 class SearchPartnerModal extends React.Component {
   constructor(props) {
     super(props);
   }
-  onSubmit = values => {
-    console.log('values', values);
-  };
 
-  handleChangeFilter = values => {
-    console.log('filter', values);
-    this.onSubmit;
+  handlePressSearch = e => {
+    console.log('press', e.target.value);
+  };
+  handleClickSearch = (value, event) => {
+    console.log('click', value);
+  };
+  handleChangeFilter = value => {
+    console.log('filter', value.target.value);
+  };
+  handleChangeDate = value => {
+    console.log('date', moment(value, DATE_FORMAT).format(DATE_FORMAT));
   };
   render() {
     return (
-      <Form onFinish={this.onSubmit}>
-        <Space direction="horizontal" style={{ display: 'flex' }}>
-          <Form.Item style={{ width: '100%' }} name="keyword">
-            <Input style={{ width: 300 }} allowClear placeholder="Enter partner store" />
-          </Form.Item>
-          <Form.Item>
-            <Button type="primary" htmlType="submit">
-              <SearchOutlined style={{ color: 'white' }} />
-            </Button>
-          </Form.Item>
-        </Space>
-        <Form.Item name="orderStatus">
-          <Radio.Group
-            style={{ display: 'flex' }}
-            defaultValue={'ALL'}
-            options={PARTNER_STATUS_ARRAY}
-            onChange={this.handleChangeFilter}
-            optionType="button"
-          ></Radio.Group>
-        </Form.Item>
-      </Form>
+      <Space direction="vertical">
+        <Input.Search
+          onPressEnter={this.handlePressSearch}
+          onSearch={this.handleClickSearch}
+          style={{ width: 300 }}
+          allowClear
+          placeholder="Enter name, address"
+        />
+        <Radio.Group
+          style={{ display: 'flex' }}
+          defaultValue={'ALL'}
+          options={PARTNER_STATUS_FILTER}
+          onChange={this.handleChangeFilter}
+          optionType="button"
+        />
+        <br />
+      </Space>
     );
   }
 }

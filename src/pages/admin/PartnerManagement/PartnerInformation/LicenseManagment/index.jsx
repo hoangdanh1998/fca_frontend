@@ -31,16 +31,25 @@ class LicenseManagement extends React.Component {
     console.log('last license', PARTNER_LAST_LICENSE);
     const columnList = [
       {
+        title: 'No.',
+        render: (text, object, index) => {
+          return index + 1;
+        },
+        width: '5%',
+      },
+      {
         title: 'Start Date',
         dataIndex: 'startDate',
         key: 'startDate',
         width: '25%',
+        sorter: (a, b) => moment(a.createdDate, DATE_FORMAT) - moment(b.createdDate, DATE_FORMAT),
       },
       {
         title: 'End Date',
         dataIndex: 'endDate',
         key: 'endDate',
         width: '25%',
+        sorter: (a, b) => moment(a.createdDate, DATE_FORMAT) - moment(b.createdDate, DATE_FORMAT),
       },
       {
         title: 'Price',
@@ -53,6 +62,7 @@ class LicenseManagement extends React.Component {
         dataIndex: 'createdDate',
         key: 'createdDate',
         width: '25%',
+        sorter: (a, b) => moment(a.createdDate, DATE_FORMAT) - moment(b.createdDate, DATE_FORMAT),
       },
     ];
     return (

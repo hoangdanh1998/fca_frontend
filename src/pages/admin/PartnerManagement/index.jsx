@@ -7,7 +7,7 @@ import DataTable from '../../../components/atom/DataTable/index';
 import HeaderLayout from '@/components/atom/Header';
 import ConfirmationPopup from '../../../components/atom/ConfirmationPopup/index.jsx';
 import SearchPartnerModal from '../PartnerManagement/SearchPartnerModal/index.jsx';
-import { PARTNER_STATUS_OPTIONS } from '../../../../config/constants';
+import { PARTNER_STATUS_OPTIONS, DATE_FORMAT } from '../../../../config/constants';
 import { PARTNER_LIST } from '../../../../config/seedingData';
 import { EditOutlined, EyeOutlined } from '@ant-design/icons';
 import styles from './index.less';
@@ -48,6 +48,13 @@ class PartnerManagement extends React.Component {
   render() {
     const columnList = [
       {
+        title: 'No.',
+        render: (text, object, index) => {
+          return index + 1;
+        },
+        width: '5%',
+      },
+      {
         title: 'Name',
         dataIndex: 'storeName',
         key: 'storeName',
@@ -79,6 +86,8 @@ class PartnerManagement extends React.Component {
         title: 'Expiration Date',
         dataIndex: 'expirationDate',
         key: 'expirationDate',
+        sorter: (a, b) =>
+          moment(a.expirationDate, DATE_FORMAT) - moment(b.expirationDate, DATE_FORMAT),
       },
       {
         title: 'Action',
