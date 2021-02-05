@@ -9,6 +9,7 @@ import StatusFilter from '../../../components/atom/StatusFilter/index.jsx';
 import CancelOrderModal from '../OrderManagement/CancelOrderModal/index.jsx';
 import SearchOrderModal from '../OrderManagement/SearchOrderModal/index.jsx';
 import styles from './index.less';
+import { convertStringToCamel } from '../../../utils/utils';
 import { ORDER_LIST } from '../../../../config/seedingData';
 import { ORDER_STATUS_FILTER, DATE_FORMAT } from '../../../../config/constants';
 
@@ -56,6 +57,9 @@ class OrderManagement extends React.Component {
         title: 'Status',
         dataIndex: 'status',
         key: 'status',
+        render: (text, record, index) => {
+          return convertStringToCamel(record.status);
+        },
       },
       {
         title: 'Order Date',
