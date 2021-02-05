@@ -34,6 +34,13 @@ class OrderManagement extends React.Component {
   render() {
     const columnList = [
       {
+        title: 'No.',
+        render: (text, object, index) => {
+          return index + 1;
+        },
+        width: '5%',
+      },
+      {
         title: 'Customer Phone',
         dataIndex: 'customerPhone',
         key: 'customerPhone',

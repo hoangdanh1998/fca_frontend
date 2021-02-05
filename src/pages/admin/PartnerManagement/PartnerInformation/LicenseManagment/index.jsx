@@ -31,6 +31,13 @@ class LicenseManagement extends React.Component {
     console.log('last license', PARTNER_LAST_LICENSE);
     const columnList = [
       {
+        title: 'No.',
+        render: (text, object, index) => {
+          return index + 1;
+        },
+        width: '5%',
+      },
+      {
         title: 'Start Date',
         dataIndex: 'startDate',
         key: 'startDate',

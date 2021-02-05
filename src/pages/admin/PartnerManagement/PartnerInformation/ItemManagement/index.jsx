@@ -65,6 +65,13 @@ class ItemManagement extends React.Component {
   render() {
     const columnList = [
       {
+        title: 'No.',
+        render: (text, object, index) => {
+          return index + 1;
+        },
+        width: '5%',
+      },
+      {
         title: 'Item Name',
         dataIndex: 'itemName',
         key: 'itemName',
