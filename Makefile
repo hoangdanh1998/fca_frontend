@@ -21,12 +21,10 @@ build-quick:
 	@echo "Building project ..."
 	npm run-script build
 
-deploy-staging:
-	tar cvf dist.tgz dist
-	scp dist.tgz scripts/deploy.sh ubuntu@gu.talaria_staging:/home/ubuntu/
-	ssh gu.talaria_staging 'bash ~/deploy.sh'
-	rm dist.tgz
-
+server:
+	yarn build
+	scp -r dist root@45.77.171.60:/usr/share/frontend
+	rm -rf dist
 deploy-production:
 	tar cvf dist_frontend.tgz dist
 	scp dist_frontend.tgz scripts/deploy_frontend.sh ubuntu@gu.talaria_production:/opt/talaria/deployment/

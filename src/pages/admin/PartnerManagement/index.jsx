@@ -9,6 +9,7 @@ import StatusFilter from '../../../components/atom/StatusFilter/index.jsx';
 import SearchText from './SearchPartnerModal/index.jsx';
 import ConfirmationPopup from '../../../components/atom/ConfirmationPopup/index.jsx';
 import SearchPartnerModal from '../PartnerManagement/SearchPartnerModal/index.jsx';
+import ExpandLicenseModal from '../PartnerManagement/ExpandLicenseModal/index.jsx';
 import {
   PARTNER_STATUS_ARRAY,
   PARTNER_STATUS_OPTIONS,
@@ -27,6 +28,7 @@ class PartnerManagement extends React.Component {
     visibleChangeStatus: false,
     visibleChangeExpirationDate: false,
     partner: {},
+    partnerLicense: {},
   };
 
   handleStatusChange = (value, record) => {
@@ -50,6 +52,11 @@ class PartnerManagement extends React.Component {
         to: moment(value).format(DATE_FORMAT),
         title: 'expiration date',
         visible: true,
+      },
+      partnerLicense: {
+        storeName: record.storeName,
+        licenseFrom: record.expirationDate,
+        licenseTo: record.expirationDate,
       },
     });
   };
@@ -103,10 +110,14 @@ class PartnerManagement extends React.Component {
         key: 'expirationDate',
         render: (text, record, index) => (
           <DatePicker
+            allowClear={false}
             style={{ width: '100%' }}
+            open={false}
+            inputReadOnly={true}
+            hideDisabledOptions={true}
             defaultValue={moment(record.expirationDate, DATE_FORMAT)}
             format={DATE_FORMAT}
-            onChange={value => {
+            onClick={value => {
               this.handleExpirationDateChange(value, record);
             }}
           />
@@ -134,12 +145,6 @@ class PartnerManagement extends React.Component {
           <HeaderLayout page="partner-management" title="Partner Management" />
         </div> */}
         <div className={styles.applicationManagementContainer}>
-          {/* <div className={styles.applicationHeader}>
-            <div>
-              <SearchText searchKeyword="name, phone" />
-              <StatusFilter statusList={PARTNER_STATUS_ARRAY} />
-            </div>
-          </div> */}
           <div className={styles.applicationHeader}>
             <SearchPartnerModal />
           </div>
@@ -150,10 +155,15 @@ class PartnerManagement extends React.Component {
             ></ConfirmationPopup>
           ) : null}
           {this.state.visibleChangeExpirationDate ? (
-            <ConfirmationPopup
-              message={this.state.partner}
+            // <ConfirmationPopup
+            //   message={this.state.partner}
+            //   hideModal={this.hideModalExpirationDate}
+            // ></ConfirmationPopup>
+            <ExpandLicenseModal
+              storeLicense={this.state.partnerLicense}
               hideModal={this.hideModalExpirationDate}
-            ></ConfirmationPopup>
+              visible={true}
+            ></ExpandLicenseModal>
           ) : null}
           <DataTable columnList={columnList} dataList={PARTNER_LIST} totalRecords={30} />
         </div>
