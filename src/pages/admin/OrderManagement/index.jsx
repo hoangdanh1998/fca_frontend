@@ -1,18 +1,16 @@
 import React from 'react';
 import { connect } from 'dva';
 import moment from 'moment';
-import { Space, DatePicker } from 'antd';
-import { DeleteOutlined, EyeOutlined } from '@ant-design/icons';
+import { Space, Tooltip } from 'antd';
+import { CloseCircleOutlined, CheckCircleOutlined, EyeOutlined } from '@ant-design/icons';
 import DataTable from '../../../components/atom/DataTable/index';
-import SearchText from '../PartnerManagement/SearchPartnerModal/index.jsx';
-import HeaderLayout from '@/components/atom/Header';
-import StatusFilter from '../../../components/atom/StatusFilter/index.jsx';
 import CancelOrderModal from '../OrderManagement/CancelOrderModal/index.jsx';
 import SearchOrderModal from '../OrderManagement/SearchOrderModal/index.jsx';
+import ConfirmationPopup from '../../../components/atom/ConfirmationPopup/index.jsx';
 import styles from './index.less';
 import { convertStringToCamel } from '../../../utils/utils';
 import { ORDER_LIST } from '../../../../config/seedingData';
-import { ORDER_STATUS_FILTER, DATE_FORMAT } from '../../../../config/constants';
+import { DATE_FORMAT } from '../../../../config/constants';
 
 @connect(({ admin, loading }) => ({
   fetchCurrentAdmin: loading.effects['admin/saveCurrentAdmin'],
@@ -30,6 +28,24 @@ class OrderManagement extends React.Component {
   hideModal = () => {
     this.setState({
       visibleCancelOrder: false,
+    });
+  };
+
+  handleStatusChange = record => {
+    this.setState({
+      visibleChangeStatus: true,
+      partner: {
+        storeName: record.customerPhone,
+        from: record.status,
+        to: 'CLOSURE',
+        title: "order's status",
+        visible: true,
+      },
+    });
+  };
+  hideModalStatus = () => {
+    this.setState({
+      visibleChangeStatus: false,
     });
   };
 
@@ -72,18 +88,27 @@ class OrderManagement extends React.Component {
         title: 'Action',
         dataIndex: 'action',
         key: 'action',
-        render: () => (
-          <Space direction="horizontal">
-            <div>
+        render: (text, record, index) => (
+          <Space direction="horizontal" style={{ display: 'flex' }}>
+            <Tooltip placement="top" title="View Order's details">
               <EyeOutlined className={styles.icon} size="small" />
-            </div>
-            <div>
-              <DeleteOutlined
+            </Tooltip>
+            <Tooltip placement="top" title="Complete Order">
+              <CheckCircleOutlined
+                className={styles.icon}
+                size="small"
+                style={{ color: 'green' }}
+                onClick={() => this.handleStatusChange(record)}
+              />
+            </Tooltip>
+            <Tooltip placement="top" title="Cancel Order">
+              <CloseCircleOutlined
+                style={{ color: 'red' }}
                 className={styles.icon}
                 onClick={this.handleVisibleCancelOrder}
                 size="small"
               />
-            </div>
+            </Tooltip>
           </Space>
         ),
       },
@@ -94,11 +119,17 @@ class OrderManagement extends React.Component {
           <HeaderLayout page="order-management" title="Order Management" />
         </div> */}
         <div direction="horizontal" className={styles.applicationManagementContainer}>
-          <Space direction="vertical" className={styles.applicationHeader}>
+          <div className={styles.applicationHeader}>
             <SearchOrderModal />
-          </Space>
+          </div>
           {this.state.visibleCancelOrder ? (
             <CancelOrderModal visible={this.state.visibleCancelOrder} hideModal={this.hideModal} />
+          ) : null}
+          {this.state.visibleChangeStatus ? (
+            <ConfirmationPopup
+              message={this.state.partner}
+              hideModal={this.hideModalStatus}
+            ></ConfirmationPopup>
           ) : null}
           <DataTable columnList={columnList} dataList={ORDER_LIST} totalRecords={30} />
         </div>
