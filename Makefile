@@ -23,8 +23,8 @@ build-quick:
 
 server:
 	yarn build
-	scp -r dist root@45.77.171.60:/root/deploy_frontend
-
+	scp -r dist root@45.77.171.60:/usr/share/frontend
+	rm -rf dist
 deploy-production:
 	tar cvf dist_frontend.tgz dist
 	scp dist_frontend.tgz scripts/deploy_frontend.sh ubuntu@gu.talaria_production:/opt/talaria/deployment/
