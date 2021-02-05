@@ -1,6 +1,6 @@
 import { Button, Form, Input, Space, Radio } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
-import { PARTNER_STATUS_ARRAY } from '../../../../../config/constants';
+import { PARTNER_STATUS_FILTER } from '../../../../../config/constants';
 
 class SearchPartnerModal extends React.Component {
   constructor(props) {
@@ -31,7 +31,7 @@ class SearchPartnerModal extends React.Component {
           <Radio.Group
             style={{ display: 'flex' }}
             defaultValue={'ALL'}
-            options={PARTNER_STATUS_ARRAY}
+            options={PARTNER_STATUS_FILTER}
             onChange={this.handleChangeFilter}
             optionType="button"
           ></Radio.Group>

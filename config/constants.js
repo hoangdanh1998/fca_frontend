@@ -39,32 +39,59 @@ export const FCA_ITEM_STATUS = {
 };
 
 // OPTIONS ARRAY
-export const PARTNER_STATUS_ARRAY = [
-  'ALL',
-  PARTNER_STATUS.PROCESS,
-  PARTNER_STATUS.APPROVED,
-  PARTNER_STATUS.REJECTED,
-];
-export const PARTNER_STATUS_OPTIONS = [
+export const PARTNER_STATUS_FILTER = [
   {
-    label: PARTNER_STATUS.PROCESS,
+    label: 'All',
+    value: 'ALL',
+  },
+  {
+    label: 'Process',
     value: PARTNER_STATUS.PROCESS,
   },
   {
-    label: PARTNER_STATUS.APPROVED,
+    label: 'Approved',
     value: PARTNER_STATUS.APPROVED,
   },
   {
-    label: PARTNER_STATUS.REJECTED,
+    label: 'Rejected',
     value: PARTNER_STATUS.REJECTED,
   },
 ];
-export const ORDER_STATUS_ARRAY = [
-  'ALL',
-  ORDER_STATUS.READINESS,
-  ORDER_STATUS.ARRIVAL,
-  ORDER_STATUS.WAIT,
-  ORDER_STATUS.CANCELLATION,
+export const PARTNER_STATUS_OPTIONS = [
+  {
+    label: 'Process',
+    value: PARTNER_STATUS.PROCESS,
+  },
+  {
+    label: 'Approved',
+    value: PARTNER_STATUS.APPROVED,
+  },
+  {
+    label: 'Rejected',
+    value: PARTNER_STATUS.REJECTED,
+  },
+];
+export const ORDER_STATUS_FILTER = [
+  {
+    label: 'All',
+    value: 'ALL',
+  },
+  {
+    label: 'Readiness',
+    value: ORDER_STATUS.READINESS,
+  },
+  {
+    label: 'Arrival',
+    value: ORDER_STATUS.ARRIVAL,
+  },
+  {
+    label: 'Wait',
+    value: ORDER_STATUS.WAIT,
+  },
+  {
+    label: 'Cancellation',
+    value: ORDER_STATUS.CANCELLATION,
+  },
 ];
 // LICENSE TYPE
 export const LICENSE_PACKAGE = [
@@ -87,15 +114,15 @@ export const LICENSE_PACKAGE = [
 ];
 export const ITEM_STATUS_OPTIONS = [
   {
-    label: ITEM_STATUS.PROCESS,
+    label: 'Process',
     value: ITEM_STATUS.PROCESS,
   },
   {
-    label: ITEM_STATUS.APPROVED,
+    label: 'Approved',
     value: ITEM_STATUS.APPROVED,
   },
   {
-    label: ITEM_STATUS.REJECTED,
+    label: 'Rejected',
     value: ITEM_STATUS.REJECTED,
   },
 ];

@@ -10,7 +10,7 @@ import CancelOrderModal from '../OrderManagement/CancelOrderModal/index.jsx';
 import SearchOrderModal from '../OrderManagement/SearchOrderModal/index.jsx';
 import styles from './index.less';
 import { ORDER_LIST } from '../../../../config/seedingData';
-import { ORDER_STATUS_ARRAY, DATE_FORMAT } from '../../../../config/constants';
+import { ORDER_STATUS_FILTER, DATE_FORMAT } from '../../../../config/constants';
 
 @connect(({ admin, loading }) => ({
   fetchCurrentAdmin: loading.effects['admin/saveCurrentAdmin'],

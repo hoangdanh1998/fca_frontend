@@ -1,6 +1,6 @@
 import { Button, Form, Input, Space, DatePicker, Radio } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
-import { DATE_FORMAT, ORDER_STATUS_ARRAY } from '../../../../../config/constants';
+import { DATE_FORMAT, ORDER_STATUS_FILTER } from '../../../../../config/constants';
 
 class SearchOrderModal extends React.Component {
   constructor(props) {
@@ -38,7 +38,7 @@ class SearchOrderModal extends React.Component {
           <Radio.Group
             style={{ display: 'flex' }}
             defaultValue={'ALL'}
-            options={ORDER_STATUS_ARRAY}
+            options={ORDER_STATUS_FILTER}
             onChange={this.handleChangeFilter}
             optionType="button"
           ></Radio.Group>
