@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'dva';
+import moment from 'moment';
 import { Space, DatePicker } from 'antd';
 import { DeleteOutlined, EyeOutlined } from '@ant-design/icons';
 import DataTable from '../../../components/atom/DataTable/index';
@@ -9,8 +10,9 @@ import StatusFilter from '../../../components/atom/StatusFilter/index.jsx';
 import CancelOrderModal from '../OrderManagement/CancelOrderModal/index.jsx';
 import SearchOrderModal from '../OrderManagement/SearchOrderModal/index.jsx';
 import styles from './index.less';
+import { convertStringToCamel } from '../../../utils/utils';
 import { ORDER_LIST } from '../../../../config/seedingData';
-import { ORDER_STATUS_ARRAY, DATE_FORMAT } from '../../../../config/constants';
+import { ORDER_STATUS_FILTER, DATE_FORMAT } from '../../../../config/constants';
 
 @connect(({ admin, loading }) => ({
   fetchCurrentAdmin: loading.effects['admin/saveCurrentAdmin'],
@@ -34,6 +36,13 @@ class OrderManagement extends React.Component {
   render() {
     const columnList = [
       {
+        title: 'No.',
+        render: (text, object, index) => {
+          return index + 1;
+        },
+        width: '5%',
+      },
+      {
         title: 'Customer Phone',
         dataIndex: 'customerPhone',
         key: 'customerPhone',
@@ -49,11 +58,15 @@ class OrderManagement extends React.Component {
         title: 'Status',
         dataIndex: 'status',
         key: 'status',
+        render: (text, record, index) => {
+          return convertStringToCamel(record.status);
+        },
       },
       {
         title: 'Order Date',
         dataIndex: 'createdDate',
         key: 'createdDate',
+        sorter: (a, b) => moment(a.createdDate, DATE_FORMAT) - moment(b.createdDate, DATE_FORMAT),
       },
       {
         title: 'Action',

@@ -2,19 +2,16 @@ import React from 'react';
 import { connect } from 'dva';
 import moment from 'moment';
 import { Form, Space, Modal, Button, DatePicker, Radio } from 'antd';
-import { DATE_FORMAT, LICENSE_PACKAGE } from '../../../../../config/constants';
+import { DATE_FORMAT, LICENSE_PACKAGE } from '../../../../../../../config/constants';
 import styles from './index.less';
 
 class ExpandLicenseModal extends React.Component {
   constructor(props) {
     super(props);
   }
-
   state = {
-    visible: this.props.visible,
-    startDate: moment(this.props.storeLicense.licenseFrom, DATE_FORMAT),
-    endDate: moment(this.props.storeLicense.licenseFrom, DATE_FORMAT)
-      .add(1, 'months'),
+    startDate: moment(this.props.storeLicense.licenseTo, DATE_FORMAT),
+    endDate: moment(this.props.storeLicense.licenseTo, DATE_FORMAT).add(1, 'months'),
     package: 1,
   };
 
@@ -22,28 +19,30 @@ class ExpandLicenseModal extends React.Component {
     const value = e.target.value;
     this.setState({
       package: value,
-      endDate: moment(this.state.startDate, DATE_FORMAT).add(value, 'months')
+      endDate: moment(this.state.startDate, DATE_FORMAT).add(value, 'months'),
     });
   };
 
   handleChangeStartDate = value => {
-    console.log('change start date', value.format(DATE_FORMAT));
     this.setState({
       startDate: value,
-      endDate: moment(value, DATE_FORMAT).add(this.state.package, 'months') 
+      endDate: moment(value, DATE_FORMAT).add(this.state.package, 'months'),
     });
   };
 
   onSubmit = values => {
-    console.log('valuesss', values);
+    console.log('startDate', this.state.startDate.format(DATE_FORMAT));
+    console.log('endDate', this.state.endDate.format(DATE_FORMAT));
+    console.log('package', this.state.package);
   };
 
   render() {
     const { storeLicense, hideModal } = this.props;
+    console.log('storeLicense', storeLicense);
     return (
       <Modal
         title="CONFIRMATION"
-        visible={this.state.visible}
+        visible={true}
         onOk={hideModal}
         onCancel={hideModal}
         className={styles.modal}
@@ -84,6 +83,7 @@ class ExpandLicenseModal extends React.Component {
                 value={this.state.endDate}
                 open={false}
                 inputReadOnly={true}
+                disabled={true}
                 format={DATE_FORMAT}
               />
             </Form.Item>

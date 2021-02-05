@@ -11,7 +11,7 @@ class InsertButton extends React.Component {
 
   render() {
     return (
-      <Button type="primary" className={styles.insertButton}>
+      <Button type="primary" className={styles.insertButton} onClick={this.props.onClick}>
         <PlusOutlined size="small" style={{ color: 'white' }} />
         Create
       </Button>

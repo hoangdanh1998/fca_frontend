@@ -1,12 +1,11 @@
 import React from 'react';
 import { connect } from 'dva';
 import moment from 'moment';
-import { Space, DatePicker } from 'antd';
-import { ArrowRightOutlined } from '@ant-design/icons';
 import DataTable from '../../../../../components/atom/DataTable/index.jsx';
 import InsertButton from '../../../../../components/atom/InsertButton/index.jsx';
+import ExpandLicenseModal from '../LicenseManagment/ExpandLicenseModal/index.jsx';
 import styles from './index.less';
-import { PARTNER_LICENSE_LIST } from '../../../../../../config/seedingData';
+import { PARTNER_LICENSE_LIST, PARTNER_LAST_LICENSE } from '../../../../../../config/seedingData';
 import { DATE_FORMAT } from '../../../../../../config/constants';
 
 @connect(({ admin, loading }) => ({
@@ -14,33 +13,43 @@ import { DATE_FORMAT } from '../../../../../../config/constants';
   visibleContact: admin.visibleCreateContact,
 }))
 class LicenseManagement extends React.Component {
-  state = { visibleCancelOrder: false };
+  state = { visibleChangeExpirationDate: false, partnerLicense: PARTNER_LAST_LICENSE };
 
-  handleVisibleCancelOrder = () => {
+  handleChangeExpirationDate = () => {
     this.setState({
-      visibleCancelOrder: true,
+      visibleChangeExpirationDate: true,
     });
   };
 
-  hideModal = () => {
+  hideModalExpirationDate = () => {
     this.setState({
-      visibleCancelOrder: false,
+      visibleChangeExpirationDate: false,
     });
   };
 
   render() {
+    console.log('last license', PARTNER_LAST_LICENSE);
     const columnList = [
+      {
+        title: 'No.',
+        render: (text, object, index) => {
+          return index + 1;
+        },
+        width: '5%',
+      },
       {
         title: 'Start Date',
         dataIndex: 'startDate',
         key: 'startDate',
         width: '25%',
+        sorter: (a, b) => moment(a.createdDate, DATE_FORMAT) - moment(b.createdDate, DATE_FORMAT),
       },
       {
         title: 'End Date',
         dataIndex: 'endDate',
         key: 'endDate',
         width: '25%',
+        sorter: (a, b) => moment(a.createdDate, DATE_FORMAT) - moment(b.createdDate, DATE_FORMAT),
       },
       {
         title: 'Price',
@@ -53,6 +62,7 @@ class LicenseManagement extends React.Component {
         dataIndex: 'createdDate',
         key: 'createdDate',
         width: '25%',
+        sorter: (a, b) => moment(a.createdDate, DATE_FORMAT) - moment(b.createdDate, DATE_FORMAT),
       },
     ];
     return (
@@ -62,8 +72,14 @@ class LicenseManagement extends React.Component {
         </div> */}
         <div className={styles.applicationManagementContainer}>
           <div className={styles.applicationHeader}>
-            <InsertButton />
+            <InsertButton onClick={this.handleChangeExpirationDate} />
           </div>
+          {this.state.visibleChangeExpirationDate ? (
+            <ExpandLicenseModal
+              storeLicense={this.state.partnerLicense}
+              hideModal={this.hideModalExpirationDate}
+            ></ExpandLicenseModal>
+          ) : null}
           <DataTable columnList={columnList} dataList={PARTNER_LICENSE_LIST} totalRecords={30} />
         </div>
       </>
