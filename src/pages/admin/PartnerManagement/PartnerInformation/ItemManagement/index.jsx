@@ -1,5 +1,6 @@
 import React from 'react';
 import moment from 'moment';
+import NumberFormat from 'react-number-format';
 import { router } from 'umi';
 import { connect } from 'dva';
 import { Select, Card } from 'antd';
@@ -82,6 +83,9 @@ class ItemManagement extends React.Component {
         dataIndex: 'itemPrice',
         key: 'itemPrice',
         width: '10%',
+        render: (text, record, index) => (
+          <NumberFormat value={record.itemPrice} displayType={'text'} thousandSeparator={true} />
+        ),
       },
       {
         title: 'FCA Group',
