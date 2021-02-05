@@ -1,11 +1,12 @@
 import React from 'react';
 import ProLayout, { getMenuData, getPageTitle } from '@ant-design/pro-layout';
+import { Button, Avatar } from 'antd';
 import { Link } from 'umi';
 import { connect } from 'dva';
 import Authorized from '@/utils/Authorized';
-import { Helmet } from 'react-helmet-async';
 import styles from './ManagementLayout.less';
 import AdminSignOut from './LogOut/LogOut';
+import HeaderLayout from '../components/atom/Header/index.jsx';
 import defaultSettings from '../../config/defaultSettings';
 
 @connect(({ global, settings }) => ({
@@ -51,10 +52,31 @@ class ManagementLayout extends React.Component {
         const localItem = { ...item, children: item.children ? menuDataRender(item.children) : [] };
         return Authorized.check(item.authority, localItem, null);
       });
+    console.log('title', title);
+    console.log('this.menuItemRender', this.menuItemRender);
     return (
       <div>
         <ProLayout
           title={defaultSettings.title}
+          rightContentRender={() => (
+            <>
+              <Avatar
+                style={{ color: 'black', backgroundColor: 'white' }}
+                shape="square"
+                size="middle"
+              >
+                {this.title}
+              </Avatar>
+              <Button size="middle" style={{ verticalAlign: 'middle' }}>
+                Logout
+              </Button>
+            </>
+          )}
+          headerContentRender={() => {
+            return <div>{this.title}</div>;
+          }}
+          collapsedButtonRender={false}
+          fixedHeader={true}
           siderWidth={240}
           collapsed={false}
           fixSiderbar={true}
