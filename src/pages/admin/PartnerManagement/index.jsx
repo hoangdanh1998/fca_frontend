@@ -5,15 +5,9 @@ import { connect } from 'dva';
 import { Select, DatePicker, Space } from 'antd';
 import DataTable from '../../../components/atom/DataTable/index';
 import HeaderLayout from '@/components/atom/Header';
-import StatusFilter from '../../../components/atom/StatusFilter/index.jsx';
-import SearchText from './SearchPartnerModal/index.jsx';
 import ConfirmationPopup from '../../../components/atom/ConfirmationPopup/index.jsx';
 import SearchPartnerModal from '../PartnerManagement/SearchPartnerModal/index.jsx';
-import {
-  PARTNER_STATUS_ARRAY,
-  PARTNER_STATUS_OPTIONS,
-  DATE_FORMAT,
-} from '../../../../config/constants';
+import { PARTNER_STATUS_OPTIONS } from '../../../../config/constants';
 import { PARTNER_LIST } from '../../../../config/seedingData';
 import { EditOutlined, EyeOutlined } from '@ant-design/icons';
 import styles from './index.less';
@@ -27,8 +21,12 @@ class PartnerManagement extends React.Component {
     visibleChangeStatus: false,
     visibleChangeExpirationDate: false,
     partner: {},
+    partnerLicense: {},
   };
 
+  handleViewPartner = () => {
+    router.push('/fca-management/partner-management/partner-information');
+  };
   handleStatusChange = (value, record) => {
     this.setState({
       visibleChangeStatus: true,
@@ -41,29 +39,9 @@ class PartnerManagement extends React.Component {
       },
     });
   };
-  handleExpirationDateChange = (value, record) => {
-    this.setState({
-      visibleChangeExpirationDate: true,
-      partner: {
-        storeName: record.storeName,
-        from: record.expirationDate,
-        to: moment(value).format(DATE_FORMAT),
-        title: 'expiration date',
-        visible: true,
-      },
-    });
-  };
-  handleViewPartner = () => {
-    router.push('/fca-management/partner-management/partner-information');
-  };
   hideModalStatus = () => {
     this.setState({
       visibleChangeStatus: false,
-    });
-  };
-  hideModalExpirationDate = () => {
-    this.setState({
-      visibleChangeExpirationDate: false,
     });
   };
 
@@ -101,16 +79,6 @@ class PartnerManagement extends React.Component {
         title: 'Expiration Date',
         dataIndex: 'expirationDate',
         key: 'expirationDate',
-        render: (text, record, index) => (
-          <DatePicker
-            style={{ width: '100%' }}
-            defaultValue={moment(record.expirationDate, DATE_FORMAT)}
-            format={DATE_FORMAT}
-            onChange={value => {
-              this.handleExpirationDateChange(value, record);
-            }}
-          />
-        ),
       },
       {
         title: 'Action',
@@ -134,12 +102,6 @@ class PartnerManagement extends React.Component {
           <HeaderLayout page="partner-management" title="Partner Management" />
         </div> */}
         <div className={styles.applicationManagementContainer}>
-          {/* <div className={styles.applicationHeader}>
-            <div>
-              <SearchText searchKeyword="name, phone" />
-              <StatusFilter statusList={PARTNER_STATUS_ARRAY} />
-            </div>
-          </div> */}
           <div className={styles.applicationHeader}>
             <SearchPartnerModal />
           </div>
@@ -147,12 +109,6 @@ class PartnerManagement extends React.Component {
             <ConfirmationPopup
               message={this.state.partner}
               hideModal={this.hideModalStatus}
-            ></ConfirmationPopup>
-          ) : null}
-          {this.state.visibleChangeExpirationDate ? (
-            <ConfirmationPopup
-              message={this.state.partner}
-              hideModal={this.hideModalExpirationDate}
             ></ConfirmationPopup>
           ) : null}
           <DataTable columnList={columnList} dataList={PARTNER_LIST} totalRecords={30} />
