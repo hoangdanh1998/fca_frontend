@@ -72,9 +72,7 @@ class ManagementLayout extends React.Component {
               </Button>
             </>
           )}
-          headerContentRender={() => {
-            return <div>{this.title}</div>;
-          }}
+          headerContentRender={<div>{this.title}</div>}
           collapsedButtonRender={false}
           fixedHeader={true}
           siderWidth={240}
