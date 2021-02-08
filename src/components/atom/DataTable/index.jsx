@@ -1,23 +1,11 @@
 import React from 'react';
 import { Table } from 'antd';
 import { connect } from 'dva';
-import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
-import moment from 'moment';
 import styles from './index.less';
 
 const { Column } = Table;
 @connect(({ admin, loading }) => {
-  return {
-    listContact: admin.contact,
-    listContactMerge: admin.listContactMerge,
-    tags: admin.tags,
-    isLoadingTableContact: loading.effects['admin/queryContacts'],
-    isLoadingTags: loading.effects['admin/getAllTags'],
-    isLoadingSearchContact: loading.effects['admin/searchContact'],
-    isLoadingGetAllContacts: loading.effects['admin/getAllContacts'],
-    currentState: admin.currentState,
-    totalContact: admin.totalContact,
-  };
+  return {};
 })
 class DataTable extends React.Component {
   constructor(props) {
@@ -27,70 +15,6 @@ class DataTable extends React.Component {
       PAGE_SIZE: 10,
     };
   }
-
-  //   componentDidMount() {
-  //     const { dispatch } = this.props;
-  //     dispatch({
-  //       type: 'admin/queryContacts',
-  //       payload: {
-  //         search: '',
-  //         status: this.props.currentState,
-  //         skip: this.state.skip,
-  //         limit: this.state.PAGE_SIZE,
-  //       },
-  //     });
-  //     dispatch({ type: 'admin/getAllTags' });
-  //     dispatch({ type: 'admin/getAllContacts' });
-  //   }
-
-  //   search = e => {
-  //     const { dispatch } = this.props;
-  //     dispatch({
-  //       type: 'admin/searchContact',
-  //       payload: {
-  //         keyword: e.target.value,
-  //         status: this.state.currentState,
-  //       },
-  //     });
-  //   };
-
-  //   handleClickRow = id => {
-  //     this.props.onShowInfor();
-  //     this.props.getContactID(id);
-  //   };
-
-  //   confirmDelete = record => {
-  //     const { dispatch } = this.props;
-  //     const values = { status: 'ARCHIVE' };
-  //     const data = { values, id: record.id };
-  //     dispatch({ type: 'admin/updateContactStatus', payload: data })
-  //       .then(response => {
-  //         if (response.type && response.type === 'HttpError') {
-  //           message.error(`Failed to archive contact`);
-  //         } else {
-  //           message.success(`Successfully`);
-  //         }
-  //       })
-  //       .catch(error => {
-  //         message.error(`${error.message}`);
-  //       });
-  //   };
-
-  //   onChangePaging = page => {
-  //     const { dispatch } = this.props;
-  //     this.setState({
-  //       skip: page,
-  //     });
-  //     dispatch({
-  //       type: 'admin/queryContacts',
-  //       payload: {
-  //         search: '',
-  //         status: this.props.currentState,
-  //         skip: page,
-  //         limit: this.state.PAGE_SIZE,
-  //       },
-  //     });
-  //   };
 
   render() {
     // const { listContact, currentState, totalContact } = this.props;
