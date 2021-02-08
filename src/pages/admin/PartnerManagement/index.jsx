@@ -3,20 +3,19 @@ import moment from 'moment';
 import { router } from 'umi';
 import { connect } from 'dva';
 import { Select, Tooltip, Space, Switch } from 'antd';
-import DataTable from '../../../components/atom/DataTable/index';
+import DataTable from '../PartnerManagement/DataTable/index.jsx';
 import HeaderLayout from '@/components/atom/Header';
 import ConfirmationPopup from '../../../components/atom/ConfirmationPopup/index.jsx';
 import SearchPartnerModal from '../PartnerManagement/SearchPartnerModal/index.jsx';
 import CloseStoreModal from '../PartnerManagement/CloseStoreModal/index.jsx';
 import { PARTNER_STATUS_OPTIONS, DATE_FORMAT } from '../../../../config/constants';
-import { PARTNER_LIST } from '../../../../config/seedingData';
 import { EditOutlined, EyeOutlined } from '@ant-design/icons';
 import styles from './index.less';
 
-// @connect(({ admin, loading }) => ({
-//   fetchCurrentAdmin: loading.effects['admin/saveCurrentAdmin'],
-//   visibleContact: admin.visibleCreateContact,
-// }))
+@connect(({ partner, loading }) => ({
+  // staff,
+  // fetchPartnerList: loading.effects['staff/getPartnerList'],
+}))
 class PartnerManagement extends React.Component {
   state = {
     visibleChangeStatus: false,
@@ -34,8 +33,8 @@ class PartnerManagement extends React.Component {
     this.setState({
       visibleChangeStatus: true,
       partner: {
-        storeName: record.storeName,
-        from: record.storeStatus,
+        storeName: record.name,
+        from: record.status,
         to: value,
         title: 'status',
         visible: true,
@@ -52,8 +51,8 @@ class PartnerManagement extends React.Component {
     this.setState({
       visibleChangeOpenClose: true,
       openedStore: {
-        storeName: record.storeName,
-        storeId: record.storeName,
+        storeName: record.name,
+        storeId: record.id,
         isOpen: checked,
         undoneOrder: 5,
       },
@@ -90,24 +89,24 @@ class PartnerManagement extends React.Component {
       },
       {
         title: 'Name',
-        dataIndex: 'storeName',
-        key: 'storeName',
+        dataIndex: 'name',
+        key: 'name',
         width: '20%',
       },
       {
         title: 'Address',
-        dataIndex: 'storeAddress',
-        key: 'storeAddress',
+        dataIndex: ['address', 'description'],
+        key: ['address', 'description'],
         width: '40%',
       },
       {
         title: 'Status',
-        dataIndex: 'storeStatus',
-        key: 'storeStatus',
+        dataIndex: 'status',
+        key: 'status',
         render: (text, record, index) => (
           <Select
             size="small"
-            defaultValue={record.storeStatus}
+            defaultValue={record.status}
             onChange={value => {
               this.handleStatusChange(value, record);
             }}
@@ -118,10 +117,12 @@ class PartnerManagement extends React.Component {
       },
       {
         title: 'Expiration Date',
-        dataIndex: 'expirationDate',
-        key: 'expirationDate',
-        sorter: (a, b) =>
-          moment(a.expirationDate, DATE_FORMAT) - moment(b.expirationDate, DATE_FORMAT),
+        dataIndex: 'createdAt',
+        key: 'createdAt',
+        sorter: (a, b) => moment(a.createdAt) - moment(b.createdAt),
+        render: (text, record, index) => {
+          return moment(record.createdAt).format(DATE_FORMAT);
+        },
       },
       {
         title: 'Action',
@@ -144,6 +145,7 @@ class PartnerManagement extends React.Component {
         {/* <div className={styles.wrapHeader}>
           <HeaderLayout page="partner-management" title="Partner Management" />
         </div> */}
+
         <div className={styles.applicationManagementContainer}>
           <div className={styles.applicationHeader}>
             <SearchPartnerModal />
@@ -162,7 +164,7 @@ class PartnerManagement extends React.Component {
               hideModal={this.hideModalOpenCloseStore}
             ></CloseStoreModal>
           ) : null}
-          <DataTable columnList={columnList} dataList={PARTNER_LIST} totalRecords={30} />
+          <DataTable columnList={columnList} />
         </div>
       </>
     );

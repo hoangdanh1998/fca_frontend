@@ -15,8 +15,8 @@ class ConfirmationPopup extends React.Component {
         onOk={this.props.hideModal}
         onCancel={this.props.hideModal}
         style={{ textAlign: 'center', width: '50%' }}
-        okText="yes"
-        cancelText="no"
+        okText="Yes"
+        cancelText="No"
       >
         {isOpen ? (
           <p>
