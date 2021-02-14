@@ -39,7 +39,7 @@ class SearchPartnerModal extends React.Component {
       type: 'partner/getPartnerList',
       payload: {
         name: '',
-        status: e.target.value,
+        status: e.target.value === 'ALL' ? '' : e.target.value,
       },
     });
   };

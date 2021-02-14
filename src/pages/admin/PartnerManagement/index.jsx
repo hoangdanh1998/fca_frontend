@@ -33,10 +33,10 @@ class PartnerManagement extends React.Component {
     this.setState({
       visibleChangeStatus: true,
       partner: {
-        storeName: record.name,
+        name: record.name,
         from: record.status,
         to: value,
-        title: 'status',
+        property: 'status',
         visible: true,
       },
     });

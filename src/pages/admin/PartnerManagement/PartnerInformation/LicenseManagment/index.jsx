@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'dva';
 import moment from 'moment';
 import NumberFormat from 'react-number-format';
-import DataTable from '../../../../../components/atom/DataTable/index.jsx';
+import DataTable from '../../../OrderManagement/DataTable/index.jsx';
 import InsertButton from '../../../../../components/atom/InsertButton/index.jsx';
 import ExpandLicenseModal from '../LicenseManagment/ExpandLicenseModal/index.jsx';
 import styles from './index.less';

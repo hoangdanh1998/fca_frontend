@@ -4,7 +4,7 @@ import NumberFormat from 'react-number-format';
 import { router } from 'umi';
 import { connect } from 'dva';
 import { Select, Card } from 'antd';
-import DataTable from '../../../../../components/atom/DataTable/index.jsx';
+import DataTable from '../../../OrderManagement/DataTable/index.jsx';
 import ConfirmationPopup from '../../../../../components/atom/ConfirmationPopup/index.jsx';
 import { ITEM_STATUS_OPTIONS, DATE_FORMAT } from '../../../../../../config/constants';
 import {
@@ -30,10 +30,10 @@ class ItemManagement extends React.Component {
     this.setState({
       visibleChangeStatus: true,
       partner: {
-        storeName: record.itemName,
+        name: record.itemName,
         from: record.itemStatus,
         to: value,
-        title: 'status',
+        property: 'status',
         visible: true,
       },
     });
@@ -48,10 +48,10 @@ class ItemManagement extends React.Component {
     this.setState({
       visibleFCAGroupChange: true,
       itemFCAGroup: {
-        storeName: record.itemName,
+        name: record.itemName,
         from: record.fcaGroup,
         to: value,
-        title: 'FCA Group',
+        property: 'FCA Group',
         visible: true,
       },
     });

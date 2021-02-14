@@ -462,6 +462,8 @@ export const PARTNER_INFORMATION = {
   storePhone: '990-264-3499',
   storeAddress: '3 Carioca Plaza',
   storeStatus: 'APPROVED',
+  storeImage:
+    'http://retaildesignblog.net/wp-content/uploads/2016/07/GENERAL-SUPPLY-store-and-cafe-Nagoya-Japan.jpg',
 };
 
 export const PARTNER_LAST_LICENSE = {

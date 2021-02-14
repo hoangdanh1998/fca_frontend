@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import moment from 'moment';
 import { Space, Tooltip } from 'antd';
 import { CloseCircleOutlined, CheckCircleOutlined, EyeOutlined } from '@ant-design/icons';
-import DataTable from '../../../components/atom/DataTable/index';
+import DataTable from './DataTable/index';
 import CancelOrderModal from '../OrderManagement/CancelOrderModal/index.jsx';
 import SearchOrderModal from '../OrderManagement/SearchOrderModal/index.jsx';
 import ConfirmationPopup from '../../../components/atom/ConfirmationPopup/index.jsx';
@@ -35,10 +35,10 @@ class OrderManagement extends React.Component {
     this.setState({
       visibleChangeStatus: true,
       partner: {
-        storeName: record.customerPhone,
+        name: record.customerPhone,
         from: record.status,
         to: 'CLOSURE',
-        title: "order's status",
+        property: "order's status",
         visible: true,
       },
     });
