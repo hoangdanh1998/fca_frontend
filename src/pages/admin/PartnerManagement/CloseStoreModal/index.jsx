@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'dva';
-import { Modal } from 'antd';
+import { Modal, Space, Button } from 'antd';
 
 class ConfirmationPopup extends React.Component {
   constructor(props) {
@@ -15,24 +15,29 @@ class ConfirmationPopup extends React.Component {
         onOk={this.props.hideModal}
         onCancel={this.props.hideModal}
         style={{ textAlign: 'center', width: '50%' }}
-        okText="Yes"
-        cancelText="No"
+        footer={null}
       >
         {isOpen ? (
           <p>
-            <b>Open {storeName} store</b>
+            Open <b> {storeName} </b> store
           </p>
         ) : (
           <div>
             <p>
-              <b>Close {storeName} store</b>
+              Close <b> {storeName} </b> store
             </p>
             <p>
-              {storeName} has <b>{undoneOrder} incomplete orders</b>
+              <b>{storeName}</b> has <b>{undoneOrder} incomplete orders</b>
             </p>
             <p>If closing, the system will cancel all incomplete orders</p>
           </div>
         )}
+        <Space direction="horizontal">
+          <Button onClick={this.props.hideModal}>No</Button>
+          <Button onClick={this.props.hideModal} type="primary">
+            Yes
+          </Button>
+        </Space>
       </Modal>
     );
   }

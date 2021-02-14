@@ -16,10 +16,9 @@ const Model = {
       const response = yield call(getPartnerList, payload);
 
       if (response.type && response.type === 'HttpError') {
-        notification.fail('Something went wrong. Please try to consolidate application again.');
+        notification.fail('Something went wrong. Please try again.');
         return;
       }
-      console.log('response.data.partners', response.data.partners);
       yield put({
         type: 'handleGetPartnerList',
         payload: response.data,
