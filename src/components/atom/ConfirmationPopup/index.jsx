@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'dva';
-import { Popconfirm, Modal, Button } from 'antd';
+import { Modal } from 'antd';
 
 class ConfirmationPopup extends React.Component {
   constructor(props) {
@@ -31,11 +31,11 @@ class ConfirmationPopup extends React.Component {
         onOk={this.props.hideModal}
         onCancel={this.props.hideModal}
         style={{ textAlign: 'center', width: '50%' }}
-        okText="yes"
-        cancelText="no"
+        okText="Yes"
+        cancelText="No"
       >
         <p style={{ textAlign: 'center' }}>
-          Change <b>{message.storeName}</b> {message.title}
+          Change <b>{message.name}</b> {message.property}
         </p>
         <p style={{ textAlign: 'center' }}>
           from <b>{message.from}</b> to <b>{message.to}</b>

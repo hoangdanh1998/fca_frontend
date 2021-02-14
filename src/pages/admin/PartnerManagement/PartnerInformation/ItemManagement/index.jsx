@@ -30,10 +30,10 @@ class ItemManagement extends React.Component {
     this.setState({
       visibleChangeStatus: true,
       partner: {
-        storeName: record.itemName,
+        name: record.itemName,
         from: record.itemStatus,
         to: value,
-        title: 'status',
+        property: 'status',
         visible: true,
       },
     });
@@ -48,10 +48,10 @@ class ItemManagement extends React.Component {
     this.setState({
       visibleFCAGroupChange: true,
       itemFCAGroup: {
-        storeName: record.itemName,
+        name: record.itemName,
         from: record.fcaGroup,
         to: value,
-        title: 'FCA Group',
+        property: 'FCA Group',
         visible: true,
       },
     });

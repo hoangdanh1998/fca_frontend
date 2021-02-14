@@ -35,10 +35,10 @@ class OrderManagement extends React.Component {
     this.setState({
       visibleChangeStatus: true,
       partner: {
-        storeName: record.customerPhone,
+        name: record.customerPhone,
         from: record.status,
         to: 'CLOSURE',
-        title: "order's status",
+        property: "order's status",
         visible: true,
       },
     });
