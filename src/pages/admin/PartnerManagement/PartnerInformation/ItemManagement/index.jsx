@@ -4,7 +4,7 @@ import NumberFormat from 'react-number-format';
 import { router } from 'umi';
 import { connect } from 'dva';
 import { Select, Card } from 'antd';
-import DataTable from '../../../../../components/atom/DataTable/index.jsx';
+import DataTable from '../../../OrderManagement/DataTable/index.jsx';
 import ConfirmationPopup from '../../../../../components/atom/ConfirmationPopup/index.jsx';
 import { ITEM_STATUS_OPTIONS, DATE_FORMAT } from '../../../../../../config/constants';
 import {

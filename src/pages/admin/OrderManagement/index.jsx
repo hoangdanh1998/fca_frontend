@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import moment from 'moment';
 import { Space, Tooltip } from 'antd';
 import { CloseCircleOutlined, CheckCircleOutlined, EyeOutlined } from '@ant-design/icons';
-import DataTable from '../../../components/atom/DataTable/index';
+import DataTable from './DataTable/index';
 import CancelOrderModal from '../OrderManagement/CancelOrderModal/index.jsx';
 import SearchOrderModal from '../OrderManagement/SearchOrderModal/index.jsx';
 import ConfirmationPopup from '../../../components/atom/ConfirmationPopup/index.jsx';
