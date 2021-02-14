@@ -1,6 +1,6 @@
 import React from 'react';
 import ProLayout, { getMenuData, getPageTitle } from '@ant-design/pro-layout';
-import { Button, Avatar } from 'antd';
+import { Button, Space, PageHeader } from 'antd';
 import { Link } from 'umi';
 import { connect } from 'dva';
 import Authorized from '@/utils/Authorized';
@@ -58,21 +58,19 @@ class ManagementLayout extends React.Component {
       <div>
         <ProLayout
           title={defaultSettings.title}
-          rightContentRender={() => (
-            <>
-              <Avatar
-                style={{ color: 'black', backgroundColor: 'white' }}
-                shape="square"
-                size="middle"
-              >
-                {this.title}
-              </Avatar>
-              <Button size="middle" style={{ verticalAlign: 'middle' }}>
-                Logout
-              </Button>
-            </>
+          headerRender={() => (
+            <PageHeader
+              ghost={false}
+              onBack={() => window.history.back()}
+              title={title}
+              backIcon={false}
+              extra={[
+                <Button key="1" type="primary">
+                  Logout
+                </Button>,
+              ]}
+            ></PageHeader>
           )}
-          headerContentRender={<div>{this.title}</div>}
           collapsedButtonRender={false}
           fixedHeader={true}
           siderWidth={240}
