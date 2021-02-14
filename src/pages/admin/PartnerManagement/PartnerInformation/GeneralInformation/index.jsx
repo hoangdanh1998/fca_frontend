@@ -1,46 +1,49 @@
 import React from 'react';
-import moment from 'moment';
 import { router } from 'umi';
 import { connect } from 'dva';
-import { List } from 'antd';
-import {
-  HomeOutlined,
-  PhoneOutlined,
-  EnvironmentOutlined,
-  CheckCircleOutlined,
-} from '@ant-design/icons';
+import { Button, Descriptions, Badge, Image } from 'antd';
 import styles from './index.less';
 import { PARTNER_INFORMATION } from '../../../../../../config/seedingData';
+import { PARTNER_STATUS } from '../../../../../../config/constants';
 
 // @connect(({ admin, loading }) => ({
 //   fetchCurrentAdmin: loading.effects['admin/saveCurrentAdmin'],
 //   visibleContact: admin.visibleCreateContact,
 // }))
 class GeneralInformation extends React.Component {
+  handleStoreStatus = () => {
+    switch (PARTNER_INFORMATION.storeStatus) {
+      case PARTNER_STATUS.APPROVED:
+        return 'success';
+      case PARTNER_STATUS.REJECTED:
+        return 'error';
+      case PARTNER_STATUS.PROCESS:
+        return 'processing';
+    }
+  };
   render() {
     return (
-      <List itemLayout="horizontal" style={{ textAlign: 'left' }}>
-        <List.Item>
-          <HomeOutlined className={styles.icon} />
-          <p className={styles.title}>Store Name</p>
-          <p className={styles.data}>{PARTNER_INFORMATION.storeName}</p>
-        </List.Item>
-        <List.Item>
-          <PhoneOutlined className={styles.icon} />
-          <p className={styles.title}>Store Phone</p>
-          <p className={styles.data}>{PARTNER_INFORMATION.storePhone}</p>
-        </List.Item>
-        <List.Item>
-          <EnvironmentOutlined className={styles.icon} />
-          <p className={styles.title}>Store Address</p>
-          <p className={styles.data}>{PARTNER_INFORMATION.storeAddress}</p>
-        </List.Item>
-        <List.Item>
-          <CheckCircleOutlined className={styles.icon} />
-          <p className={styles.title}>Store Status</p>
-          <p className={styles.data}>{PARTNER_INFORMATION.storeAddress}</p>
-        </List.Item>
-      </List>
+      <div>
+        <Descriptions
+          title="Partner Information"
+          className={styles.description}
+          extra={<Button type="primary">Edit</Button>}
+        >
+          <Descriptions.Item label="Store">{PARTNER_INFORMATION.storeName}</Descriptions.Item>
+          <Descriptions.Item label="Telephone">{PARTNER_INFORMATION.storePhone}</Descriptions.Item>
+          <Descriptions.Item label="Owner">{PARTNER_INFORMATION.storeName}</Descriptions.Item>
+          <Descriptions.Item label="Status">
+            <Badge status={this.handleStoreStatus()} text={PARTNER_INFORMATION.storeStatus} />
+          </Descriptions.Item>
+          <Descriptions.Item label="Address">{PARTNER_INFORMATION.storeAddress}</Descriptions.Item>
+        </Descriptions>
+        <Image
+          width={'90%'}
+          className={styles.image}
+          preview={false}
+          src={PARTNER_INFORMATION.storeImage}
+        />
+      </div>
     );
   }
 }
