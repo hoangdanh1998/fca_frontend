@@ -1,12 +1,10 @@
 import React from 'react';
 import ProLayout, { getMenuData, getPageTitle } from '@ant-design/pro-layout';
-import { Button, Space, PageHeader } from 'antd';
+import { Button, PageHeader } from 'antd';
 import { Link } from 'umi';
 import { connect } from 'dva';
 import Authorized from '@/utils/Authorized';
 import styles from './ManagementLayout.less';
-import AdminSignOut from './LogOut/LogOut';
-import HeaderLayout from '../components/atom/Header/index.jsx';
 import defaultSettings from '../../config/defaultSettings';
 
 @connect(({ global, settings }) => ({
@@ -82,7 +80,6 @@ class ManagementLayout extends React.Component {
         >
           {this.props.children}
         </ProLayout>
-        {/* <AdminSignOut /> */}
       </div>
     );
   }
