@@ -50,8 +50,6 @@ class ManagementLayout extends React.Component {
         const localItem = { ...item, children: item.children ? menuDataRender(item.children) : [] };
         return Authorized.check(item.authority, localItem, null);
       });
-    console.log('title', title);
-    console.log('this.menuItemRender', this.menuItemRender);
     return (
       <div>
         <ProLayout
