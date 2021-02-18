@@ -12,10 +12,7 @@ import { convertStringToCamel } from '../../../utils/utils';
 import { ORDER_LIST } from '../../../../config/seedingData';
 import { DATE_FORMAT } from '../../../../config/constants';
 
-@connect(({ admin, loading }) => ({
-  fetchCurrentAdmin: loading.effects['admin/saveCurrentAdmin'],
-  visibleContact: admin.visibleCreateContact,
-}))
+@connect(({ order, loading }) => ({}))
 class OrderManagement extends React.Component {
   state = { visibleCancelOrder: false };
 
@@ -31,11 +28,11 @@ class OrderManagement extends React.Component {
     });
   };
 
-  handleStatusChange = record => {
+  handleStatusChange = (record, index) => {
     this.setState({
       visibleChangeStatus: true,
       partner: {
-        name: record.customerPhone,
+        name: `#${index + 1}`,
         from: record.status,
         to: 'CLOSURE',
         property: "order's status",
@@ -53,21 +50,21 @@ class OrderManagement extends React.Component {
     const columnList = [
       {
         title: 'No.',
-        render: (text, object, index) => {
+        render: (text, record, index) => {
           return index + 1;
         },
         width: '5%',
       },
       {
         title: 'Customer Phone',
-        dataIndex: 'customerPhone',
-        key: 'customerPhone',
+        dataIndex: ['customer', 'phone'],
+        key: ['customer', 'phone'],
         width: '20%',
       },
       {
         title: 'Partner Store',
-        dataIndex: 'partnerStore',
-        key: 'partnerStore',
+        dataIndex: ['partner', 'name'],
+        key: ['partner', 'name'],
         width: '40%',
       },
       {
@@ -80,9 +77,12 @@ class OrderManagement extends React.Component {
       },
       {
         title: 'Order Date',
-        dataIndex: 'createdDate',
-        key: 'createdDate',
-        sorter: (a, b) => moment(a.createdDate, DATE_FORMAT) - moment(b.createdDate, DATE_FORMAT),
+        dataIndex: 'createdAt',
+        key: 'createdAt',
+        sorter: (a, b) => moment(a.createdAt, DATE_FORMAT) - moment(b.createdAt, DATE_FORMAT),
+        render: (text, record, index) => {
+          return moment(record.createdAt).format(DATE_FORMAT);
+        },
       },
       {
         title: 'Action',
@@ -98,7 +98,7 @@ class OrderManagement extends React.Component {
                 className={styles.icon}
                 size="small"
                 style={{ color: 'green' }}
-                onClick={() => this.handleStatusChange(record)}
+                onClick={() => this.handleStatusChange(record, index)}
               />
             </Tooltip>
             <Tooltip placement="top" title="Cancel Order">
@@ -115,9 +115,6 @@ class OrderManagement extends React.Component {
     ];
     return (
       <>
-        {/* <div className={styles.wrapHeader}>
-          <HeaderLayout page="order-management" title="Order Management" />
-        </div> */}
         <div direction="horizontal" className={styles.applicationManagementContainer}>
           <div className={styles.applicationHeader}>
             <SearchOrderModal />

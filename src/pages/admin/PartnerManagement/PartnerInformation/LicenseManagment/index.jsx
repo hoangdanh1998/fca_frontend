@@ -71,9 +71,6 @@ class LicenseManagement extends React.Component {
     ];
     return (
       <>
-        {/* <div className={styles.wrapHeader}>
-          <HeaderLayout page="order-management" title="Order Management" />
-        </div> */}
         <div className={styles.applicationManagementContainer}>
           <div className={styles.applicationHeader}>
             <InsertButton onClick={this.handleChangeExpirationDate} />

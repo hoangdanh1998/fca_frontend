@@ -12,10 +12,7 @@ import { PARTNER_STATUS_OPTIONS, DATE_FORMAT } from '../../../../config/constant
 import { EditOutlined, EyeOutlined } from '@ant-design/icons';
 import styles from './index.less';
 
-@connect(({ partner, loading }) => ({
-  // staff,
-  // fetchPartnerList: loading.effects['staff/getPartnerList'],
-}))
+@connect(({ partner, loading }) => ({}))
 class PartnerManagement extends React.Component {
   state = {
     visibleChangeStatus: false,
@@ -142,10 +139,6 @@ class PartnerManagement extends React.Component {
     ];
     return (
       <>
-        {/* <div className={styles.wrapHeader}>
-          <HeaderLayout page="partner-management" title="Partner Management" />
-        </div> */}
-
         <div className={styles.applicationManagementContainer}>
           <div className={styles.applicationHeader}>
             <SearchPartnerModal />

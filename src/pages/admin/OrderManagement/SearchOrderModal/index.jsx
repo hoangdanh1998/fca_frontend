@@ -1,23 +1,77 @@
 import moment from 'moment';
-import { Button, Form, Input, Space, DatePicker, Radio } from 'antd';
-import { SearchOutlined } from '@ant-design/icons';
-import { DATE_FORMAT, ORDER_STATUS_FILTER } from '../../../../../config/constants';
+import { connect } from 'dva';
+import { Input, Space, DatePicker, Radio } from 'antd';
+import {
+  DATE_FORMAT,
+  ORDER_STATUS_FILTER,
+  DATE_FORMAT_CALL_API,
+} from '../../../../../config/constants';
 
+@connect(({ order, loading }) => {})
 class SearchOrderModal extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      createdDate: moment().format(DATE_FORMAT_CALL_API),
+      status: '',
+      phone: '',
+    };
   }
   handlePressSearch = e => {
     console.log('press', e.target.value);
+    this.setState({ phone: e.target.value });
+
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'order/getOrderList',
+      payload: {
+        createdDate: this.state.createdDate,
+        status: this.state.status,
+        phone: e.target.value,
+      },
+    });
   };
   handleClickSearch = (value, event) => {
     console.log('click', value);
+    this.setState({ phone: value });
+
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'order/getOrderList',
+      payload: {
+        createdDate: this.state.createdDate,
+        status: this.state.status,
+        phone: value,
+      },
+    });
   };
-  handleChangeFilter = value => {
-    console.log('filter', value.target.value);
+  handleChangeFilter = e => {
+    console.log('filter', e.target.value);
+    this.setState({ status: e.target.value === 'ALL' ? '' : e.target.value });
+
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'order/getOrderList',
+      payload: {
+        createdDate: this.state.createdDate,
+        status: e.target.value === 'ALL' ? '' : e.target.value,
+        phone: this.state.phone,
+      },
+    });
   };
   handleChangeDate = value => {
     console.log('date', moment(value, DATE_FORMAT).format(DATE_FORMAT));
+    this.setState({ createdDate: moment(value, DATE_FORMAT).format(DATE_FORMAT_CALL_API) });
+
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'order/getOrderList',
+      payload: {
+        createdDate: moment(value, DATE_FORMAT).format(DATE_FORMAT_CALL_API),
+        status: this.state.status,
+        phone: this.state.phone,
+      },
+    });
   };
 
   render() {
@@ -35,7 +89,7 @@ class SearchOrderModal extends React.Component {
             style={{ width: 300 }}
             defaultValue={moment()}
             onChange={this.handleChangeDate}
-            allowClear
+            allowClear={false}
             format={DATE_FORMAT}
           />
         </Space>
