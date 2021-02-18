@@ -27,6 +27,7 @@ class CancelOrderModal extends React.Component {
         footer={null}
         onCancel={hideModal}
       >
+        <p>OrderID</p>
         <Form onFinish={this.onSubmit} labelCol={{ span: 6 }} wrapperCol={{ span: 16 }}>
           <Form.Item name="requestBy" label="Request by" rules={[{ required: true }]}>
             <Select placeholder="" allowClear options={requestByList}></Select>

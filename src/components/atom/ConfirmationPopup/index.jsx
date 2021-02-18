@@ -7,26 +7,12 @@ class ConfirmationPopup extends React.Component {
     super(props);
   }
 
-  state = { visible: this.props.message.visible };
-
-  showModal = visible => {
-    this.setState({
-      visible: visible,
-    });
-  };
-
-  hideModal = () => {
-    this.setState({
-      visible: false,
-    });
-  };
-
   render() {
-    const { message } = this.props;
+    const { message, visible } = this.props;
     return (
       <Modal
         title="CONFIRMATION"
-        visible={this.state.visible}
+        visible={visible}
         onOk={this.props.hideModal}
         onCancel={this.props.hideModal}
         style={{ textAlign: 'center', width: '50%' }}

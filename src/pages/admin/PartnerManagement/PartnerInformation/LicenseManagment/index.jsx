@@ -2,17 +2,17 @@ import React from 'react';
 import { connect } from 'dva';
 import moment from 'moment';
 import NumberFormat from 'react-number-format';
-import DataTable from '../../../OrderManagement/DataTable/index.jsx';
+import DataTable from './DataTable/index.jsx';
 import InsertButton from '../../../../../components/atom/InsertButton/index.jsx';
 import ExpandLicenseModal from '../LicenseManagment/ExpandLicenseModal/index.jsx';
 import styles from './index.less';
 import { PARTNER_LICENSE_LIST, PARTNER_LAST_LICENSE } from '../../../../../../config/seedingData';
 import { DATE_FORMAT } from '../../../../../../config/constants';
 
-@connect(({ admin, loading }) => ({
-  fetchCurrentAdmin: loading.effects['admin/saveCurrentAdmin'],
-  visibleContact: admin.visibleCreateContact,
-}))
+// @connect(({ admin, loading }) => ({
+//   fetchCurrentAdmin: loading.effects['admin/saveCurrentAdmin'],
+//   visibleContact: admin.visibleCreateContact,
+// }))
 class LicenseManagement extends React.Component {
   state = { visibleChangeExpirationDate: false, partnerLicense: PARTNER_LAST_LICENSE };
 

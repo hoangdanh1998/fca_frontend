@@ -14,11 +14,16 @@ import { DATE_FORMAT } from '../../../../config/constants';
 
 @connect(({ order, loading }) => ({}))
 class OrderManagement extends React.Component {
-  state = { visibleCancelOrder: false };
+  state = { visibleCancelOrder: false, order: {} };
 
-  handleVisibleCancelOrder = () => {
+  handleVisibleCancelOrder = (record, index) => {
     this.setState({
       visibleCancelOrder: true,
+      order: {
+        i: index + 1,
+        customer: record.customer.phone,
+        partner: record.partner.phone,
+      },
     });
   };
 
@@ -105,7 +110,7 @@ class OrderManagement extends React.Component {
               <CloseCircleOutlined
                 style={{ color: 'red' }}
                 className={styles.icon}
-                onClick={this.handleVisibleCancelOrder}
+                onClick={() => this.handleVisibleCancelOrder(record, index)}
                 size="small"
               />
             </Tooltip>
@@ -119,9 +124,7 @@ class OrderManagement extends React.Component {
           <div className={styles.applicationHeader}>
             <SearchOrderModal />
           </div>
-          {this.state.visibleCancelOrder ? (
-            <CancelOrderModal visible={this.state.visibleCancelOrder} hideModal={this.hideModal} />
-          ) : null}
+          <CancelOrderModal visible={this.state.visibleCancelOrder} hideModal={this.hideModal} />
           {this.state.visibleChangeStatus ? (
             <ConfirmationPopup
               message={this.state.partner}
