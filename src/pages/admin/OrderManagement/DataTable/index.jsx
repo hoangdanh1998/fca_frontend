@@ -22,8 +22,6 @@ class DataTable extends React.Component {
 
   componentDidMount() {
     const { dispatch } = this.props;
-    console.log('componentDidMountOrderManagement');
-    console.log(moment().format(DATE_FORMAT_CALL_API));
     dispatch({
       type: 'order/getOrderList',
       payload: {

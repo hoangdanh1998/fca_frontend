@@ -34,19 +34,19 @@ class DataTable extends React.Component {
   }
 
   onChangePaging = page => {
-    const { dispatch } = this.props;
-    this.setState({
-      skip: page,
-    });
-    dispatch({
-      type: 'partner/getPartnerList',
-      payload: {
-        name: '',
-        status: '',
-        skip: this.state.skip,
-        limit: this.state.PAGE_SIZE,
-      },
-    });
+    // const { dispatch } = this.props;
+    // this.setState({
+    //   skip: page,
+    // });
+    // dispatch({
+    //   type: 'partner/getPartnerList',
+    //   payload: {
+    //     name: '',
+    //     status: '',
+    //     skip: this.state.skip,
+    //     limit: this.state.PAGE_SIZE,
+    //   },
+    // });
   };
 
   render() {

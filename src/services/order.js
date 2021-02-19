@@ -8,3 +8,17 @@ export async function getOrderList(params) {
     },
   );
 }
+
+export async function cancelOrder(params) {
+  return request(`/api/order/${params.id}/status`, {
+    method: 'PUT',
+    data: { status: params.status },
+  }).catch(error => error);
+}
+
+export async function closeOrder(params) {
+  return request(`/api/order/${params.id}/status`, {
+    method: 'PUT',
+    data: { status: params.status },
+  }).catch(error => error);
+}

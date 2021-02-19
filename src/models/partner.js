@@ -12,7 +12,6 @@ const Model = {
   },
   effects: {
     *getPartnerList({ payload }, { call, put }) {
-      console.log('getPartnerList');
       const response = yield call(getPartnerList, payload);
 
       if (response.type && response.type === 'HttpError') {

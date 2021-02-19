@@ -1,24 +1,37 @@
+import { connect } from 'dva';
+import { router } from 'umi';
 import { Modal, Select, Button, Form, Input, Space } from 'antd';
+import { ORDER_STATUS } from '../../../../../config/constants';
 
+@connect(({ order, loading }) => ({}))
 class CancelOrderModal extends React.Component {
   constructor(props) {
     super(props);
   }
   onSubmit = values => {
     console.log('values', values);
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'order/cancelOrder',
+      payload: {
+        status: ORDER_STATUS.CANCELLATION,
+        id: this.props.order.id,
+      },
+    });
   };
+
   render() {
+    const { visible, hideModal, order } = this.props;
     const requestByList = [
       {
-        label: 'partner',
-        value: 'partner',
+        label: `Partner - ${order.partner}`,
+        value: order.partner,
       },
       {
-        label: 'customer',
-        value: 'customer',
+        label: `Customer - ${order.customer}`,
+        value: order.customer,
       },
     ];
-    const { visible, hideModal } = this.props;
     return (
       <Modal
         style={{ textAlign: 'center' }}
@@ -27,7 +40,7 @@ class CancelOrderModal extends React.Component {
         footer={null}
         onCancel={hideModal}
       >
-        <p>OrderID</p>
+        <p>Cancel order #{order.i}</p>
         <Form onFinish={this.onSubmit} labelCol={{ span: 6 }} wrapperCol={{ span: 16 }}>
           <Form.Item name="requestBy" label="Request by" rules={[{ required: true }]}>
             <Select placeholder="" allowClear options={requestByList}></Select>
@@ -35,7 +48,7 @@ class CancelOrderModal extends React.Component {
           <Form.Item name="reason" label="Reason" rules={[{ required: true }]}>
             <Select
               mode="multiple"
-              placeholder="Select a option and change input text above"
+              placeholder="Select one or more"
               allowClear
               options={requestByList}
             ></Select>
@@ -53,7 +66,7 @@ class CancelOrderModal extends React.Component {
               </Button>
             </Form.Item>
             <Form.Item>
-              <Button type="primary" htmlType="submit">
+              <Button type="primary" htmlType="submit" onClick={hideModal}>
                 OK
               </Button>
             </Form.Item>

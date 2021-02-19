@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'dva';
+import { router } from 'umi';
 import moment from 'moment';
 import { Space, Tooltip } from 'antd';
 import { CloseCircleOutlined, CheckCircleOutlined, EyeOutlined } from '@ant-design/icons';
@@ -10,19 +11,20 @@ import ConfirmationPopup from '../../../components/atom/ConfirmationPopup/index.
 import styles from './index.less';
 import { convertStringToCamel } from '../../../utils/utils';
 import { ORDER_LIST } from '../../../../config/seedingData';
-import { DATE_FORMAT } from '../../../../config/constants';
+import { DATE_FORMAT, ORDER_STATUS } from '../../../../config/constants';
 
 @connect(({ order, loading }) => ({}))
 class OrderManagement extends React.Component {
-  state = { visibleCancelOrder: false, order: {} };
+  state = { visibleCancelOrder: false, visibleChangeStatus: false, order: {} };
 
   handleVisibleCancelOrder = (record, index) => {
     this.setState({
       visibleCancelOrder: true,
       order: {
         i: index + 1,
+        id: record.id,
         customer: record.customer.phone,
-        partner: record.partner.phone,
+        partner: record.partner.name,
       },
     });
   };
@@ -33,11 +35,12 @@ class OrderManagement extends React.Component {
     });
   };
 
-  handleStatusChange = (record, index) => {
+  handleVisibleCloseOrder = (record, index) => {
     this.setState({
       visibleChangeStatus: true,
-      partner: {
+      order: {
         name: `#${index + 1}`,
+        id: record.id,
         from: record.status,
         to: 'CLOSURE',
         property: "order's status",
@@ -45,9 +48,20 @@ class OrderManagement extends React.Component {
       },
     });
   };
-  hideModalStatus = () => {
+  hideModalCloseOrder = () => {
     this.setState({
       visibleChangeStatus: false,
+    });
+  };
+  handleCloseOrder = () => {
+    this.hideModalCloseOrder();
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'order/closeOrder',
+      payload: {
+        status: ORDER_STATUS.CLOSURE,
+        id: this.state.order.id,
+      },
     });
   };
 
@@ -103,7 +117,7 @@ class OrderManagement extends React.Component {
                 className={styles.icon}
                 size="small"
                 style={{ color: 'green' }}
-                onClick={() => this.handleStatusChange(record, index)}
+                onClick={() => this.handleVisibleCloseOrder(record, index)}
               />
             </Tooltip>
             <Tooltip placement="top" title="Cancel Order">
@@ -124,13 +138,17 @@ class OrderManagement extends React.Component {
           <div className={styles.applicationHeader}>
             <SearchOrderModal />
           </div>
-          <CancelOrderModal visible={this.state.visibleCancelOrder} hideModal={this.hideModal} />
-          {this.state.visibleChangeStatus ? (
-            <ConfirmationPopup
-              message={this.state.partner}
-              hideModal={this.hideModalStatus}
-            ></ConfirmationPopup>
-          ) : null}
+          <CancelOrderModal
+            visible={this.state.visibleCancelOrder}
+            order={this.state.order}
+            hideModal={this.hideModal}
+          />
+          <ConfirmationPopup
+            visible={this.state.visibleChangeStatus}
+            message={this.state.order}
+            hideModal={this.hideModalCloseOrder}
+            onClickOK={this.handleCloseOrder}
+          />
           <DataTable columnList={columnList} dataList={ORDER_LIST} totalRecords={30} />
         </div>
       </>

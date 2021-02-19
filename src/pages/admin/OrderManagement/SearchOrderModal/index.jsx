@@ -18,7 +18,6 @@ class SearchOrderModal extends React.Component {
     };
   }
   handlePressSearch = e => {
-    console.log('press', e.target.value);
     this.setState({ phone: e.target.value });
 
     const { dispatch } = this.props;
@@ -32,7 +31,6 @@ class SearchOrderModal extends React.Component {
     });
   };
   handleClickSearch = (value, event) => {
-    console.log('click', value);
     this.setState({ phone: value });
 
     const { dispatch } = this.props;
@@ -46,7 +44,6 @@ class SearchOrderModal extends React.Component {
     });
   };
   handleChangeFilter = e => {
-    console.log('filter', e.target.value);
     this.setState({ status: e.target.value === 'ALL' ? '' : e.target.value });
 
     const { dispatch } = this.props;
@@ -60,7 +57,6 @@ class SearchOrderModal extends React.Component {
     });
   };
   handleChangeDate = value => {
-    console.log('date', moment(value, DATE_FORMAT).format(DATE_FORMAT));
     this.setState({ createdDate: moment(value, DATE_FORMAT).format(DATE_FORMAT_CALL_API) });
 
     const { dispatch } = this.props;

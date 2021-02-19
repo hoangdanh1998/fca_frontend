@@ -13,7 +13,7 @@ class ConfirmationPopup extends React.Component {
       <Modal
         title="CONFIRMATION"
         visible={visible}
-        onOk={this.props.hideModal}
+        onOk={this.props.onClickOK}
         onCancel={this.props.hideModal}
         style={{ textAlign: 'center', width: '50%' }}
         footer={null}
@@ -26,7 +26,7 @@ class ConfirmationPopup extends React.Component {
         </p>
         <Space direction="horizontal">
           <Button onClick={this.props.hideModal}>No</Button>
-          <Button onClick={this.props.hideModal} type="primary">
+          <Button onClick={this.props.onClickOK} type="primary">
             Yes
           </Button>
         </Space>
