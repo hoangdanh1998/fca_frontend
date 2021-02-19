@@ -6,16 +6,18 @@ import { Space, Tooltip } from 'antd';
 import { CloseCircleOutlined, CheckCircleOutlined, EyeOutlined } from '@ant-design/icons';
 import DataTable from './DataTable/index';
 import CancelOrderModal from '../OrderManagement/CancelOrderModal/index.jsx';
-import SearchOrderModal from '../OrderManagement/SearchOrderModal/index.jsx';
 import ConfirmationPopup from '../../../components/atom/ConfirmationPopup/index.jsx';
 import styles from './index.less';
 import { convertStringToCamel } from '../../../utils/utils';
-import { ORDER_LIST } from '../../../../config/seedingData';
 import { DATE_FORMAT, ORDER_STATUS } from '../../../../config/constants';
 
 @connect(({ order, loading }) => ({}))
 class OrderManagement extends React.Component {
-  state = { visibleCancelOrder: false, visibleChangeStatus: false, order: {} };
+  state = { visibleCancelOrder: false, visibleChangeStatus: false, order: {}, page: 1 };
+
+  setPage = page => {
+    this.setState({ page: page });
+  };
 
   handleVisibleCancelOrder = (record, index) => {
     this.setState({
@@ -135,9 +137,6 @@ class OrderManagement extends React.Component {
     return (
       <>
         <div direction="horizontal" className={styles.applicationManagementContainer}>
-          <div className={styles.applicationHeader}>
-            <SearchOrderModal />
-          </div>
           <CancelOrderModal
             visible={this.state.visibleCancelOrder}
             order={this.state.order}
@@ -149,7 +148,7 @@ class OrderManagement extends React.Component {
             hideModal={this.hideModalCloseOrder}
             onClickOK={this.handleCloseOrder}
           />
-          <DataTable columnList={columnList} dataList={ORDER_LIST} totalRecords={30} />
+          <DataTable columnList={columnList} />
         </div>
       </>
     );

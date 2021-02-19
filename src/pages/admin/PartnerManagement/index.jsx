@@ -4,9 +4,7 @@ import { router } from 'umi';
 import { connect } from 'dva';
 import { Select, Tooltip, Space, Switch } from 'antd';
 import DataTable from '../PartnerManagement/DataTable/index.jsx';
-import HeaderLayout from '@/components/atom/Header';
 import ConfirmationPopup from '../../../components/atom/ConfirmationPopup/index.jsx';
-import SearchPartnerModal from '../PartnerManagement/SearchPartnerModal/index.jsx';
 import CloseStoreModal from '../PartnerManagement/CloseStoreModal/index.jsx';
 import { PARTNER_STATUS_OPTIONS, DATE_FORMAT } from '../../../../config/constants';
 import { EditOutlined, EyeOutlined } from '@ant-design/icons';
@@ -140,9 +138,6 @@ class PartnerManagement extends React.Component {
     return (
       <>
         <div className={styles.applicationManagementContainer}>
-          <div className={styles.applicationHeader}>
-            <SearchPartnerModal />
-          </div>
           {this.state.visibleChangeStatus ? (
             <ConfirmationPopup
               message={this.state.partner}

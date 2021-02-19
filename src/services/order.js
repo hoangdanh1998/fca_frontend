@@ -2,7 +2,7 @@ import request from '@/utils/request';
 
 export async function getOrderList(params) {
   return request(
-    `/api/order?createdDate=${params.createdDate}&status=${params.status}&phone=${params.phone}`,
+    `/api/order?skip=${params.skip}&limit=${params.limit}&createdDate=${params.createdDate}&status=${params.status}&customerPhone=${params.phone}`,
     {
       method: 'GET',
     },
