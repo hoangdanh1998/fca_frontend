@@ -31,6 +31,7 @@ const Model = {
         notification.fail('Something went wrong. Please try again.');
         return;
       }
+      notification.success('Success');
       yield put({
         type: 'handleUpdatePartnerStatus',
         payload: payload,
