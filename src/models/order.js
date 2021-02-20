@@ -31,6 +31,7 @@ const Model = {
         notification.fail('Something went wrong. Please try again.');
         return 'fail';
       }
+      notification.success('Success');
       yield put({
         type: 'handleChangeOrderStatus',
         payload: payload,
@@ -44,6 +45,7 @@ const Model = {
         notification.fail('Something went wrong. Please try again.');
         return 'fail';
       }
+      notification.success('Success');
       yield put({
         type: 'handleChangeOrderStatus',
         payload: payload,
