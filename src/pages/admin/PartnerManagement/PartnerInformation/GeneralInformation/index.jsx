@@ -17,7 +17,6 @@ class GeneralInformation extends React.Component {
   };
 
   handleVisibleChangeProfile = () => {
-    console.log('onclick');
     this.setState({ visibleChangeProfile: true });
   };
   handleStoreStatus = () => {

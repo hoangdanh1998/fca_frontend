@@ -1,27 +1,33 @@
 import React from 'react';
 import { connect } from 'dva';
+import { router } from 'umi';
 import moment from 'moment';
 import { Space, Tooltip } from 'antd';
 import { CloseCircleOutlined, CheckCircleOutlined, EyeOutlined } from '@ant-design/icons';
 import DataTable from './DataTable/index';
 import CancelOrderModal from '../OrderManagement/CancelOrderModal/index.jsx';
-import SearchOrderModal from '../OrderManagement/SearchOrderModal/index.jsx';
 import ConfirmationPopup from '../../../components/atom/ConfirmationPopup/index.jsx';
 import styles from './index.less';
 import { convertStringToCamel } from '../../../utils/utils';
-import { ORDER_LIST } from '../../../../config/seedingData';
-import { DATE_FORMAT } from '../../../../config/constants';
+import { DATE_FORMAT, ORDER_STATUS, DATE_TIME_FORMAT } from '../../../../config/constants';
 
-@connect(({ admin, loading }) => ({
-  fetchCurrentAdmin: loading.effects['admin/saveCurrentAdmin'],
-  visibleContact: admin.visibleCreateContact,
-}))
+@connect(({ order, loading }) => ({}))
 class OrderManagement extends React.Component {
-  state = { visibleCancelOrder: false };
+  state = { visibleCancelOrder: false, visibleChangeStatus: false, order: {}, page: 1 };
 
-  handleVisibleCancelOrder = () => {
+  setPage = page => {
+    this.setState({ page: page });
+  };
+
+  handleVisibleCancelOrder = (record, index) => {
     this.setState({
       visibleCancelOrder: true,
+      order: {
+        i: index + 1,
+        id: record.id,
+        customer: record.customer.phone,
+        partner: record.partner.name,
+      },
     });
   };
 
@@ -31,21 +37,33 @@ class OrderManagement extends React.Component {
     });
   };
 
-  handleStatusChange = record => {
+  handleVisibleCloseOrder = (record, index) => {
     this.setState({
       visibleChangeStatus: true,
-      partner: {
-        name: record.customerPhone,
+      order: {
+        name: `#${index + 1}`,
+        id: record.id,
         from: record.status,
-        to: 'CLOSURE',
+        to: ORDER_STATUS.RECEPTION,
         property: "order's status",
         visible: true,
       },
     });
   };
-  hideModalStatus = () => {
+  hideModalCloseOrder = () => {
     this.setState({
       visibleChangeStatus: false,
+    });
+  };
+  handleCloseOrder = () => {
+    this.hideModalCloseOrder();
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'order/closeOrder',
+      payload: {
+        status: ORDER_STATUS.RECEPTION,
+        id: this.state.order.id,
+      },
     });
   };
 
@@ -53,21 +71,21 @@ class OrderManagement extends React.Component {
     const columnList = [
       {
         title: 'No.',
-        render: (text, object, index) => {
+        render: (text, record, index) => {
           return index + 1;
         },
         width: '5%',
       },
       {
         title: 'Customer Phone',
-        dataIndex: 'customerPhone',
-        key: 'customerPhone',
+        dataIndex: ['customer', 'phone'],
+        key: ['customer', 'phone'],
         width: '20%',
       },
       {
         title: 'Partner Store',
-        dataIndex: 'partnerStore',
-        key: 'partnerStore',
+        dataIndex: ['partner', 'name'],
+        key: ['partner', 'name'],
         width: '40%',
       },
       {
@@ -80,9 +98,12 @@ class OrderManagement extends React.Component {
       },
       {
         title: 'Order Date',
-        dataIndex: 'createdDate',
-        key: 'createdDate',
-        sorter: (a, b) => moment(a.createdDate, DATE_FORMAT) - moment(b.createdDate, DATE_FORMAT),
+        dataIndex: 'createdAt',
+        key: 'createdAt',
+        sorter: (a, b) => moment(a.createdAt, DATE_FORMAT) - moment(b.createdAt, DATE_FORMAT),
+        render: (text, record, index) => {
+          return moment(record.createdAt).format(DATE_TIME_FORMAT);
+        },
       },
       {
         title: 'Action',
@@ -93,45 +114,61 @@ class OrderManagement extends React.Component {
             <Tooltip placement="top" title="View Order's details">
               <EyeOutlined className={styles.icon} size="small" />
             </Tooltip>
-            <Tooltip placement="top" title="Complete Order">
-              <CheckCircleOutlined
-                className={styles.icon}
-                size="small"
-                style={{ color: 'green' }}
-                onClick={() => this.handleStatusChange(record)}
-              />
-            </Tooltip>
-            <Tooltip placement="top" title="Cancel Order">
-              <CloseCircleOutlined
-                style={{ color: 'red' }}
-                className={styles.icon}
-                onClick={this.handleVisibleCancelOrder}
-                size="small"
-              />
-            </Tooltip>
+            {record.status != ORDER_STATUS.REJECTION &&
+            record.status != ORDER_STATUS.RECEPTION &&
+            record.status != ORDER_STATUS.CANCELLATION &&
+            record.status != ORDER_STATUS.CLOSURE ? (
+              <>
+                <Tooltip placement="top" title="Complete Order">
+                  <CheckCircleOutlined
+                    className={styles.icon}
+                    size="small"
+                    style={{ color: 'green' }}
+                    onClick={() => this.handleVisibleCloseOrder(record, index)}
+                  />
+                </Tooltip>
+                <Tooltip placement="top" title="Cancel Order">
+                  <CloseCircleOutlined
+                    style={{ color: 'red' }}
+                    className={styles.icon}
+                    onClick={() => this.handleVisibleCancelOrder(record, index)}
+                    size="small"
+                  />
+                </Tooltip>
+              </>
+            ) : (
+              <>
+                <CheckCircleOutlined
+                  className={styles.icon}
+                  size="small"
+                  style={{ color: 'gray' }}
+                />
+                <CloseCircleOutlined
+                  style={{ color: 'gray' }}
+                  className={styles.icon}
+                  size="small"
+                />
+              </>
+            )}
           </Space>
         ),
       },
     ];
     return (
       <>
-        {/* <div className={styles.wrapHeader}>
-          <HeaderLayout page="order-management" title="Order Management" />
-        </div> */}
         <div direction="horizontal" className={styles.applicationManagementContainer}>
-          <div className={styles.applicationHeader}>
-            <SearchOrderModal />
-          </div>
-          {this.state.visibleCancelOrder ? (
-            <CancelOrderModal visible={this.state.visibleCancelOrder} hideModal={this.hideModal} />
-          ) : null}
-          {this.state.visibleChangeStatus ? (
-            <ConfirmationPopup
-              message={this.state.partner}
-              hideModal={this.hideModalStatus}
-            ></ConfirmationPopup>
-          ) : null}
-          <DataTable columnList={columnList} dataList={ORDER_LIST} totalRecords={30} />
+          <CancelOrderModal
+            visible={this.state.visibleCancelOrder}
+            order={this.state.order}
+            hideModal={this.hideModal}
+          />
+          <ConfirmationPopup
+            visible={this.state.visibleChangeStatus}
+            message={this.state.order}
+            hideModal={this.hideModalCloseOrder}
+            onClickOK={this.handleCloseOrder}
+          />
+          <DataTable columnList={columnList} />
         </div>
       </>
     );
