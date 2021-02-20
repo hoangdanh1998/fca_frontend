@@ -9,7 +9,7 @@ import CancelOrderModal from '../OrderManagement/CancelOrderModal/index.jsx';
 import ConfirmationPopup from '../../../components/atom/ConfirmationPopup/index.jsx';
 import styles from './index.less';
 import { convertStringToCamel } from '../../../utils/utils';
-import { DATE_FORMAT, ORDER_STATUS } from '../../../../config/constants';
+import { DATE_FORMAT, ORDER_STATUS, DATE_TIME_FORMAT } from '../../../../config/constants';
 
 @connect(({ order, loading }) => ({}))
 class OrderManagement extends React.Component {
@@ -44,7 +44,7 @@ class OrderManagement extends React.Component {
         name: `#${index + 1}`,
         id: record.id,
         from: record.status,
-        to: 'CLOSURE',
+        to: ORDER_STATUS.RECEPTION,
         property: "order's status",
         visible: true,
       },
@@ -61,7 +61,7 @@ class OrderManagement extends React.Component {
     dispatch({
       type: 'order/closeOrder',
       payload: {
-        status: ORDER_STATUS.CLOSURE,
+        status: ORDER_STATUS.RECEPTION,
         id: this.state.order.id,
       },
     });
@@ -102,7 +102,7 @@ class OrderManagement extends React.Component {
         key: 'createdAt',
         sorter: (a, b) => moment(a.createdAt, DATE_FORMAT) - moment(b.createdAt, DATE_FORMAT),
         render: (text, record, index) => {
-          return moment(record.createdAt).format(DATE_FORMAT);
+          return moment(record.createdAt).format(DATE_TIME_FORMAT);
         },
       },
       {
@@ -114,22 +114,42 @@ class OrderManagement extends React.Component {
             <Tooltip placement="top" title="View Order's details">
               <EyeOutlined className={styles.icon} size="small" />
             </Tooltip>
-            <Tooltip placement="top" title="Complete Order">
-              <CheckCircleOutlined
-                className={styles.icon}
-                size="small"
-                style={{ color: 'green' }}
-                onClick={() => this.handleVisibleCloseOrder(record, index)}
-              />
-            </Tooltip>
-            <Tooltip placement="top" title="Cancel Order">
-              <CloseCircleOutlined
-                style={{ color: 'red' }}
-                className={styles.icon}
-                onClick={() => this.handleVisibleCancelOrder(record, index)}
-                size="small"
-              />
-            </Tooltip>
+            {record.status != ORDER_STATUS.REJECTION &&
+            record.status != ORDER_STATUS.RECEPTION &&
+            record.status != ORDER_STATUS.CANCELLATION &&
+            record.status != ORDER_STATUS.CLOSURE ? (
+              <>
+                <Tooltip placement="top" title="Complete Order">
+                  <CheckCircleOutlined
+                    className={styles.icon}
+                    size="small"
+                    style={{ color: 'green' }}
+                    onClick={() => this.handleVisibleCloseOrder(record, index)}
+                  />
+                </Tooltip>
+                <Tooltip placement="top" title="Cancel Order">
+                  <CloseCircleOutlined
+                    style={{ color: 'red' }}
+                    className={styles.icon}
+                    onClick={() => this.handleVisibleCancelOrder(record, index)}
+                    size="small"
+                  />
+                </Tooltip>
+              </>
+            ) : (
+              <>
+                <CheckCircleOutlined
+                  className={styles.icon}
+                  size="small"
+                  style={{ color: 'gray' }}
+                />
+                <CloseCircleOutlined
+                  style={{ color: 'gray' }}
+                  className={styles.icon}
+                  size="small"
+                />
+              </>
+            )}
           </Space>
         ),
       },

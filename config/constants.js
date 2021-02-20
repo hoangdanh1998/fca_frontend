@@ -1,5 +1,6 @@
 // APPLICATION CONFIGURATION
 export const DATE_FORMAT = 'DD/MM/YYYY';
+export const DATE_TIME_FORMAT = 'DD/MM/YYYY HH:mm';
 export const DATE_FORMAT_CALL_API = 'YYYY-MM-DD';
 export const PAGE_SIZE = 10;
 export const GOOGLE_KEY = 'AIzaSyCbsRxuA3NGxpOMeC0UkmJTi0V2bvSyAJo';
