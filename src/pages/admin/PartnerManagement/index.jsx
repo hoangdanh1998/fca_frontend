@@ -24,10 +24,12 @@ class PartnerManagement extends React.Component {
   handleViewPartner = () => {
     router.push('/fca-management/partner-management/partner-information');
   };
-  handleStatusChange = (value, record) => {
+
+  handleVisibleChangeStatus = (value, record) => {
     this.setState({
       visibleChangeStatus: true,
       partner: {
+        id: record.id,
         name: record.name,
         from: record.status,
         to: value,
@@ -39,6 +41,17 @@ class PartnerManagement extends React.Component {
   hideModalStatus = () => {
     this.setState({
       visibleChangeStatus: false,
+    });
+  };
+  handleChangeStatus = () => {
+    this.hideModalStatus();
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'partner/updatePartnerStatus',
+      payload: {
+        status: this.state.partner.to,
+        id: this.state.partner.id,
+      },
     });
   };
 
@@ -101,10 +114,10 @@ class PartnerManagement extends React.Component {
         render: (text, record, index) => (
           <Select
             size="small"
-            defaultValue={record.status}
             onChange={value => {
-              this.handleStatusChange(value, record);
+              this.handleVisibleChangeStatus(value, record);
             }}
+            value={record.status}
             style={{ width: '100%' }}
             options={PARTNER_STATUS_OPTIONS}
           />
@@ -138,12 +151,12 @@ class PartnerManagement extends React.Component {
     return (
       <>
         <div className={styles.applicationManagementContainer}>
-          {this.state.visibleChangeStatus ? (
-            <ConfirmationPopup
-              message={this.state.partner}
-              hideModal={this.hideModalStatus}
-            ></ConfirmationPopup>
-          ) : null}
+          <ConfirmationPopup
+            visible={this.state.visibleChangeStatus}
+            message={this.state.partner}
+            hideModal={this.hideModalStatus}
+            onClickOK={this.handleChangeStatus}
+          />
           {this.state.visibleChangeOpenClose ? (
             <CloseStoreModal
               storeName={this.state.openedStore.storeName}
