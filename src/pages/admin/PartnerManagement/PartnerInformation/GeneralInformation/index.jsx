@@ -3,6 +3,7 @@ import { router } from 'umi';
 import { connect } from 'dva';
 import { Button, Descriptions, Badge, Image } from 'antd';
 import styles from './index.less';
+import EditProfileModal from '../../EditProfileModal/index.jsx';
 import { PARTNER_INFORMATION } from '../../../../../../config/seedingData';
 import { PARTNER_STATUS } from '../../../../../../config/constants';
 
@@ -11,6 +12,13 @@ import { PARTNER_STATUS } from '../../../../../../config/constants';
 //   visibleContact: admin.visibleCreateContact,
 // }))
 class GeneralInformation extends React.Component {
+  state = {
+    visibleChangeProfile: false,
+  };
+
+  handleVisibleChangeProfile = () => {
+    this.setState({ visibleChangeProfile: true });
+  };
   handleStoreStatus = () => {
     switch (PARTNER_INFORMATION.storeStatus) {
       case PARTNER_STATUS.APPROVED:
@@ -27,7 +35,11 @@ class GeneralInformation extends React.Component {
         <Descriptions
           title="Partner Information"
           className={styles.description}
-          extra={<Button type="primary">Edit</Button>}
+          extra={
+            <Button onClick={this.handleVisibleChangeProfile} type="primary">
+              Edit
+            </Button>
+          }
         >
           <Descriptions.Item label="Store">{PARTNER_INFORMATION.storeName}</Descriptions.Item>
           <Descriptions.Item label="Telephone">{PARTNER_INFORMATION.storePhone}</Descriptions.Item>
@@ -43,6 +55,7 @@ class GeneralInformation extends React.Component {
           preview={false}
           src={PARTNER_INFORMATION.storeImage}
         />
+        <EditProfileModal visible={this.state.visibleChangeProfile} />
       </div>
     );
   }

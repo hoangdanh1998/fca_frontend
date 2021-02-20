@@ -4,7 +4,7 @@ import NumberFormat from 'react-number-format';
 import { router } from 'umi';
 import { connect } from 'dva';
 import { Select, Card } from 'antd';
-import DataTable from '../../../OrderManagement/DataTable/index.jsx';
+import DataTable from './DataTable/index.jsx';
 import ConfirmationPopup from '../../../../../components/atom/ConfirmationPopup/index.jsx';
 import { ITEM_STATUS_OPTIONS, DATE_FORMAT } from '../../../../../../config/constants';
 import {
@@ -144,15 +144,17 @@ class ItemManagement extends React.Component {
         <div className={styles.applicationManagementContainer}>
           {this.state.visibleChangeStatus ? (
             <ConfirmationPopup
+              visible={this.state.visibleChangeStatus}
               message={this.state.partner}
               hideModal={this.hideModalStatus}
-            ></ConfirmationPopup>
+            />
           ) : null}
           {this.state.visibleFCAGroupChange ? (
             <ConfirmationPopup
+              visible={this.state.visibleFCAGroupChange}
               message={this.state.itemFCAGroup}
               hideModal={this.hideModalFCAGroup}
-            ></ConfirmationPopup>
+            />
           ) : null}
           <DataTable columnList={columnList} dataList={PARTNER_ITEM_LIST} totalRecords={30} />
         </div>

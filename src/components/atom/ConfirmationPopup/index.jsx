@@ -7,27 +7,13 @@ class ConfirmationPopup extends React.Component {
     super(props);
   }
 
-  state = { visible: this.props.message.visible };
-
-  showModal = visible => {
-    this.setState({
-      visible: visible,
-    });
-  };
-
-  hideModal = () => {
-    this.setState({
-      visible: false,
-    });
-  };
-
   render() {
-    const { message } = this.props;
+    const { message, visible } = this.props;
     return (
       <Modal
         title="CONFIRMATION"
-        visible={this.state.visible}
-        onOk={this.props.hideModal}
+        visible={visible}
+        onOk={this.props.onClickOK}
         onCancel={this.props.hideModal}
         style={{ textAlign: 'center', width: '50%' }}
         footer={null}
@@ -40,7 +26,7 @@ class ConfirmationPopup extends React.Component {
         </p>
         <Space direction="horizontal">
           <Button onClick={this.props.hideModal}>No</Button>
-          <Button onClick={this.props.hideModal} type="primary">
+          <Button onClick={this.props.onClickOK} type="primary">
             Yes
           </Button>
         </Space>
