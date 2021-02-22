@@ -3,15 +3,17 @@ import moment from 'moment';
 import NumberFormat from 'react-number-format';
 import { router } from 'umi';
 import { connect } from 'dva';
-import { Select, Card } from 'antd';
+import { Select, Radio } from 'antd';
+import { convertStringToCamel } from '../../../../../utils/utils';
 import DataTable from './DataTable/index.jsx';
 import ConfirmationPopup from '../../../../../components/atom/ConfirmationPopup/index.jsx';
-import { ITEM_STATUS_OPTIONS, DATE_FORMAT } from '../../../../../../config/constants';
 import {
-  PARTNER_ITEM_LIST,
-  IMAGE_ADDRESS,
-  FCA_ITEM_LIST,
-} from '../../../../../../config/seedingData';
+  PARTNER_ITEM_STATUS,
+  DATE_FORMAT,
+  SHOW_ITEMS_OPTIONS,
+  PARTNER_STATUS_ITEM_OPTIONS,
+} from '../../../../../../config/constants';
+import { IMAGE_ADDRESS } from '../../../../../../config/seedingData';
 import styles from './index.less';
 
 // @connect(({ admin, loading }) => ({
@@ -24,26 +26,31 @@ class ItemManagement extends React.Component {
     visibleFCAGroupChange: false,
     partner: {},
     itemFCAGroup: {},
+    showItemOption: 'Usable items',
+  };
+
+  handleChangeTableFilter = value => {
+    this.setState({ showItemOption: value });
   };
 
   handleStatusChange = (value, record) => {
     this.setState({
       visibleChangeStatus: true,
       partner: {
-        name: record.itemName,
-        from: record.itemStatus,
+        name: record.name,
+        from: record.status,
         to: value,
-        property: 'status',
+        property: "item's status",
         visible: true,
       },
     });
   };
-
   hideModalStatus = () => {
     this.setState({
       visibleChangeStatus: false,
     });
   };
+
   handleFCAGroupChange = (value, record) => {
     this.setState({
       visibleFCAGroupChange: true,
@@ -56,7 +63,6 @@ class ItemManagement extends React.Component {
       },
     });
   };
-
   hideModalFCAGroup = () => {
     this.setState({
       visibleFCAGroupChange: false,
@@ -64,7 +70,8 @@ class ItemManagement extends React.Component {
   };
 
   render() {
-    const columnList = [
+    const { partner } = this.props;
+    const itemColumns = [
       {
         title: 'No.',
         render: (text, object, index) => {
@@ -74,23 +81,91 @@ class ItemManagement extends React.Component {
       },
       {
         title: 'Item Name',
-        dataIndex: 'itemName',
-        key: 'itemName',
+        dataIndex: 'name',
+        key: 'name',
         width: '25%',
       },
       {
         title: 'Item Price',
-        dataIndex: 'itemPrice',
-        key: 'itemPrice',
+        dataIndex: 'price',
+        key: 'price',
         width: '10%',
         render: (text, record, index) => (
-          <NumberFormat value={record.itemPrice} displayType={'text'} thousandSeparator={true} />
+          <NumberFormat value={record.price} displayType={'text'} thousandSeparator={true} />
         ),
       },
       {
         title: 'FCA Group',
-        dataIndex: 'fcaGroup',
-        key: 'fcaGroup',
+        width: '10%',
+        render: (text, record, index) => {
+          return Object.assign({}, record.fcaItem).name;
+        },
+      },
+      {
+        title: 'Item Status',
+        dataIndex: 'status',
+        key: 'status',
+        width: '10%',
+        render: (text, record, index) => (
+          <Select
+            size="small"
+            defaultValue={convertStringToCamel(record.status)}
+            onChange={value => {
+              this.handleStatusChange(value, record);
+            }}
+            style={{ width: '100%' }}
+            options={PARTNER_STATUS_ITEM_OPTIONS}
+          />
+        ),
+      },
+
+      {
+        title: 'Item Image',
+        render: (text, record, index) => (
+          <a href={record.imageLink ? record.imageLink : IMAGE_ADDRESS} target="_blank">
+            <p>Click to view</p>
+          </a>
+        ),
+        width: '10%',
+      },
+      {
+        title: 'Register Date',
+        dataIndex: 'createdAt',
+        key: 'createdAt',
+        width: '10%',
+        sorter: (a, b) => moment(a.createdAt, DATE_FORMAT) - moment(b.createdAt, DATE_FORMAT),
+        render: (text, record, index) => {
+          return moment(record.createdAt).format(DATE_FORMAT);
+        },
+      },
+    ];
+    const requestedItemColumns = [
+      {
+        title: 'No.',
+        render: (text, object, index) => {
+          return index + 1;
+        },
+        width: '5%',
+      },
+      {
+        title: 'Item Name',
+        dataIndex: 'name',
+        key: 'name',
+        width: '25%',
+      },
+      {
+        title: 'Item Price',
+        dataIndex: 'price',
+        key: 'price',
+        width: '10%',
+        render: (text, record, index) => (
+          <NumberFormat value={record.price} displayType={'text'} thousandSeparator={true} />
+        ),
+      },
+      {
+        title: 'FCA Group',
+        dataIndex: ['fcaItem', 'name'],
+        key: ['fcaItem', 'name'],
         width: '10%',
         render: (text, record, index) => (
           <Select
@@ -106,8 +181,8 @@ class ItemManagement extends React.Component {
       },
       {
         title: 'Item Status',
-        dataIndex: 'itemStatus',
-        key: 'itemStatus',
+        dataIndex: 'status',
+        key: 'status',
         width: '10%',
         render: (text, record, index) => (
           <Select
@@ -121,42 +196,50 @@ class ItemManagement extends React.Component {
           />
         ),
       },
-
-      {
-        title: 'Item Image',
-        render: () => (
-          <a href={IMAGE_ADDRESS}>
-            <p>{IMAGE_ADDRESS}</p>
-          </a>
-        ),
-        width: '25%',
-      },
       {
         title: 'Register Date',
-        dataIndex: 'createdDate',
-        key: 'createdDate',
+        dataIndex: 'createdAt',
+        key: 'createdAt',
         width: '10%',
-        sorter: (a, b) => moment(a.createdDate, DATE_FORMAT) - moment(b.createdDate, DATE_FORMAT),
+        sorter: (a, b) => moment(a.createdAt, DATE_FORMAT) - moment(b.createdAt, DATE_FORMAT),
       },
     ];
     return (
       <>
         <div className={styles.applicationManagementContainer}>
-          {this.state.visibleChangeStatus ? (
-            <ConfirmationPopup
-              visible={this.state.visibleChangeStatus}
-              message={this.state.partner}
-              hideModal={this.hideModalStatus}
+          <div>
+            <Radio.Group
+              style={{ display: 'flex' }}
+              defaultValue={this.state.showItemOption}
+              options={SHOW_ITEMS_OPTIONS}
+              onChange={this.handleChangeTableFilter}
+              optionType="button"
             />
-          ) : null}
-          {this.state.visibleFCAGroupChange ? (
-            <ConfirmationPopup
-              visible={this.state.visibleFCAGroupChange}
-              message={this.state.itemFCAGroup}
-              hideModal={this.hideModalFCAGroup}
+            <br />
+          </div>
+          <ConfirmationPopup
+            visible={this.state.visibleChangeStatus}
+            message={this.state.partner}
+            hideModal={this.hideModalStatus}
+          />
+          <ConfirmationPopup
+            visible={this.state.visibleFCAGroupChange}
+            message={this.state.itemFCAGroup}
+            hideModal={this.hideModalFCAGroup}
+          />
+          {this.state.showItemOption === 'Usable items' ? (
+            <DataTable
+              columnList={itemColumns}
+              dataList={partner.items}
+              totalRecords={partner.items.length}
             />
-          ) : null}
-          <DataTable columnList={columnList} dataList={PARTNER_ITEM_LIST} totalRecords={30} />
+          ) : (
+            <DataTable
+              columnList={requestedItemColumns}
+              dataList={partner.requestItems}
+              totalRecords={partner.requestItems.length}
+            />
+          )}
         </div>
       </>
     );

@@ -9,6 +9,17 @@ export const LIGHT_BACKGROUND_COLOR = '#e6d7ab';
 export const DARK_BACKGROUND_COLOR = '#603a18';
 export const DEFAULT_OLD_COLOR = '#33b3ab';
 export const APPLICATION_TITLE_FONT_FAMILY = "'Open Sans', sans-serif";
+
+export const SHOW_ITEMS_OPTIONS = [
+  {
+    label: 'Usable items',
+    value: 'Usable items',
+  },
+  {
+    label: 'Requested item',
+    value: 'Requested item',
+  },
+];
 // OBJECT STATUS
 export const PARTNER_STATUS = {
   PROCESS: 'PROCESS',
@@ -27,7 +38,7 @@ export const ORDER_STATUS = {
   CANCELLATION: 'CANCELLATION',
   CLOSURE: 'CLOSURE',
 };
-export const ITEM_STATUS = {
+export const REQUESTED_ITEM_STATUS = {
   PROCESS: 'PROCESS',
   APPROVED: 'APPROVED',
   REJECTED: 'REJECTED',
@@ -36,8 +47,11 @@ export const CUSTOMER_STATUS = {
   ACTIVE: 'ACTIVE',
   PASSIVE: 'PASSIVE',
 };
-
 export const FCA_ITEM_STATUS = {
+  ACTIVE: 'ACTIVE',
+  ARCHIVE: 'ARCHIVE',
+};
+export const PARTNER_ITEM_STATUS = {
   ACTIVE: 'ACTIVE',
   ARCHIVE: 'ARCHIVE',
 };
@@ -97,6 +111,16 @@ export const ORDER_STATUS_FILTER = [
     value: ORDER_STATUS.CANCELLATION,
   },
 ];
+export const PARTNER_STATUS_ITEM_OPTIONS = [
+  {
+    label: 'Active',
+    value: PARTNER_ITEM_STATUS.ACTIVE,
+  },
+  {
+    label: 'Archive',
+    value: PARTNER_ITEM_STATUS.ARCHIVE,
+  },
+];
 // LICENSE TYPE
 export const LICENSE_PACKAGE = [
   {
@@ -119,14 +143,14 @@ export const LICENSE_PACKAGE = [
 export const ITEM_STATUS_OPTIONS = [
   {
     label: 'Process',
-    value: ITEM_STATUS.PROCESS,
+    value: REQUESTED_ITEM_STATUS.PROCESS,
   },
   {
     label: 'Approved',
-    value: ITEM_STATUS.APPROVED,
+    value: REQUESTED_ITEM_STATUS.APPROVED,
   },
   {
     label: 'Rejected',
-    value: ITEM_STATUS.REJECTED,
+    value: REQUESTED_ITEM_STATUS.REJECTED,
   },
 ];
