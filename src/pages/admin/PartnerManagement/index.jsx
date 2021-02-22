@@ -21,8 +21,8 @@ class PartnerManagement extends React.Component {
     openedStore: {},
   };
 
-  handleViewPartner = () => {
-    router.push('/fca-management/partner-management/partner-information');
+  handleViewPartner = record => {
+    router.push(`/fca-management/partner-management/partner-information?id=${record.id}`);
   };
 
   handleVisibleChangeStatus = (value, record) => {
@@ -136,10 +136,16 @@ class PartnerManagement extends React.Component {
         title: 'Action',
         dataIndex: 'action',
         key: 'action',
-        render: () => (
+        render: (text, record, index) => (
           <Space direction="horizontal" style={{ display: 'flex' }}>
             <Tooltip placement="top" title="View Partner's details">
-              <EyeOutlined className={styles.icon} size="small" onClick={this.handleViewPartner} />
+              <EyeOutlined
+                className={styles.icon}
+                size="small"
+                onClick={() => {
+                  this.handleViewPartner(record);
+                }}
+              />
             </Tooltip>
             <Tooltip placement="top" title="Edit Partner">
               <EditOutlined className={styles.icon} size="small" />

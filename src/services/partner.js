@@ -9,6 +9,12 @@ export async function getPartnerList(params) {
   );
 }
 
+export async function getPartner(params) {
+  return request(`/api/partner/${params.id}`, {
+    method: 'GET',
+  });
+}
+
 export async function updatePartnerStatus(params) {
   return request(`/api/partner/${params.id}/status`, {
     method: 'PUT',
