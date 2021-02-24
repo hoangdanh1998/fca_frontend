@@ -54,19 +54,17 @@ class EditProfileModal extends React.Component {
           <Form.Item rules={[{ required: true }]} name="phone" label="Phone">
             <Input placeholder="Enter phone" />
           </Form.Item>
-          <Form.Item rules={[{ required: true }]} name="address" label="Address" id="address-input">
+          <Form.Item rules={[{ required: true }]} name="address" label="Address">
             <PlacesAutocomplete onSelect={this.handleSelect}>
               {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
                 <div>
                   <Input
+                    id="address-input"
                     allowClear
                     {...getInputProps({
                       placeholder: 'Enter address',
                       className: 'location-search-input',
                     })}
-                    onFocus={() => {
-                      this.setState({ isFocused: true });
-                    }}
                   />
                   <Menu
                     className="autocomplete-dropdown-container"
