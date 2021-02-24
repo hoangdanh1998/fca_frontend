@@ -20,8 +20,12 @@ class GeneralInformation extends React.Component {
   handleVisibleChangeProfile = () => {
     this.setState({ visibleChangeProfile: true });
   };
+  handleHideChangeProfile = () => {
+    this.setState({ visibleChangeProfile: false });
+  };
+
   handleStoreStatus = () => {
-    switch (PARTNER_INFORMATION.storeStatus) {
+    switch (this.props.partner.status) {
       case PARTNER_STATUS.APPROVED:
         return 'success';
       case PARTNER_STATUS.REJECTED:
@@ -30,6 +34,7 @@ class GeneralInformation extends React.Component {
         return 'processing';
     }
   };
+
   render() {
     const partner = Object.assign({}, this.props.partner);
     return (
@@ -59,7 +64,11 @@ class GeneralInformation extends React.Component {
           preview={false}
           src={partner.imageLink ? partner.imageLink : PARTNER_INFORMATION.storeImage}
         />
-        <EditProfileModal visible={this.state.visibleChangeProfile} />
+        <EditProfileModal
+          visible={this.state.visibleChangeProfile}
+          hideModal={this.handleHideChangeProfile}
+          partner={partner}
+        />
       </div>
     );
   }

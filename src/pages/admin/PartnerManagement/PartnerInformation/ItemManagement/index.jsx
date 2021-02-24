@@ -204,7 +204,6 @@ class ItemManagement extends React.Component {
         sorter: (a, b) => moment(a.createdAt, DATE_FORMAT) - moment(b.createdAt, DATE_FORMAT),
       },
     ];
-    console.log('partner.items', partner.items);
     return (
       <>
         <div className={styles.applicationManagementContainer}>
