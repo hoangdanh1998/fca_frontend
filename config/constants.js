@@ -16,8 +16,8 @@ export const SHOW_ITEMS_OPTIONS = [
     value: 'Usable items',
   },
   {
-    label: 'Requested item',
-    value: 'Requested item',
+    label: 'Requested items',
+    value: 'Requested items',
   },
 ];
 // OBJECT STATUS

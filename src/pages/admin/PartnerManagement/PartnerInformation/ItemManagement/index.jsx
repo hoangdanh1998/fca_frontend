@@ -29,8 +29,8 @@ class ItemManagement extends React.Component {
     showItemOption: 'Usable items',
   };
 
-  handleChangeTableFilter = value => {
-    this.setState({ showItemOption: value });
+  handleChangeTableFilter = event => {
+    this.setState({ showItemOption: event.target.value });
   };
 
   handleStatusChange = (value, record) => {
@@ -204,6 +204,7 @@ class ItemManagement extends React.Component {
         sorter: (a, b) => moment(a.createdAt, DATE_FORMAT) - moment(b.createdAt, DATE_FORMAT),
       },
     ];
+    console.log('partner.items', partner.items);
     return (
       <>
         <div className={styles.applicationManagementContainer}>

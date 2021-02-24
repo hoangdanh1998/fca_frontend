@@ -49,10 +49,7 @@ class DataTable extends React.Component {
   };
 
   render() {
-    console.log('items in table');
     const { columnList, totalRecords, dataList } = this.props;
-    console.log('data list', dataList);
-    console.log('columnList', columnList);
     return (
       <div>
         <div>
