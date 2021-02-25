@@ -41,7 +41,7 @@ class ExpandLicenseModal extends React.Component {
     console.log('storeLicense', storeLicense);
     return (
       <Modal
-        title="CONFIRMATION"
+        title="CREATE LICENSE"
         visible={true}
         onOk={hideModal}
         onCancel={hideModal}
@@ -104,7 +104,7 @@ class ExpandLicenseModal extends React.Component {
             </Form.Item>
             <Form.Item>
               <Button type="primary" htmlType="submit">
-                Next
+                OK
               </Button>
             </Form.Item>
           </Space>

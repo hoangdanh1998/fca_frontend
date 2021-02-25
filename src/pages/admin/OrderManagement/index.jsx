@@ -9,7 +9,12 @@ import CancelOrderModal from '../OrderManagement/CancelOrderModal/index.jsx';
 import ConfirmationPopup from '../../../components/atom/ConfirmationPopup/index.jsx';
 import styles from './index.less';
 import { convertStringToCamel } from '../../../utils/utils';
-import { DATE_FORMAT, ORDER_STATUS, DATE_TIME_FORMAT } from '../../../../config/constants';
+import {
+  DATE_FORMAT,
+  ORDER_STATUS,
+  DATE_TIME_FORMAT,
+  DATE_TIME_FORMAT_CALL_API,
+} from '../../../../config/constants';
 
 @connect(({ order, loading }) => ({}))
 class OrderManagement extends React.Component {
@@ -100,7 +105,9 @@ class OrderManagement extends React.Component {
         title: 'Order Date',
         dataIndex: 'createdAt',
         key: 'createdAt',
-        sorter: (a, b) => moment(a.createdAt, DATE_FORMAT) - moment(b.createdAt, DATE_FORMAT),
+        sorter: (a, b) =>
+          moment(a.createdAt, DATE_TIME_FORMAT_CALL_API) -
+          moment(b.createdAt, DATE_TIME_FORMAT_CALL_API),
         render: (text, record, index) => {
           return moment(record.createdAt).format(DATE_TIME_FORMAT);
         },
@@ -119,7 +126,7 @@ class OrderManagement extends React.Component {
             record.status != ORDER_STATUS.CANCELLATION &&
             record.status != ORDER_STATUS.CLOSURE ? (
               <>
-                <Tooltip placement="top" title="Complete Order">
+                <Tooltip placement="top" title="Finish Order">
                   <CheckCircleOutlined
                     className={styles.icon}
                     size="small"

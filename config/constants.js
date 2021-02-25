@@ -2,6 +2,7 @@
 export const DATE_FORMAT = 'DD/MM/YYYY';
 export const DATE_TIME_FORMAT = 'DD/MM/YYYY HH:mm';
 export const DATE_FORMAT_CALL_API = 'YYYY-MM-DD';
+export const DATE_TIME_FORMAT_CALL_API = 'YYYY-MM-DD HH:mm';
 export const PAGE_SIZE = 10;
 export const GOOGLE_KEY = 'AIzaSyCbsRxuA3NGxpOMeC0UkmJTi0V2bvSyAJo';
 // APPLICATION BACKGROUND COLOR
@@ -119,6 +120,40 @@ export const PARTNER_STATUS_ITEM_OPTIONS = [
   {
     label: 'Archive',
     value: PARTNER_ITEM_STATUS.ARCHIVE,
+  },
+];
+export const CANCEL_ORDER_REASON = [
+  {
+    label: 'Delivery is late',
+    value: 'PARTNER_LATE',
+  },
+  {
+    label: 'Drink has problem',
+    value: 'PARTNER_DRINK_PROBLEM',
+  },
+  {
+    label: 'Drink is wrong',
+    value: 'PARTNER_DRINK_WRONG',
+  },
+  {
+    label: 'System has problem',
+    value: 'SYSTEM',
+  },
+  {
+    label: 'Customer personal reason',
+    value: 'CUSTOMER_PERSONAL',
+  },
+  {
+    label: 'Customer can not find store',
+    value: 'PARTNER_NOT_FOUND',
+  },
+  {
+    label: 'Partner can not find customer',
+    value: 'CUSTOMER_NOT_FOUND',
+  },
+  {
+    label: 'Others',
+    value: 'OTHERS',
   },
 ];
 // LICENSE TYPE

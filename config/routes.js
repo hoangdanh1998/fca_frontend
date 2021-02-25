@@ -15,12 +15,6 @@ export default [
     path: '/',
     component: '../layouts/BasicLayout',
     routes: [
-      // {
-      //   name: 'Partner Information',
-      //   path: '/fca-management/partner-management/partner-information',
-      //   component: './admin/PartnerManagement',
-      //   authority: ['admin'],
-      // },
       {
         path: '/fca-management',
         name: 'FCA Management',
