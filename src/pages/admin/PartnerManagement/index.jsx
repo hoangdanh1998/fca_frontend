@@ -5,8 +5,14 @@ import { connect } from 'dva';
 import { Select, Tooltip, Space, Switch } from 'antd';
 import DataTable from '../PartnerManagement/DataTable/index.jsx';
 import ConfirmationPopup from '../../../components/atom/ConfirmationPopup/index.jsx';
+import EditProfileModal from './EditProfileModal/index';
 import CloseStoreModal from '../PartnerManagement/CloseStoreModal/index.jsx';
-import { PARTNER_STATUS_OPTIONS, DATE_FORMAT } from '../../../../config/constants';
+import {
+  PARTNER_STATUS_OPTIONS,
+  DATE_FORMAT,
+  DATE_FORMAT_CALL_API,
+  PARTNER_STATUS,
+} from '../../../../config/constants';
 import { EditOutlined, EyeOutlined } from '@ant-design/icons';
 import styles from './index.less';
 
@@ -16,8 +22,10 @@ class PartnerManagement extends React.Component {
     visibleChangeStatus: false,
     visibleChangeExpirationDate: false,
     visibleChangeOpenClose: false,
+    visibleEditProfile: false,
     partner: {},
     partnerLicense: {},
+    partnerProfile: {},
     openedStore: {},
   };
 
@@ -72,11 +80,21 @@ class PartnerManagement extends React.Component {
     });
   };
 
+  handleVisibleEditProfile = record => {
+    this.setState({
+      visibleEditProfile: true,
+      partnerProfile: record,
+    });
+  };
+  hideModalEditProfile = () => {
+    this.setState({ visibleEditProfile: false });
+  };
+
   render() {
     const columnList = [
       {
         title: 'No.',
-        render: (text, object, index) => {
+        render: (text, record, index) => {
           return index + 1;
         },
         width: '5%',
@@ -88,12 +106,11 @@ class PartnerManagement extends React.Component {
             <Switch
               checkedChildren="Open"
               unCheckedChildren="Close"
-              checked={true}
+              checked={record.status == PARTNER_STATUS.APPROVED}
               onChange={checked => this.handleOpenCloseStore(checked, record)}
             />
           </Tooltip>
         ),
-        // width: '5%',
       },
       {
         title: 'Name',
@@ -127,7 +144,8 @@ class PartnerManagement extends React.Component {
         title: 'Expiration Date',
         dataIndex: 'createdAt',
         key: 'createdAt',
-        sorter: (a, b) => moment(a.createdAt) - moment(b.createdAt),
+        sorter: (a, b) =>
+          moment(a.createdAt, DATE_FORMAT_CALL_API) - moment(b.createdAt, DATE_FORMAT_CALL_API),
         render: (text, record, index) => {
           return moment(record.createdAt).format(DATE_FORMAT);
         },
@@ -147,8 +165,12 @@ class PartnerManagement extends React.Component {
                 }}
               />
             </Tooltip>
-            <Tooltip placement="top" title="Edit Partner">
-              <EditOutlined className={styles.icon} size="small" />
+            <Tooltip placement="top" title="Edit Partner's profile">
+              <EditOutlined
+                className={styles.icon}
+                size="small"
+                onClick={() => this.handleVisibleEditProfile(record)}
+              />
             </Tooltip>
           </Space>
         ),
@@ -171,6 +193,11 @@ class PartnerManagement extends React.Component {
               hideModal={this.hideModalOpenCloseStore}
             ></CloseStoreModal>
           ) : null}
+          <EditProfileModal
+            visible={this.state.visibleEditProfile}
+            partner={this.state.partnerProfile}
+            hideModal={this.hideModalEditProfile}
+          />
           <DataTable columnList={columnList} />
         </div>
       </>

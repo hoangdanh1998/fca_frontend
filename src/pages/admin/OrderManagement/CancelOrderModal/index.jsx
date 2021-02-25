@@ -2,6 +2,7 @@ import { connect } from 'dva';
 import { router } from 'umi';
 import { Modal, Select, Button, Form, Input, Space } from 'antd';
 import { ORDER_STATUS } from '../../../../../config/constants';
+import { CANCEL_ORDER_REASON } from '../../../../../config/constants';
 
 @connect(({ order, loading }) => ({}))
 class CancelOrderModal extends React.Component {
@@ -50,7 +51,7 @@ class CancelOrderModal extends React.Component {
               mode="multiple"
               placeholder="Select one or more"
               allowClear
-              options={requestByList}
+              options={CANCEL_ORDER_REASON}
             ></Select>
           </Form.Item>
           <Form.Item name="note" label="Note">
