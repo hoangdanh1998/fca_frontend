@@ -1,15 +1,11 @@
 import React from 'react';
 import { connect } from 'dva';
-import { Modal, Space, Button, Form, Input, Menu } from 'antd';
+import { Modal, Space, Button, Form, Input, Menu, AutoComplete } from 'antd';
 import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 
 class EditProfileModal extends React.Component {
   state = {
-    address: {
-      lat: 10.8537557,
-      lng: 106.6283449,
-      description: 'Công viên phần mềm Quang Trung',
-    },
+    address: this.props.partner.id ? this.props.partner.address : {},
   };
 
   handleSelect = async address => {
@@ -23,34 +19,58 @@ class EditProfileModal extends React.Component {
         description: description,
       },
     });
+    let input = document.getElementById('address-input');
+    input.blur();
+    input.value = description;
   };
   onSubmit = values => {
     console.log('values', values);
     console.log('address', this.state.address);
+    console.log('addressDescription', this.state.addressDescription);
   };
   render() {
-    const { partner, visible } = this.props;
+    const { partner, visible, hideModal } = this.props;
     return (
-      <Modal visible={visible} style={{ textAlign: 'center' }} title="EDIT PROFILE" footer={null}>
-        <Form onFinish={this.onSubmit} labelCol={{ span: 4 }} wrapperCol={{ span: 20 }}>
-          <Form.Item rules={[{ required: true }]} name="storeName" label="Name">
-            <Input defaultValue="Cafe GO CAGO" placeholder="Enter name" value="Cafe Go CAGO" />
+      <Modal
+        visible={visible}
+        style={{ textAlign: 'center' }}
+        title="EDIT PROFILE"
+        footer={null}
+        onCancel={hideModal}
+      >
+        <Form
+          onFinish={this.onSubmit}
+          labelCol={{ span: 4 }}
+          wrapperCol={{ span: 20 }}
+          initialValues={{
+            name: partner.id ? partner.name : '',
+            phone: partner.id ? partner.phone : '',
+            address: partner.id ? partner.address.description : '',
+          }}
+        >
+          <Form.Item rules={[{ required: true }]} name="name" label="Name">
+            <Input placeholder="Enter name" />
           </Form.Item>
           <Form.Item rules={[{ required: true }]} name="phone" label="Phone">
             <Input placeholder="Enter phone" />
           </Form.Item>
           <Form.Item rules={[{ required: true }]} name="address" label="Address">
-            <PlacesAutocomplete value={this.state.address} onSelect={this.handleSelect}>
+            <PlacesAutocomplete onSelect={this.handleSelect}>
               {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
                 <div>
                   <Input
-                    defaultValue={this.state.address.description}
+                    id="address-input"
+                    allowClear
                     {...getInputProps({
                       placeholder: 'Enter address',
                       className: 'location-search-input',
                     })}
                   />
-                  <Menu className="autocomplete-dropdown-container" style={{ height: 'auto' }}>
+                  <Menu
+                    className="autocomplete-dropdown-container"
+                    style={{ height: 'auto' }}
+                    onSelect={this.handleSelect}
+                  >
                     {loading && <Menu.Item>Loading...</Menu.Item>}
                     {suggestions.map(suggestion => {
                       const className = suggestion.active
@@ -83,7 +103,9 @@ class EditProfileModal extends React.Component {
           </Form.Item>
           <Space direction="horizontal">
             <Form.Item>
-              <Button htmlType="button">Cancel</Button>
+              <Button htmlType="button" onClick={hideModal}>
+                Cancel
+              </Button>
             </Form.Item>
             <Form.Item>
               <Button type="primary" htmlType="submit">

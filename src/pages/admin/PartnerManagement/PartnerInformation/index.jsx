@@ -8,12 +8,24 @@ import LicenseManagement from '../PartnerInformation/LicenseManagment/index.jsx'
 import ItemManagement from '../PartnerInformation/ItemManagement/index.jsx';
 import styles from './index.less';
 
-// @connect(({ admin, loading }) => ({
-//   fetchCurrentAdmin: loading.effects['admin/saveCurrentAdmin'],
-//   visibleContact: admin.visibleCreateContact,
-// }))
+@connect(({ partner, loading }) => ({
+  partner: partner.partner,
+}))
 class PartnerInformation extends React.Component {
+  componentDidMount() {
+    const { dispatch } = this.props;
+    const url = window.location.href;
+    const id = url.substring(url.indexOf('=') + 1);
+    dispatch({
+      type: 'partner/getPartner',
+      payload: {
+        id: id,
+      },
+    });
+  }
+
   render() {
+    const { partner } = this.props;
     return (
       <div className={styles.applicationManagementContainer}>
         <Tabs
@@ -28,10 +40,10 @@ class PartnerInformation extends React.Component {
           }}
         >
           <Tabs.TabPane tab="General Information" key="1">
-            <GeneralInformation />
+            <GeneralInformation partner={partner} />
           </Tabs.TabPane>
           <Tabs.TabPane tab="Item Management" key="2">
-            <ItemManagement />
+            <ItemManagement partner={partner} />
           </Tabs.TabPane>
           <Tabs.TabPane tab="License Management" key="3">
             <LicenseManagement />

@@ -124,6 +124,7 @@ class DataTable extends React.Component {
                 pageSize: this.state.pageSize,
                 total: totalPartner,
                 onChange: this.onChangePaging,
+                showSizeChanger: false,
               }}
               bordered
             ></Table>

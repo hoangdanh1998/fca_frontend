@@ -7,10 +7,11 @@ import EditProfileModal from '../../EditProfileModal/index.jsx';
 import { PARTNER_INFORMATION } from '../../../../../../config/seedingData';
 import { PARTNER_STATUS } from '../../../../../../config/constants';
 
-// @connect(({ admin, loading }) => ({
-//   fetchCurrentAdmin: loading.effects['admin/saveCurrentAdmin'],
-//   visibleContact: admin.visibleCreateContact,
-// }))
+// @connect(({ partner, loading }) => {
+//   return {
+//     partner: partner.partner,
+//   };
+// })
 class GeneralInformation extends React.Component {
   state = {
     visibleChangeProfile: false,
@@ -19,8 +20,12 @@ class GeneralInformation extends React.Component {
   handleVisibleChangeProfile = () => {
     this.setState({ visibleChangeProfile: true });
   };
+  handleHideChangeProfile = () => {
+    this.setState({ visibleChangeProfile: false });
+  };
+
   handleStoreStatus = () => {
-    switch (PARTNER_INFORMATION.storeStatus) {
+    switch (this.props.partner.status) {
       case PARTNER_STATUS.APPROVED:
         return 'success';
       case PARTNER_STATUS.REJECTED:
@@ -29,11 +34,13 @@ class GeneralInformation extends React.Component {
         return 'processing';
     }
   };
+
   render() {
+    const partner = Object.assign({}, this.props.partner);
     return (
       <div>
         <Descriptions
-          title="Partner Information"
+          title={partner.name}
           className={styles.description}
           extra={
             <Button onClick={this.handleVisibleChangeProfile} type="primary">
@@ -41,21 +48,27 @@ class GeneralInformation extends React.Component {
             </Button>
           }
         >
-          <Descriptions.Item label="Store">{PARTNER_INFORMATION.storeName}</Descriptions.Item>
-          <Descriptions.Item label="Telephone">{PARTNER_INFORMATION.storePhone}</Descriptions.Item>
-          <Descriptions.Item label="Owner">{PARTNER_INFORMATION.storeName}</Descriptions.Item>
-          <Descriptions.Item label="Status">
-            <Badge status={this.handleStoreStatus()} text={PARTNER_INFORMATION.storeStatus} />
+          <Descriptions.Item label="Telephone">
+            {partner.phone ? partner.phone : '-'}
           </Descriptions.Item>
-          <Descriptions.Item label="Address">{PARTNER_INFORMATION.storeAddress}</Descriptions.Item>
+          <Descriptions.Item label="Status">
+            <Badge status={this.handleStoreStatus()} text={partner.status} />
+          </Descriptions.Item>
+          <Descriptions.Item label="Address">
+            {Object.assign({}, partner.address).description}
+          </Descriptions.Item>
         </Descriptions>
         <Image
           width={'90%'}
           className={styles.image}
           preview={false}
-          src={PARTNER_INFORMATION.storeImage}
+          src={partner.imageLink ? partner.imageLink : PARTNER_INFORMATION.storeImage}
         />
-        <EditProfileModal visible={this.state.visibleChangeProfile} />
+        <EditProfileModal
+          visible={this.state.visibleChangeProfile}
+          hideModal={this.handleHideChangeProfile}
+          partner={partner}
+        />
       </div>
     );
   }

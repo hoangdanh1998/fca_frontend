@@ -20,17 +20,16 @@ class DataTable extends React.Component {
   }
 
   componentDidMount() {
-    const { dispatch } = this.props;
-    console.log('componentDidMount');
-    // dispatch({
-    //   type: 'partner/getPartnerList',
-    //   payload: {
-    //     name: '',
-    //     status: '',
-    //     skip: this.state.skip,
-    //     limit: this.state.PAGE_SIZE,
-    //   },
-    // });
+    //   const { dispatch } = this.props;
+    //   dispatch({
+    //     type: 'partner/getPartnerList',
+    //     payload: {
+    //       name: '',
+    //       status: '',
+    //       skip: this.state.skip,
+    //       limit: this.state.PAGE_SIZE,
+    //     },
+    //   });
   }
 
   onChangePaging = page => {
@@ -50,7 +49,7 @@ class DataTable extends React.Component {
   };
 
   render() {
-    const { columnList, totalPartner, dataList } = this.props;
+    const { columnList, totalRecords, dataList } = this.props;
     return (
       <div>
         <div>
@@ -62,11 +61,11 @@ class DataTable extends React.Component {
               pagination={{
                 current: this.state.skip,
                 pageSize: this.state.PAGE_SIZE,
-                total: totalPartner,
+                total: totalRecords,
                 onChange: this.onChangePaging,
               }}
               bordered
-            ></Table>
+            />
           </div>
         </div>
       </div>

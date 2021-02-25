@@ -35,8 +35,9 @@ class DataTable extends React.Component {
     dispatch({
       type: 'order/getOrderList',
       payload: {
-        createdDate: moment().format(DATE_FORMAT_CALL_API),
-        status: '',
+        createdDate: this.state.createdDate,
+        status: this.state.status,
+        phone: this.state.phone,
         skip: this.state.skip,
         limit: this.state.pageSize,
       },
