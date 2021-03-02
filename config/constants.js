@@ -125,31 +125,31 @@ export const PARTNER_STATUS_ITEM_OPTIONS = [
 export const CANCEL_ORDER_REASON = [
   {
     label: 'Delivery is late',
-    value: 'PARTNER_LATE',
+    value: 'PARTNER_DRINK_LATE',
   },
   {
     label: 'Drink has problem',
     value: 'PARTNER_DRINK_PROBLEM',
   },
-  {
-    label: 'Drink is wrong',
-    value: 'PARTNER_DRINK_WRONG',
-  },
-  {
-    label: 'System has problem',
-    value: 'SYSTEM',
-  },
+  // {
+  //   label: 'Drink is wrong',
+  //   value: 'PARTNER_DRINK_WRONG',
+  // },
+  // {
+  //   label: 'System has problem',
+  //   value: 'SYSTEM',
+  // },
   {
     label: 'Customer personal reason',
-    value: 'CUSTOMER_PERSONAL',
+    value: 'CUSTOMER_PERSONAL_REASON',
   },
   {
     label: 'Customer can not find store',
-    value: 'PARTNER_NOT_FOUND',
+    value: 'CUSTOMER_STORE_NOT_FOUND',
   },
   {
     label: 'Partner can not find customer',
-    value: 'CUSTOMER_NOT_FOUND',
+    value: 'PARTNER_CUSTOMER_NOT_FOUND',
   },
   {
     label: 'Others',

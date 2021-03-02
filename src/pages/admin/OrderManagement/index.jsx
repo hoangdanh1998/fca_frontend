@@ -29,9 +29,12 @@ class OrderManagement extends React.Component {
       visibleCancelOrder: true,
       order: {
         i: index + 1,
+        order: record,
         id: record.id,
-        customer: record.customer.phone,
-        partner: record.partner.name,
+        customerPhone: record.customer.phone,
+        partnerName: record.partner.name,
+        customerId: record.customer.id,
+        partnerId: record.partner.id,
       },
     });
   };
