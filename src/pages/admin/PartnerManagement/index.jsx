@@ -106,7 +106,7 @@ class PartnerManagement extends React.Component {
             <Switch
               checkedChildren="Open"
               unCheckedChildren="Close"
-              checked={record.status == PARTNER_STATUS.APPROVED}
+              checked={record.isOpen !== undefined && record.isOpen ? record.isOpen : false}
               onChange={checked => this.handleOpenCloseStore(checked, record)}
             />
           </Tooltip>
@@ -147,7 +147,7 @@ class PartnerManagement extends React.Component {
         sorter: (a, b) =>
           moment(a.createdAt, DATE_FORMAT_CALL_API) - moment(b.createdAt, DATE_FORMAT_CALL_API),
         render: (text, record, index) => {
-          return moment(record.createdAt).format(DATE_FORMAT);
+          return moment().format(DATE_FORMAT);
         },
       },
       {

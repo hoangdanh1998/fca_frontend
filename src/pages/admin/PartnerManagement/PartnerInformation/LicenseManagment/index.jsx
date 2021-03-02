@@ -9,10 +9,6 @@ import styles from './index.less';
 import { PARTNER_LICENSE_LIST, PARTNER_LAST_LICENSE } from '../../../../../../config/seedingData';
 import { DATE_FORMAT } from '../../../../../../config/constants';
 
-// @connect(({ admin, loading }) => ({
-//   fetchCurrentAdmin: loading.effects['admin/saveCurrentAdmin'],
-//   visibleContact: admin.visibleCreateContact,
-// }))
 class LicenseManagement extends React.Component {
   state = { visibleChangeExpirationDate: false, partnerLicense: PARTNER_LAST_LICENSE };
 
@@ -29,7 +25,8 @@ class LicenseManagement extends React.Component {
   };
 
   render() {
-    console.log('last license', PARTNER_LAST_LICENSE);
+    const lastLicense = this.props.lastLicense ? this.props.lastLicense : null;
+    const partner = this.props.partner;
     const columnList = [
       {
         title: 'No.',
@@ -77,11 +74,15 @@ class LicenseManagement extends React.Component {
           </div>
           {this.state.visibleChangeExpirationDate ? (
             <ExpandLicenseModal
-              storeLicense={this.state.partnerLicense}
+              {...(lastLicense ? (lastLicense = { lastLicense }) : null)}
               hideModal={this.hideModalExpirationDate}
             ></ExpandLicenseModal>
           ) : null}
-          <DataTable columnList={columnList} dataList={PARTNER_LICENSE_LIST} totalRecords={30} />
+          <DataTable
+            columnList={columnList}
+            dataList={partner.licenses ? partner.licenses : []}
+            totalRecords={partner.licenses ? partner.licenses.length : 0}
+          />
         </div>
       </>
     );

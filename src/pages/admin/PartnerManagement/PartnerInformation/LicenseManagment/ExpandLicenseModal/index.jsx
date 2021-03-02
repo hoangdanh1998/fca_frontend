@@ -10,8 +10,12 @@ class ExpandLicenseModal extends React.Component {
     super(props);
   }
   state = {
-    startDate: moment(this.props.storeLicense.licenseTo, DATE_FORMAT),
-    endDate: moment(this.props.storeLicense.licenseTo, DATE_FORMAT).add(1, 'months'),
+    startDate: this.props.lastLicense
+      ? moment(this.props.storeLicense.licenseTo, DATE_FORMAT)
+      : moment(),
+    endDate: this.props.lastLicense
+      ? moment(this.props.storeLicense.licenseTo, DATE_FORMAT).add(1, 'months')
+      : moment().add(1, 'months'),
     package: 1,
   };
 
@@ -37,8 +41,8 @@ class ExpandLicenseModal extends React.Component {
   };
 
   render() {
-    const { storeLicense, hideModal } = this.props;
-    console.log('storeLicense', storeLicense);
+    const { lastLicense, hideModal } = this.props;
+    console.log('lastLicense', lastLicense);
     return (
       <Modal
         title="CREATE LICENSE"
@@ -48,12 +52,16 @@ class ExpandLicenseModal extends React.Component {
         className={styles.modal}
         footer={null}
       >
-        <p className={styles.message}>
-          <b>{storeLicense.storeName}</b> has license
-        </p>
-        <p className={styles.message}>
-          from <b>{storeLicense.licenseFrom}</b> to <b>{storeLicense.licenseTo}</b>
-        </p>
+        {lastLicense ? (
+          <>
+            <p className={styles.message}>
+              <b>{lastLicense.storeName}</b> has license
+            </p>
+            <p className={styles.message}>
+              from <b>{lastLicense.licenseFrom}</b> to <b>{lastLicense.licenseTo}</b>
+            </p>
+          </>
+        ) : null}
         <Form
           initialValues={{
             startDate: this.state.startDate,
