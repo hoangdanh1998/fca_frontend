@@ -1,14 +1,13 @@
 import React from 'react';
 import { router } from 'umi';
 import { connect } from 'dva';
-import { Descriptions, Badge, Image, Space, Switch } from 'antd';
+import { Descriptions, Badge, Image, Space, Switch, Carousel } from 'antd';
 import Button from 'antd-button-color';
 import 'antd-button-color/dist/css/style.less';
 import styles from './index.less';
 import EditProfileModal from '../../EditProfileModal/index.jsx';
 import ConfirmationPopup from '../../../../../components/atom/ConfirmationPopup/index.jsx';
 import CloseStoreModal from '../../CloseStoreModal/index.jsx';
-import { convertStringToCamel } from '../../../../../utils/utils';
 import { EditOutlined, CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import { PARTNER_INFORMATION } from '../../../../../../config/seedingData';
 import { PARTNER_STATUS } from '../../../../../../config/constants';
@@ -81,6 +80,53 @@ class GeneralInformation extends React.Component {
         id: this.props.partner.id,
       },
     });
+  };
+
+  handleImageSlide = () => {
+    const images = [];
+    if (this.props.partner.images) {
+      images.forEach(image =>
+        images.push(
+          <div>
+            <Image width={'90%'} className={styles.image} preview={false} src={image} />
+          </div>,
+        ),
+      );
+      return images;
+    } else if (this.props.partner.imageLink) {
+      return (
+        <div>
+          <Image
+            width={'90%'}
+            className={styles.image}
+            preview={false}
+            src={this.props.partner.imageLink}
+          />
+        </div>
+      );
+    } else {
+      images.push(
+        <div>
+          <Image
+            width={'90%'}
+            className={styles.image}
+            preview={false}
+            src={PARTNER_INFORMATION.storeImage}
+          />
+        </div>,
+      );
+      images.push(
+        <div>
+          <Image
+            width={'90%'}
+            className={styles.image}
+            preview={false}
+            src={PARTNER_INFORMATION.storeImage}
+          />
+        </div>,
+      );
+      return images;
+    }
   };
 
   render() {
@@ -168,12 +214,7 @@ class GeneralInformation extends React.Component {
             {Object.assign({}, partner.address).description}
           </Descriptions.Item>
         </Descriptions>
-        <Image
-          width={'90%'}
-          className={styles.image}
-          preview={false}
-          src={partner.imageLink ? partner.imageLink : PARTNER_INFORMATION.storeImage}
-        />
+        <Carousel autoplay={true}>{this.handleImageSlide()}</Carousel>
         <EditProfileModal
           visible={this.state.visibleChangeProfile}
           hideModal={this.handleHideChangeProfile}
