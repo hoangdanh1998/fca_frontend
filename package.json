@@ -60,6 +60,7 @@
     "@antv/data-set": "^0.11.0",
     "@sentry/react": "^5.19.2",
     "antd": "^4.10.0",
+    "antd-button-color": "^1.0.4",
     "axios": "^0.19.2",
     "classnames": "^2.2.6",
     "cldr-data": "^36.0.0",

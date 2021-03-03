@@ -48,7 +48,7 @@ const Model = {
       notification.success('Success');
       yield put({
         type: 'handleUpdatePartnerStatus',
-        payload: payload,
+        payload: response.data,
       });
     },
   },
@@ -70,16 +70,7 @@ const Model = {
     },
 
     handleUpdatePartnerStatus(state, action) {
-      const updatedPartnerList = Array.from(state.allPartnerList, partner => {
-        if (partner.id == action.payload.id) {
-          partner.status = action.payload.status;
-        }
-        return partner;
-      });
-      return {
-        ...state,
-        allPartnerList: updatedPartnerList,
-      };
+      return { ...state, partner: action.payload.partner };
     },
   },
 };

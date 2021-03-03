@@ -13,6 +13,7 @@ import {
   DATE_FORMAT_CALL_API,
   PARTNER_STATUS,
 } from '../../../../config/constants';
+import { convertStringToCamel } from '../../../utils/utils';
 import { EditOutlined, EyeOutlined } from '@ant-design/icons';
 import styles from './index.less';
 
@@ -97,20 +98,6 @@ class PartnerManagement extends React.Component {
         render: (text, record, index) => {
           return index + 1;
         },
-        width: '5%',
-      },
-      {
-        title: 'Opening',
-        render: (text, record, index) => (
-          <Tooltip placement="top" title="Open/Close Store">
-            <Switch
-              checkedChildren="Open"
-              unCheckedChildren="Close"
-              checked={record.isOpen !== undefined && record.isOpen ? record.isOpen : false}
-              onChange={checked => this.handleOpenCloseStore(checked, record)}
-            />
-          </Tooltip>
-        ),
       },
       {
         title: 'Name',
@@ -128,17 +115,20 @@ class PartnerManagement extends React.Component {
         title: 'Status',
         dataIndex: 'status',
         key: 'status',
-        render: (text, record, index) => (
-          <Select
-            size="small"
-            onChange={value => {
-              this.handleVisibleChangeStatus(value, record);
-            }}
-            value={record.status}
-            style={{ width: '100%' }}
-            options={PARTNER_STATUS_OPTIONS}
-          />
-        ),
+        // render: (text, record, index) => (
+        //   <Select
+        //     size="small"
+        //     onChange={value => {
+        //       this.handleVisibleChangeStatus(value, record);
+        //     }}
+        //     value={record.status}
+        //     style={{ width: '100%' }}
+        //     options={PARTNER_STATUS_OPTIONS}
+        //   />
+        // ),
+        render: (text, record, index) => {
+          return convertStringToCamel(record.status);
+        },
       },
       {
         title: 'Expiration Date',
@@ -156,7 +146,10 @@ class PartnerManagement extends React.Component {
         key: 'action',
         render: (text, record, index) => (
           <Space direction="horizontal" style={{ display: 'flex' }}>
-            <Tooltip placement="top" title="View Partner's details">
+            <a href={`/fca-management/partner-management/partner-information?id=${record.id}`}>
+              View
+            </a>
+            {/* <Tooltip placement="top" title="View Partner's details">
               <EyeOutlined
                 className={styles.icon}
                 size="small"
@@ -164,14 +157,22 @@ class PartnerManagement extends React.Component {
                   this.handleViewPartner(record);
                 }}
               />
-            </Tooltip>
-            <Tooltip placement="top" title="Edit Partner's profile">
+            </Tooltip> */}
+            {/* <Tooltip placement="top" title="Edit Partner's profile">
               <EditOutlined
                 className={styles.icon}
                 size="small"
                 onClick={() => this.handleVisibleEditProfile(record)}
               />
-            </Tooltip>
+            </Tooltip> */}
+            {/* <Tooltip placement="top" title="Open/Close Store">
+              <Switch
+                checkedChildren="Open"
+                unCheckedChildren="Close"
+                checked={record.isOpen !== undefined && record.isOpen ? record.isOpen : false}
+                onChange={checked => this.handleOpenCloseStore(checked, record)}
+              />
+            </Tooltip> */}
           </Space>
         ),
       },
@@ -185,7 +186,7 @@ class PartnerManagement extends React.Component {
             hideModal={this.hideModalStatus}
             onClickOK={this.handleChangeStatus}
           />
-          {this.state.visibleChangeOpenClose ? (
+          {/* {this.state.visibleChangeOpenClose ? (
             <CloseStoreModal
               storeName={this.state.openedStore.storeName}
               undoneOrder={this.state.openedStore.undoneOrder}
@@ -197,7 +198,7 @@ class PartnerManagement extends React.Component {
             visible={this.state.visibleEditProfile}
             partner={this.state.partnerProfile}
             hideModal={this.hideModalEditProfile}
-          />
+          /> */}
           <DataTable columnList={columnList} />
         </div>
       </>
