@@ -9,6 +9,12 @@ export async function getOrderList(params) {
   );
 }
 
+export async function getOrder(params) {
+  return request(`/api/order/${params.id}`, {
+    method: 'GET',
+  });
+}
+
 export async function cancelOrder(params) {
   return request(`/api/order/${params.id}/status`, {
     method: 'PUT',

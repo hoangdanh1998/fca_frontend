@@ -103,6 +103,22 @@ const routes = [
             exact: true,
           },
           {
+            path: '/fca-management/order-management/order-information',
+            name: 'Order Information',
+            component: __IS_BROWSER
+              ? _dvaDynamic({
+                  component: () =>
+                    import(/* webpackChunkName: "p__admin__OrderManagement__OrderInformation__index" */ '../admin/OrderManagement/OrderInformation/index'),
+                  LoadingComponent: require('/Users/pkimanh03/Documents/capstone/fca_frontend/src/components/PageLoading/index')
+                    .default,
+                })
+              : require('../admin/OrderManagement/OrderInformation/index')
+                  .default,
+            authority: ['admin'],
+            hidden: true,
+            exact: true,
+          },
+          {
             name: 'Order Management',
             path: '/fca-management/order-management',
             component: __IS_BROWSER

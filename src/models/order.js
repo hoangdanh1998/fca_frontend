@@ -1,5 +1,5 @@
 import { router } from 'umi';
-import { getOrderList, cancelOrder, closeOrder } from '@/services/order';
+import { getOrderList, getOrder, cancelOrder, closeOrder } from '@/services/order';
 import AdminNotification from '../components/Notification';
 
 const notification = new AdminNotification();
@@ -9,6 +9,7 @@ const Model = {
   state: {
     allOrderList: [],
     totalOrder: 0,
+    order: {},
   },
   effects: {
     *getOrderList({ payload }, { call, put }) {
@@ -20,6 +21,19 @@ const Model = {
       }
       yield put({
         type: 'handleGetOrderList',
+        payload: response.data,
+      });
+    },
+
+    *getOrder({ payload }, { call, put }) {
+      const response = yield call(getOrder, payload);
+
+      if (response.type && response.type === 'HttpError') {
+        notification.fail('Something went wrong. Please try again.');
+        return;
+      }
+      yield put({
+        type: 'handleGetOrder',
         payload: response.data,
       });
     },
@@ -59,6 +73,12 @@ const Model = {
         ...state,
         allOrderList: action.payload.orders,
         totalOrder: action.payload.count,
+      };
+    },
+    handleGetOrder(state, action) {
+      return {
+        ...state,
+        order: action.payload.order,
       };
     },
     handleChangeOrderStatus(state, action) {

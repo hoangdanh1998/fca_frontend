@@ -35,6 +35,13 @@ export default [
             authority: ['admin'],
           },
           {
+            path: '/fca-management/order-management/order-information',
+            name: 'Order Information',
+            component: './admin/OrderManagement/OrderInformation/index',
+            authority: ['admin'],
+            hidden: true,
+          },
+          {
             name: 'Order Management',
             path: '/fca-management/order-management',
             component: './admin/OrderManagement',
