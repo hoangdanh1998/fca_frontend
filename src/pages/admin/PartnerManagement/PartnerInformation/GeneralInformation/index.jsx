@@ -1,14 +1,21 @@
 import React from 'react';
 import { router } from 'umi';
 import { connect } from 'dva';
-import { Descriptions, Badge, Image, Space, Switch, Carousel } from 'antd';
+import { Descriptions, Tag, Image, Space, Switch, Carousel } from 'antd';
 import Button from 'antd-button-color';
 import 'antd-button-color/dist/css/style.less';
 import styles from './index.less';
 import EditProfileModal from '../../EditProfileModal/index.jsx';
 import ConfirmationPopup from '../../../../../components/atom/ConfirmationPopup/index.jsx';
 import CloseStoreModal from '../../CloseStoreModal/index.jsx';
-import { EditOutlined, CheckOutlined, CloseOutlined } from '@ant-design/icons';
+import {
+  EditOutlined,
+  CheckOutlined,
+  CloseOutlined,
+  ClockCircleOutlined,
+  CloseCircleOutlined,
+  CheckCircleOutlined,
+} from '@ant-design/icons';
 import { PARTNER_INFORMATION } from '../../../../../../config/seedingData';
 import { PARTNER_STATUS } from '../../../../../../config/constants';
 
@@ -29,7 +36,7 @@ class GeneralInformation extends React.Component {
     this.setState({ visibleChangeProfile: false });
   };
 
-  handleStoreStatus = () => {
+  getTagStatusColors = () => {
     switch (this.props.partner.status) {
       case PARTNER_STATUS.APPROVED:
         return 'success';
@@ -37,6 +44,17 @@ class GeneralInformation extends React.Component {
         return 'error';
       case PARTNER_STATUS.PROCESS:
         return 'processing';
+    }
+  };
+
+  getTagStatusIcons = () => {
+    switch (this.props.partner.status) {
+      case PARTNER_STATUS.APPROVED:
+        return <CheckCircleOutlined />;
+      case PARTNER_STATUS.REJECTED:
+        return <CloseCircleOutlined />;
+      case PARTNER_STATUS.PROCESS:
+        return <ClockCircleOutlined />;
     }
   };
 
@@ -208,7 +226,9 @@ class GeneralInformation extends React.Component {
             {partner.phone ? partner.phone : '-'}
           </Descriptions.Item>
           <Descriptions.Item label="Status">
-            <Badge status={this.handleStoreStatus()} text={partner.status} />
+            <Tag color={this.getTagStatusColors()} icon={this.getTagStatusIcons()}>
+              {partner.status}
+            </Tag>
           </Descriptions.Item>
           <Descriptions.Item label="Address">
             {Object.assign({}, partner.address).description}
