@@ -58,6 +58,6 @@ export const getRouteAuthority = (path, routeData) => {
   return authorities;
 };
 
-export const convertStringToCamel = str => {
+export const convertStringToCamel = (str = '') => {
   return str.substr(0, 1).toUpperCase() + str.substr(1).toLowerCase();
 };

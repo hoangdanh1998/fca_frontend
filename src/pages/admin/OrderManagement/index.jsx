@@ -2,14 +2,24 @@ import React from 'react';
 import { connect } from 'dva';
 import { router } from 'umi';
 import moment from 'moment';
-import { Space, Tooltip } from 'antd';
-import { CloseCircleOutlined, CheckCircleOutlined, EyeOutlined } from '@ant-design/icons';
+import { Space, Tooltip, Tag } from 'antd';
+import {
+  CloseCircleOutlined,
+  CheckCircleOutlined,
+  EyeOutlined,
+  SyncOutlined,
+} from '@ant-design/icons';
 import DataTable from './DataTable/index';
 import CancelOrderModal from '../OrderManagement/CancelOrderModal/index.jsx';
 import ConfirmationPopup from '../../../components/atom/ConfirmationPopup/index.jsx';
 import styles from './index.less';
 import { convertStringToCamel } from '../../../utils/utils';
-import { DATE_FORMAT, ORDER_STATUS, DATE_TIME_FORMAT } from '../../../../config/constants';
+import {
+  DATE_FORMAT,
+  ORDER_STATUS,
+  DATE_TIME_FORMAT,
+  DATE_TIME_FORMAT_CALL_API,
+} from '../../../../config/constants';
 
 @connect(({ order, loading }) => ({}))
 class OrderManagement extends React.Component {
@@ -19,18 +29,50 @@ class OrderManagement extends React.Component {
     this.setState({ page: page });
   };
 
+  getTagStatusColors = record => {
+    switch (record.status) {
+      case ORDER_STATUS.RECEPTION:
+        return {
+          color: 'success',
+          icon: <CheckCircleOutlined />,
+        };
+      case ORDER_STATUS.REJECTION:
+        return {
+          color: 'error',
+          icon: <CloseCircleOutlined />,
+        };
+      case ORDER_STATUS.CANCELLATION:
+        return {
+          color: 'default',
+          icon: <CloseCircleOutlined />,
+        };
+      case ORDER_STATUS.CLOSURE:
+        return {
+          color: 'default',
+          icon: <CheckCircleOutlined />,
+        };
+      default:
+        return {
+          color: 'processing',
+          icon: <SyncOutlined spin />,
+        };
+    }
+  };
+
   handleVisibleCancelOrder = (record, index) => {
     this.setState({
       visibleCancelOrder: true,
       order: {
         i: index + 1,
+        order: record,
         id: record.id,
-        customer: record.customer.phone,
-        partner: record.partner.name,
+        customerPhone: record.customer.phone,
+        partnerName: record.partner.name,
+        customerId: record.customer.id,
+        partnerId: record.partner.id,
       },
     });
   };
-
   hideModal = () => {
     this.setState({
       visibleCancelOrder: false,
@@ -74,13 +116,13 @@ class OrderManagement extends React.Component {
         render: (text, record, index) => {
           return index + 1;
         },
-        width: '5%',
+        align: 'right',
       },
       {
         title: 'Customer Phone',
         dataIndex: ['customer', 'phone'],
         key: ['customer', 'phone'],
-        width: '20%',
+        align: 'right',
       },
       {
         title: 'Partner Store',
@@ -93,17 +135,27 @@ class OrderManagement extends React.Component {
         dataIndex: 'status',
         key: 'status',
         render: (text, record, index) => {
-          return convertStringToCamel(record.status);
+          return (
+            <Tag
+              color={this.getTagStatusColors(record).color}
+              icon={this.getTagStatusColors(record).icon}
+            >
+              {convertStringToCamel(record.status)}
+            </Tag>
+          );
         },
       },
       {
         title: 'Order Date',
         dataIndex: 'createdAt',
         key: 'createdAt',
-        sorter: (a, b) => moment(a.createdAt, DATE_FORMAT) - moment(b.createdAt, DATE_FORMAT),
+        sorter: (a, b) =>
+          moment(a.createdAt, DATE_TIME_FORMAT_CALL_API) -
+          moment(b.createdAt, DATE_TIME_FORMAT_CALL_API),
         render: (text, record, index) => {
           return moment(record.createdAt).format(DATE_TIME_FORMAT);
         },
+        align: 'right',
       },
       {
         title: 'Action',
@@ -111,45 +163,7 @@ class OrderManagement extends React.Component {
         key: 'action',
         render: (text, record, index) => (
           <Space direction="horizontal" style={{ display: 'flex' }}>
-            <Tooltip placement="top" title="View Order's details">
-              <EyeOutlined className={styles.icon} size="small" />
-            </Tooltip>
-            {record.status != ORDER_STATUS.REJECTION &&
-            record.status != ORDER_STATUS.RECEPTION &&
-            record.status != ORDER_STATUS.CANCELLATION &&
-            record.status != ORDER_STATUS.CLOSURE ? (
-              <>
-                <Tooltip placement="top" title="Complete Order">
-                  <CheckCircleOutlined
-                    className={styles.icon}
-                    size="small"
-                    style={{ color: 'green' }}
-                    onClick={() => this.handleVisibleCloseOrder(record, index)}
-                  />
-                </Tooltip>
-                <Tooltip placement="top" title="Cancel Order">
-                  <CloseCircleOutlined
-                    style={{ color: 'red' }}
-                    className={styles.icon}
-                    onClick={() => this.handleVisibleCancelOrder(record, index)}
-                    size="small"
-                  />
-                </Tooltip>
-              </>
-            ) : (
-              <>
-                <CheckCircleOutlined
-                  className={styles.icon}
-                  size="small"
-                  style={{ color: 'gray' }}
-                />
-                <CloseCircleOutlined
-                  style={{ color: 'gray' }}
-                  className={styles.icon}
-                  size="small"
-                />
-              </>
-            )}
+            <a href={`/fca-management/order-management/order-information?id=${record.id}`}>View</a>
           </Space>
         ),
       },

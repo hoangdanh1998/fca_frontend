@@ -46,7 +46,7 @@ class PartnerInformation extends React.Component {
             <ItemManagement partner={partner} />
           </Tabs.TabPane>
           <Tabs.TabPane tab="License Management" key="3">
-            <LicenseManagement />
+            <LicenseManagement partner={partner} />
           </Tabs.TabPane>
         </Tabs>
       </div>

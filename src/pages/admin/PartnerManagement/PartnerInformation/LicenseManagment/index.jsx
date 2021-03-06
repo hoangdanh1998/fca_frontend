@@ -9,10 +9,6 @@ import styles from './index.less';
 import { PARTNER_LICENSE_LIST, PARTNER_LAST_LICENSE } from '../../../../../../config/seedingData';
 import { DATE_FORMAT } from '../../../../../../config/constants';
 
-// @connect(({ admin, loading }) => ({
-//   fetchCurrentAdmin: loading.effects['admin/saveCurrentAdmin'],
-//   visibleContact: admin.visibleCreateContact,
-// }))
 class LicenseManagement extends React.Component {
   state = { visibleChangeExpirationDate: false, partnerLicense: PARTNER_LAST_LICENSE };
 
@@ -29,14 +25,15 @@ class LicenseManagement extends React.Component {
   };
 
   render() {
-    console.log('last license', PARTNER_LAST_LICENSE);
+    const lastLicense = this.props.lastLicense ? this.props.lastLicense : null;
+    const partner = this.props.partner;
     const columnList = [
       {
         title: 'No.',
         render: (text, object, index) => {
           return index + 1;
         },
-        width: '5%',
+        align: 'right',
       },
       {
         title: 'Start Date',
@@ -44,6 +41,7 @@ class LicenseManagement extends React.Component {
         key: 'startDate',
         width: '25%',
         sorter: (a, b) => moment(a.createdDate, DATE_FORMAT) - moment(b.createdDate, DATE_FORMAT),
+        align: 'right',
       },
       {
         title: 'End Date',
@@ -51,6 +49,7 @@ class LicenseManagement extends React.Component {
         key: 'endDate',
         width: '25%',
         sorter: (a, b) => moment(a.createdDate, DATE_FORMAT) - moment(b.createdDate, DATE_FORMAT),
+        align: 'right',
       },
       {
         title: 'Price',
@@ -60,6 +59,7 @@ class LicenseManagement extends React.Component {
         render: (text, record, index) => (
           <NumberFormat value={record.price} displayType={'text'} thousandSeparator={true} />
         ),
+        align: 'right',
       },
       {
         title: 'Created Date',
@@ -77,11 +77,15 @@ class LicenseManagement extends React.Component {
           </div>
           {this.state.visibleChangeExpirationDate ? (
             <ExpandLicenseModal
-              storeLicense={this.state.partnerLicense}
+              {...(lastLicense ? (lastLicense = { lastLicense }) : null)}
               hideModal={this.hideModalExpirationDate}
             ></ExpandLicenseModal>
           ) : null}
-          <DataTable columnList={columnList} dataList={PARTNER_LICENSE_LIST} totalRecords={30} />
+          <DataTable
+            columnList={columnList}
+            dataList={partner.licenses ? partner.licenses : []}
+            totalRecords={partner.licenses ? partner.licenses.length : 0}
+          />
         </div>
       </>
     );

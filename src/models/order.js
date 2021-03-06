@@ -1,5 +1,5 @@
 import { router } from 'umi';
-import { getOrderList, cancelOrder, closeOrder } from '@/services/order';
+import { getOrderList, getOrder, cancelOrder, closeOrder } from '@/services/order';
 import AdminNotification from '../components/Notification';
 
 const notification = new AdminNotification();
@@ -9,6 +9,7 @@ const Model = {
   state: {
     allOrderList: [],
     totalOrder: 0,
+    order: {},
   },
   effects: {
     *getOrderList({ payload }, { call, put }) {
@@ -24,6 +25,19 @@ const Model = {
       });
     },
 
+    *getOrder({ payload }, { call, put }) {
+      const response = yield call(getOrder, payload);
+
+      if (response.type && response.type === 'HttpError') {
+        notification.fail('Something went wrong. Please try again.');
+        return;
+      }
+      yield put({
+        type: 'handleGetOrder',
+        payload: response.data,
+      });
+    },
+
     *cancelOrder({ payload }, { call, put }) {
       const response = yield call(cancelOrder, payload);
 
@@ -34,7 +48,8 @@ const Model = {
       notification.success('Success');
       yield put({
         type: 'handleChangeOrderStatus',
-        payload: payload,
+        // payload: payload,
+        payload: response.data,
       });
     },
 
@@ -48,7 +63,8 @@ const Model = {
       notification.success('Success');
       yield put({
         type: 'handleChangeOrderStatus',
-        payload: payload,
+        // payload: payload,
+        payload: response.data,
       });
     },
   },
@@ -61,17 +77,24 @@ const Model = {
         totalOrder: action.payload.count,
       };
     },
-    handleChangeOrderStatus(state, action) {
-      const updatedOrderList = Array.from(state.allOrderList, order => {
-        if (order.id == action.payload.id) {
-          order.status = action.payload.status;
-        }
-        return order;
-      });
+    handleGetOrder(state, action) {
       return {
         ...state,
-        allOrderList: updatedOrderList,
+        order: action.payload.order,
       };
+    },
+    handleChangeOrderStatus(state, action) {
+      // const updatedOrderList = Array.from(state.allOrderList, order => {
+      //   if (order.id == action.payload.id) {
+      //     order.status = action.payload.status;
+      //   }
+      //   return order;
+      // });
+      // return {
+      //   ...state,
+      //   allOrderList: updatedOrderList,
+      // };
+      return { ...state, order: action.payload.order };
     },
   },
 };

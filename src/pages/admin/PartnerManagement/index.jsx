@@ -2,12 +2,12 @@ import React from 'react';
 import moment from 'moment';
 import { router } from 'umi';
 import { connect } from 'dva';
-import { Select, Tooltip, Space, Switch } from 'antd';
+import { Space, Tag } from 'antd';
 import DataTable from '../PartnerManagement/DataTable/index.jsx';
 import ConfirmationPopup from '../../../components/atom/ConfirmationPopup/index.jsx';
-import CloseStoreModal from '../PartnerManagement/CloseStoreModal/index.jsx';
-import { PARTNER_STATUS_OPTIONS, DATE_FORMAT } from '../../../../config/constants';
-import { EditOutlined, EyeOutlined } from '@ant-design/icons';
+import { DATE_FORMAT, DATE_FORMAT_CALL_API, PARTNER_STATUS } from '../../../../config/constants';
+import { convertStringToCamel } from '../../../utils/utils';
+import { CheckCircleOutlined, CloseCircleOutlined, ClockCircleOutlined } from '@ant-design/icons';
 import styles from './index.less';
 
 @connect(({ partner, loading }) => ({}))
@@ -16,13 +16,34 @@ class PartnerManagement extends React.Component {
     visibleChangeStatus: false,
     visibleChangeExpirationDate: false,
     visibleChangeOpenClose: false,
+    visibleEditProfile: false,
     partner: {},
     partnerLicense: {},
+    partnerProfile: {},
     openedStore: {},
   };
 
   handleViewPartner = record => {
     router.push(`/fca-management/partner-management/partner-information?id=${record.id}`);
+  };
+  getTagStatusColors = record => {
+    switch (record.status) {
+      case PARTNER_STATUS.APPROVED:
+        return {
+          color: 'success',
+          icon: <CheckCircleOutlined />,
+        };
+      case PARTNER_STATUS.REJECTED:
+        return {
+          color: 'error',
+          icon: <CloseCircleOutlined />,
+        };
+      case PARTNER_STATUS.PROCESS:
+        return {
+          color: 'processing',
+          icon: <ClockCircleOutlined />,
+        };
+    }
   };
 
   handleVisibleChangeStatus = (value, record) => {
@@ -72,28 +93,24 @@ class PartnerManagement extends React.Component {
     });
   };
 
+  handleVisibleEditProfile = record => {
+    this.setState({
+      visibleEditProfile: true,
+      partnerProfile: record,
+    });
+  };
+  hideModalEditProfile = () => {
+    this.setState({ visibleEditProfile: false });
+  };
+
   render() {
     const columnList = [
       {
         title: 'No.',
-        render: (text, object, index) => {
+        render: (text, record, index) => {
           return index + 1;
         },
-        width: '5%',
-      },
-      {
-        title: 'Opening',
-        render: (text, record, index) => (
-          <Tooltip placement="top" title="Open/Close Store">
-            <Switch
-              checkedChildren="Open"
-              unCheckedChildren="Close"
-              checked={true}
-              onChange={checked => this.handleOpenCloseStore(checked, record)}
-            />
-          </Tooltip>
-        ),
-        // width: '5%',
+        align: 'right',
       },
       {
         title: 'Name',
@@ -111,25 +128,26 @@ class PartnerManagement extends React.Component {
         title: 'Status',
         dataIndex: 'status',
         key: 'status',
-        render: (text, record, index) => (
-          <Select
-            size="small"
-            onChange={value => {
-              this.handleVisibleChangeStatus(value, record);
-            }}
-            value={record.status}
-            style={{ width: '100%' }}
-            options={PARTNER_STATUS_OPTIONS}
-          />
-        ),
+        render: (text, record, index) => {
+          return (
+            <Tag
+              color={this.getTagStatusColors(record).color}
+              icon={this.getTagStatusColors(record).icon}
+            >
+              {convertStringToCamel(record.status)}
+            </Tag>
+          );
+        },
       },
       {
         title: 'Expiration Date',
         dataIndex: 'createdAt',
         key: 'createdAt',
-        sorter: (a, b) => moment(a.createdAt) - moment(b.createdAt),
+        align: 'right',
+        sorter: (a, b) =>
+          moment(a.createdAt, DATE_FORMAT_CALL_API) - moment(b.createdAt, DATE_FORMAT_CALL_API),
         render: (text, record, index) => {
-          return moment(record.createdAt).format(DATE_FORMAT);
+          return moment().format(DATE_FORMAT);
         },
       },
       {
@@ -138,18 +156,9 @@ class PartnerManagement extends React.Component {
         key: 'action',
         render: (text, record, index) => (
           <Space direction="horizontal" style={{ display: 'flex' }}>
-            <Tooltip placement="top" title="View Partner's details">
-              <EyeOutlined
-                className={styles.icon}
-                size="small"
-                onClick={() => {
-                  this.handleViewPartner(record);
-                }}
-              />
-            </Tooltip>
-            <Tooltip placement="top" title="Edit Partner">
-              <EditOutlined className={styles.icon} size="small" />
-            </Tooltip>
+            <a href={`/fca-management/partner-management/partner-information?id=${record.id}`}>
+              View
+            </a>
           </Space>
         ),
       },
@@ -163,14 +172,6 @@ class PartnerManagement extends React.Component {
             hideModal={this.hideModalStatus}
             onClickOK={this.handleChangeStatus}
           />
-          {this.state.visibleChangeOpenClose ? (
-            <CloseStoreModal
-              storeName={this.state.openedStore.storeName}
-              undoneOrder={this.state.openedStore.undoneOrder}
-              isOpen={this.state.openedStore.isOpen}
-              hideModal={this.hideModalOpenCloseStore}
-            ></CloseStoreModal>
-          ) : null}
           <DataTable columnList={columnList} />
         </div>
       </>

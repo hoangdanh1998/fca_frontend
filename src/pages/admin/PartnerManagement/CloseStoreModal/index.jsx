@@ -7,11 +7,11 @@ class ConfirmationPopup extends React.Component {
     super(props);
   }
   render() {
-    const { partnerId, storeName, undoneOrder, isOpen } = this.props;
+    const { partnerId, storeName, undoneOrder, isOpen, visible } = this.props;
     return (
       <Modal
         title="CONFIRMATION"
-        visible={true}
+        visible={visible}
         onOk={this.props.hideModal}
         onCancel={this.props.hideModal}
         style={{ textAlign: 'center', width: '50%' }}
