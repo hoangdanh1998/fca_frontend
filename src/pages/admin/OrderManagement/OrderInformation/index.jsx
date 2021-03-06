@@ -3,7 +3,7 @@ import moment from 'moment';
 import { router } from 'umi';
 import { connect } from 'dva';
 import NumberFormat from 'react-number-format';
-import { Descriptions, Space, Table, Row, Col } from 'antd';
+import { Descriptions, Space, Table, Row, Col, Steps } from 'antd';
 import Button from 'antd-button-color';
 import 'antd-button-color/dist/css/style.less';
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
@@ -11,7 +11,9 @@ import {
   ORDER_STATUS,
   DATE_TIME_FORMAT_CALL_API,
   DATE_TIME_FORMAT,
+  TIME_FORMAT,
 } from '../../../../../config/constants';
+import { convertStringToCamel } from '../../../../utils/utils';
 import styles from './index.less';
 
 @connect(({ order, loading }) => ({
@@ -19,11 +21,9 @@ import styles from './index.less';
 }))
 class OrderInformation extends React.Component {
   componentDidMount() {
-    console.log('componentDidMount');
     const { dispatch } = this.props;
     const url = window.location.href;
     const id = url.substring(url.indexOf('=') + 1);
-    console.log('id', id);
     dispatch({
       type: 'order/getOrder',
       payload: {
@@ -32,8 +32,24 @@ class OrderInformation extends React.Component {
     });
   }
 
+  handleViewTransaction = (transaction = []) => {
+    if (this.props.order) {
+      const result = Array.from(transaction, t => {
+        return (
+          <Steps.Step
+            status="finish"
+            title={convertStringToCamel(t.toStatus)}
+            subTitle={moment(t.createdAt).format(TIME_FORMAT)}
+          />
+        );
+      });
+      return result;
+    }
+  };
+
   render() {
     const { order } = this.props;
+    console.log('transaction', Object.assign({}, order));
     const itemColumns = [
       {
         title: 'No.',
@@ -92,56 +108,6 @@ class OrderInformation extends React.Component {
             padding: '2.5%',
           }}
         >
-          {/* <Descriptions
-            style={{ width: '90%' }}
-            title={<Space direction="horizontal">{order.id}</Space>}
-            className={styles.description}
-            extra={
-              <Space direction="horizontal">
-                {order.status !== ORDER_STATUS.REJECTION ||
-                order.status !== ORDER_STATUS.CANCELLATION ||
-                order.status !== ORDER_STATUS.CLOSURE ? (
-                  <>
-                    <Button
-                      style={{ width: '100%' }}
-                      type="success"
-                      with="ghost"
-                      icon={
-                        <CheckOutlined
-                          onClick={() => {}}
-                          style={{ fontSize: 15, color: 'green' }}
-                        />
-                      }
-                      onClick={() => {}}
-                    >
-                      Finish
-                    </Button>
-                    <Button
-                      style={{ width: '100%' }}
-                      type="danger"
-                      with="ghost"
-                      icon={
-                        <CloseOutlined onClick={() => {}} style={{ fontSize: 20, color: 'red' }} />
-                      }
-                      onClick={() => {}}
-                    >
-                      Cancel
-                    </Button>
-                  </>
-                ) : null}
-              </Space>
-            }
-          >
-            <Descriptions.Item label="Customer">
-              {Object.assign({}, order.customer).phone}
-            </Descriptions.Item>
-            <Descriptions.Item label="Partner">
-              {Object.assign({}, order.partner).name}
-            </Descriptions.Item>
-            <Descriptions.Item label="Date">
-              {moment(order.createdAt).format(DATE_TIME_FORMAT)}
-            </Descriptions.Item>
-          </Descriptions> */}
           <Space direction="horizontal" style={{ display: 'flex', flex: 1 }}>
             <Descriptions column={1} contentStyle={{ display: 'flex', flex: 1 }} title="Customer">
               <Descriptions.Item label="Name">
@@ -191,6 +157,50 @@ class OrderInformation extends React.Component {
               );
             }}
           ></Table>
+          <Descriptions
+            title="Order Transaction"
+            extra={
+              <Space direction="horizontal">
+                {order.status !== ORDER_STATUS.REJECTION &&
+                order.status !== ORDER_STATUS.CANCELLATION &&
+                order.status !== ORDER_STATUS.CLOSURE &&
+                order.status !== ORDER_STATUS.RECEPTION ? (
+                  <>
+                    <Button
+                      style={{ width: '100%' }}
+                      type="success"
+                      with="ghost"
+                      icon={
+                        <CheckOutlined
+                          onClick={() => {}}
+                          style={{ fontSize: 15, color: 'green' }}
+                        />
+                      }
+                      onClick={() => {}}
+                    >
+                      Finish
+                    </Button>
+                    <Button
+                      style={{ width: '100%' }}
+                      type="danger"
+                      with="ghost"
+                      icon={
+                        <CloseOutlined onClick={() => {}} style={{ fontSize: 20, color: 'red' }} />
+                      }
+                      onClick={() => {}}
+                    >
+                      Cancel
+                    </Button>
+                  </>
+                ) : null}
+              </Space>
+            }
+          >
+            <Descriptions.Item>
+              <br />
+              <Steps progressDot>{this.handleViewTransaction(order?.transaction)}</Steps>
+            </Descriptions.Item>
+          </Descriptions>
         </Space>
       </div>
     );
