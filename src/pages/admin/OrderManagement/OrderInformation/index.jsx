@@ -2,7 +2,8 @@ import React from 'react';
 import moment from 'moment';
 import { router } from 'umi';
 import { connect } from 'dva';
-import { Descriptions, Space } from 'antd';
+import NumberFormat from 'react-number-format';
+import { Descriptions, Space, Table, Row, Col } from 'antd';
 import Button from 'antd-button-color';
 import 'antd-button-color/dist/css/style.less';
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
@@ -33,19 +34,65 @@ class OrderInformation extends React.Component {
 
   render() {
     const { order } = this.props;
-    console.log('order', order);
+    const itemColumns = [
+      {
+        title: 'No.',
+        render: (text, record, index) => {
+          return index + 1;
+        },
+        align: 'right',
+        width: '2%',
+      },
+      {
+        title: 'Item',
+        dataIndex: 'name',
+        key: 'name',
+      },
+      {
+        title: 'Unit Price',
+        dataIndex: 'price',
+        key: 'price',
+        render: (text, record, index) => {
+          return (
+            <NumberFormat value={record.price} displayType={'text'} thousandSeparator={true} />
+          );
+        },
+        align: 'right',
+      },
+      {
+        title: 'Quantity',
+        dataIndex: 'quantity',
+        key: 'quantity',
+        align: 'right',
+        width: '2%',
+      },
+      {
+        title: 'Sub-total',
+        render: (text, record, index) => {
+          return (
+            <NumberFormat
+              value={record.price * record.quantity}
+              displayType={'text'}
+              thousandSeparator={true}
+            />
+          );
+        },
+        align: 'right',
+      },
+    ];
     return (
       <div className={styles.applicationManagementContainer}>
-        <div
+        <Space
+          direction="vertical"
           style={{
             fontSize: 20,
             color: 'black',
             backgroundColor: 'white',
             display: 'flex',
-            justifyContent: 'center',
+            padding: '2.5%',
           }}
         >
-          <Descriptions
+          {/* <Descriptions
             style={{ width: '90%' }}
             title={<Space direction="horizontal">{order.id}</Space>}
             className={styles.description}
@@ -61,15 +108,11 @@ class OrderInformation extends React.Component {
                       with="ghost"
                       icon={
                         <CheckOutlined
-                          onClick={() => {
-                            // this.handleVisibleUpdateStatus(PARTNER_STATUS.APPROVED);
-                          }}
+                          onClick={() => {}}
                           style={{ fontSize: 15, color: 'green' }}
                         />
                       }
-                      onClick={() => {
-                        // this.handleVisibleUpdateStatus(PARTNER_STATUS.APPROVED);
-                      }}
+                      onClick={() => {}}
                     >
                       Finish
                     </Button>
@@ -78,16 +121,9 @@ class OrderInformation extends React.Component {
                       type="danger"
                       with="ghost"
                       icon={
-                        <CloseOutlined
-                          onClick={() => {
-                            // this.handleVisibleUpdateStatus(PARTNER_STATUS.REJECTED);
-                          }}
-                          style={{ fontSize: 20, color: 'red' }}
-                        />
+                        <CloseOutlined onClick={() => {}} style={{ fontSize: 20, color: 'red' }} />
                       }
-                      onClick={() => {
-                        // this.handleVisibleUpdateStatus(PARTNER_STATUS.REJECTED);
-                      }}
+                      onClick={() => {}}
                     >
                       Cancel
                     </Button>
@@ -105,8 +141,57 @@ class OrderInformation extends React.Component {
             <Descriptions.Item label="Date">
               {moment(order.createdAt).format(DATE_TIME_FORMAT)}
             </Descriptions.Item>
-          </Descriptions>
-        </div>
+          </Descriptions> */}
+          <Space direction="horizontal" style={{ display: 'flex', flex: 1 }}>
+            <Descriptions column={1} contentStyle={{ display: 'flex', flex: 1 }} title="Customer">
+              <Descriptions.Item label="Name">
+                {Object.assign({}, order.customer).name}
+              </Descriptions.Item>
+              <Descriptions.Item label="Phone">
+                {Object.assign({}, order.customer).phone}
+              </Descriptions.Item>
+            </Descriptions>
+            <Descriptions column={1} contentStyle={{ display: 'flex', flex: 1 }} title="Partner">
+              <Descriptions.Item label="Name">
+                {Object.assign({}, order.partner).name}
+              </Descriptions.Item>
+              <Descriptions.Item label="Phone">
+                {Object.assign({}, order.partner).phone}
+              </Descriptions.Item>
+              <Descriptions.Item label="Address">
+                {Object.assign({}, Object.assign({}, order.partner).address).description}
+              </Descriptions.Item>
+            </Descriptions>
+            <Descriptions column={1} contentStyle={{ display: 'flex', flex: 1 }} title="Date">
+              <Descriptions.Item>
+                {moment(order.createdAt).format(DATE_TIME_FORMAT)}
+              </Descriptions.Item>
+            </Descriptions>
+          </Space>
+          <Table
+            className={styles.table}
+            dataSource={order.items}
+            columns={itemColumns}
+            bordered
+            pagination={false}
+            footer={() => {
+              return (
+                <Row>
+                  <Col flex={3} style={{ textAlign: 'left' }}>
+                    Total
+                  </Col>
+                  <Col flex={1} style={{ textAlign: 'right' }}>
+                    <NumberFormat
+                      value={order.total}
+                      displayType={'text'}
+                      thousandSeparator={true}
+                    />
+                  </Col>
+                </Row>
+              );
+            }}
+          ></Table>
+        </Space>
       </div>
     );
   }

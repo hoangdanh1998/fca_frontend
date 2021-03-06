@@ -33,7 +33,7 @@ class LicenseManagement extends React.Component {
         render: (text, object, index) => {
           return index + 1;
         },
-        width: '5%',
+        align: 'right',
       },
       {
         title: 'Start Date',
@@ -41,6 +41,7 @@ class LicenseManagement extends React.Component {
         key: 'startDate',
         width: '25%',
         sorter: (a, b) => moment(a.createdDate, DATE_FORMAT) - moment(b.createdDate, DATE_FORMAT),
+        align: 'right',
       },
       {
         title: 'End Date',
@@ -48,6 +49,7 @@ class LicenseManagement extends React.Component {
         key: 'endDate',
         width: '25%',
         sorter: (a, b) => moment(a.createdDate, DATE_FORMAT) - moment(b.createdDate, DATE_FORMAT),
+        align: 'right',
       },
       {
         title: 'Price',
@@ -57,6 +59,7 @@ class LicenseManagement extends React.Component {
         render: (text, record, index) => (
           <NumberFormat value={record.price} displayType={'text'} thousandSeparator={true} />
         ),
+        align: 'right',
       },
       {
         title: 'Created Date',
