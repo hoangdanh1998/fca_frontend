@@ -3,10 +3,12 @@ import moment from 'moment';
 import { router } from 'umi';
 import { connect } from 'dva';
 import NumberFormat from 'react-number-format';
-import { Descriptions, Space, Table, Row, Col, Steps } from 'antd';
+import { Descriptions, Space, Table, Row, Col, Steps, Skeleton } from 'antd';
 import Button from 'antd-button-color';
 import 'antd-button-color/dist/css/style.less';
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
+import CancelOrderModal from '../CancelOrderModal/index';
+import ConfirmationPopup from '../../../../components/atom/ConfirmationPopup/index';
 import {
   ORDER_STATUS,
   DATE_TIME_FORMAT_CALL_API,
@@ -20,6 +22,13 @@ import styles from './index.less';
   order: order.order,
 }))
 class OrderInformation extends React.Component {
+  state = {
+    visibleCloseOrder: false,
+    closeOrder: {},
+    visibleCancelOrder: false,
+    cancelOrder: {},
+    isDone: false,
+  };
   componentDidMount() {
     const { dispatch } = this.props;
     const url = window.location.href;
@@ -30,6 +39,7 @@ class OrderInformation extends React.Component {
         id: id,
       },
     });
+    this.setState({ isDone: true });
   }
 
   handleViewTransaction = (transaction = []) => {
@@ -45,6 +55,66 @@ class OrderInformation extends React.Component {
       });
       return result;
     }
+  };
+
+  handleVisibleCloseOrder = order => {
+    this.setState({
+      visibleCloseOrder: true,
+      closeOrder: {
+        id: order.id,
+        from: order.status,
+        to: ORDER_STATUS.RECEPTION,
+        property: "order's status",
+        visible: true,
+      },
+    });
+  };
+  hideModalCloseOrder = () => {
+    this.setState({
+      visibleCloseOrder: false,
+    });
+  };
+  handleCloseOrder = () => {
+    this.hideModalCloseOrder();
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'order/closeOrder',
+      payload: {
+        status: ORDER_STATUS.RECEPTION,
+        id: this.state.closeOrder.id,
+      },
+    });
+  };
+
+  handleVisibleCancelOrder = order => {
+    this.setState({
+      visibleCancelOrder: true,
+      cancelOrder: {
+        order: order,
+        id: order.id,
+        customerPhone: order.customer.phone,
+        partnerName: order.partner.name,
+        customerId: order.customer.id,
+        partnerId: order.partner.id,
+      },
+    });
+  };
+  hideModalCancelOrder = () => {
+    this.setState({
+      visibleCancelOrder: false,
+    });
+  };
+  handleCancelOrder = values => {
+    console.log('values', values);
+    this.hideModalCancelOrder();
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'order/cancelOrder',
+      payload: {
+        status: ORDER_STATUS.CANCELLATION,
+        id: this.state.cancelOrder.id,
+      },
+    });
   };
 
   render() {
@@ -96,7 +166,7 @@ class OrderInformation extends React.Component {
         align: 'right',
       },
     ];
-    return (
+    return this.state.isDone ? (
       <div className={styles.applicationManagementContainer}>
         <Space
           direction="vertical"
@@ -116,6 +186,10 @@ class OrderInformation extends React.Component {
               <Descriptions.Item label="Phone">
                 {Object.assign({}, order.customer).phone}
               </Descriptions.Item>
+              <Descriptions.Item label="">
+                <br />
+                <br />
+              </Descriptions.Item>
             </Descriptions>
             <Descriptions column={1} contentStyle={{ display: 'flex', flex: 1 }} title="Partner">
               <Descriptions.Item label="Name">
@@ -128,9 +202,16 @@ class OrderInformation extends React.Component {
                 {Object.assign({}, Object.assign({}, order.partner).address).description}
               </Descriptions.Item>
             </Descriptions>
-            <Descriptions column={1} contentStyle={{ display: 'flex', flex: 1 }} title="Date">
-              <Descriptions.Item>
+            <Descriptions column={1} contentStyle={{ display: 'flex', flex: 1 }} title="Other">
+              <Descriptions.Item label="Date">
                 {moment(order.createdAt).format(DATE_TIME_FORMAT)}
+              </Descriptions.Item>
+              <Descriptions.Item label="Status">
+                {convertStringToCamel(order.status)}
+              </Descriptions.Item>
+              <Descriptions.Item label="">
+                <br />
+                <br />
               </Descriptions.Item>
             </Descriptions>
           </Space>
@@ -157,6 +238,7 @@ class OrderInformation extends React.Component {
               );
             }}
           ></Table>
+          <br />
           <Descriptions
             title="Order Transaction"
             extra={
@@ -170,13 +252,10 @@ class OrderInformation extends React.Component {
                       style={{ width: '100%' }}
                       type="success"
                       with="ghost"
-                      icon={
-                        <CheckOutlined
-                          onClick={() => {}}
-                          style={{ fontSize: 15, color: 'green' }}
-                        />
-                      }
-                      onClick={() => {}}
+                      icon={<CheckOutlined style={{ fontSize: 15, color: 'green' }} />}
+                      onClick={() => {
+                        this.handleVisibleCloseOrder(order);
+                      }}
                     >
                       Finish
                     </Button>
@@ -184,10 +263,10 @@ class OrderInformation extends React.Component {
                       style={{ width: '100%' }}
                       type="danger"
                       with="ghost"
-                      icon={
-                        <CloseOutlined onClick={() => {}} style={{ fontSize: 20, color: 'red' }} />
-                      }
-                      onClick={() => {}}
+                      icon={<CloseOutlined style={{ fontSize: 20, color: 'red' }} />}
+                      onClick={() => {
+                        this.handleVisibleCancelOrder(order);
+                      }}
                     >
                       Cancel
                     </Button>
@@ -202,7 +281,23 @@ class OrderInformation extends React.Component {
             </Descriptions.Item>
           </Descriptions>
         </Space>
+        <CancelOrderModal
+          visible={this.state.visibleCancelOrder}
+          order={this.state.cancelOrder}
+          hideModal={this.hideModalCancelOrder}
+          submitModal={values => {
+            this.handleCancelOrder(values);
+          }}
+        />
+        <ConfirmationPopup
+          visible={this.state.visibleCloseOrder}
+          message={this.state.closeOrder}
+          hideModal={this.hideModalCloseOrder}
+          onClickOK={this.handleCloseOrder}
+        />
       </div>
+    ) : (
+      <Skeleton active />
     );
   }
 }

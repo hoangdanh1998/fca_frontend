@@ -48,7 +48,8 @@ const Model = {
       notification.success('Success');
       yield put({
         type: 'handleChangeOrderStatus',
-        payload: payload,
+        // payload: payload,
+        payload: response.data,
       });
     },
 
@@ -62,7 +63,8 @@ const Model = {
       notification.success('Success');
       yield put({
         type: 'handleChangeOrderStatus',
-        payload: payload,
+        // payload: payload,
+        payload: response.data,
       });
     },
   },
@@ -82,16 +84,17 @@ const Model = {
       };
     },
     handleChangeOrderStatus(state, action) {
-      const updatedOrderList = Array.from(state.allOrderList, order => {
-        if (order.id == action.payload.id) {
-          order.status = action.payload.status;
-        }
-        return order;
-      });
-      return {
-        ...state,
-        allOrderList: updatedOrderList,
-      };
+      // const updatedOrderList = Array.from(state.allOrderList, order => {
+      //   if (order.id == action.payload.id) {
+      //     order.status = action.payload.status;
+      //   }
+      //   return order;
+      // });
+      // return {
+      //   ...state,
+      //   allOrderList: updatedOrderList,
+      // };
+      return { ...state, order: action.payload.order };
     },
   },
 };

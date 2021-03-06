@@ -44,7 +44,7 @@ class CancelOrderModal extends React.Component {
   };
 
   render() {
-    const { visible, hideModal, order } = this.props;
+    const { visible, hideModal, order, submitModal } = this.props;
     const requestByList = [
       {
         label: `Partner - ${order.partnerName}`,
@@ -63,8 +63,7 @@ class CancelOrderModal extends React.Component {
         footer={null}
         onCancel={hideModal}
       >
-        <p>Cancel order #{order.i}</p>
-        <Form onFinish={this.onSubmit} labelCol={{ span: 6 }} wrapperCol={{ span: 16 }}>
+        <Form onFinish={submitModal} labelCol={{ span: 6 }} wrapperCol={{ span: 16 }}>
           <Form.Item name="requestBy" label="Request by" rules={[{ required: true }]}>
             <Select
               placeholder=""
