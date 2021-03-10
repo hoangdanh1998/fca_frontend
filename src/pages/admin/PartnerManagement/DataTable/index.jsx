@@ -35,18 +35,19 @@ class DataTable extends React.Component {
     });
   }
 
-  onChangePaging = page => {
+  onChangePaging = (page, pageSize) => {
     const { dispatch } = this.props;
     this.setState({
       pageIndex: page,
+      pageSize: pageSize,
     });
     dispatch({
       type: 'partner/getPartnerList',
       payload: {
         name: this.state.name,
         status: this.state.status,
-        skip: parseInt((page - 1) * PAGE_SIZE),
-        limit: this.state.pageSize,
+        skip: parseInt((page - 1) * pageSize),
+        limit: pageSize,
       },
     });
   };
@@ -124,7 +125,7 @@ class DataTable extends React.Component {
                 pageSize: this.state.pageSize,
                 total: totalPartner,
                 onChange: this.onChangePaging,
-                showSizeChanger: false,
+                showSizeChanger: true,
               }}
               bordered
             ></Table>
