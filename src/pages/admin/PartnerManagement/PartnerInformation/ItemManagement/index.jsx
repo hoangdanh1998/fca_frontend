@@ -16,17 +16,13 @@ import {
 import { IMAGE_ADDRESS } from '../../../../../../config/seedingData';
 import styles from './index.less';
 
-// @connect(({ admin, loading }) => ({
-//   fetchCurrentAdmin: loading.effects['admin/saveCurrentAdmin'],
-//   visibleContact: admin.visibleCreateContact,
-// }))
 class ItemManagement extends React.Component {
   state = {
     visibleChangeStatus: false,
     visibleFCAGroupChange: false,
     partner: {},
     itemFCAGroup: {},
-    showItemOption: 'Usable items',
+    showItemOption: 'All',
   };
 
   handleChangeTableFilter = event => {
@@ -71,7 +67,7 @@ class ItemManagement extends React.Component {
 
   render() {
     const { partner } = this.props;
-    const itemColumns = [
+    const allColumns = [
       {
         title: 'No.',
         render: (text, object, index) => {
@@ -118,16 +114,6 @@ class ItemManagement extends React.Component {
           />
         ),
       },
-
-      {
-        title: 'Item Image',
-        render: (text, record, index) => (
-          <a href={record.imageLink ? record.imageLink : IMAGE_ADDRESS} target="_blank">
-            <p>Click to view</p>
-          </a>
-        ),
-        width: '10%',
-      },
       {
         title: 'Register Date',
         dataIndex: 'createdAt',
@@ -139,6 +125,16 @@ class ItemManagement extends React.Component {
         },
       },
     ];
+    const itemColumns = allColumns;
+    itemColumns.push({
+      title: 'Item Image',
+      render: (text, record, index) => (
+        <a href={record.imageLink ? record.imageLink : IMAGE_ADDRESS} target="_blank">
+          <p>Click to view</p>
+        </a>
+      ),
+      width: '10%',
+    });
     const requestedItemColumns = [
       {
         title: 'No.',
@@ -227,7 +223,13 @@ class ItemManagement extends React.Component {
             message={this.state.itemFCAGroup}
             hideModal={this.hideModalFCAGroup}
           />
-          {this.state.showItemOption === 'Usable items' ? (
+          {this.state.showItemOption === 'Requested items' ? (
+            <DataTable
+              columnList={requestedItemColumns}
+              dataList={partner.requestItems}
+              totalRecords={partner.requestItems.length}
+            />
+          ) : this.state.showItemOption === 'Usable items' ? (
             <DataTable
               columnList={itemColumns}
               dataList={partner.items}
@@ -235,9 +237,9 @@ class ItemManagement extends React.Component {
             />
           ) : (
             <DataTable
-              columnList={requestedItemColumns}
-              dataList={partner.requestItems}
-              totalRecords={partner.requestItems.length}
+              columnList={allColumns}
+              dataList={partner.items.concat(partner.requestItems)}
+              totalRecords={partner.items.length}
             />
           )}
         </div>

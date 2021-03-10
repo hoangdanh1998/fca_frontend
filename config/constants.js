@@ -14,6 +14,10 @@ export const APPLICATION_TITLE_FONT_FAMILY = "'Open Sans', sans-serif";
 
 export const SHOW_ITEMS_OPTIONS = [
   {
+    label: 'All',
+    value: 'All',
+  },
+  {
     label: 'Usable items',
     value: 'Usable items',
   },
