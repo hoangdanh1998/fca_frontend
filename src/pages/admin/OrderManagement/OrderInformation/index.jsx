@@ -67,27 +67,31 @@ class OrderInformation extends React.Component {
       const cancelledTransaction = order.transaction.find(
         t => t.toStatus === ORDER_STATUS.CANCELLATION,
       );
-      const reason = JSON.parse(cancelledTransaction.description).reason;
-      const note = JSON.parse(cancelledTransaction.description).note
-        ? JSON.parse(cancelledTransaction.description).note
-        : '';
-      const requestBy = JSON.parse(cancelledTransaction.description).requestBy.split('_')[0];
-      const viewedReason = [];
-      reason.forEach(r => {
-        viewedReason.push(CANCEL_ORDER_REASON.find(e => e.value === r));
-      });
-      return (
-        <List
-          dataSource={viewedReason}
-          renderItem={item => {
-            return item.value !== 'OTHER'
-              ? `[${requestBy}] ${item.label}`
-              : JSON.parse(cancelledTransaction.description).note
-              ? `[${requestBy}] ${note}`
-              : `[${requestBy}] Reason`;
-          }}
-        />
-      );
+      if (JSON.parse(cancelledTransaction.description)) {
+        const viewedReason = [];
+        const reason = JSON.parse(cancelledTransaction.description).reason;
+        const note = JSON.parse(cancelledTransaction.description).note
+          ? JSON.parse(cancelledTransaction.description).note
+          : '';
+        const requestBy = JSON.parse(cancelledTransaction.description).requestBy.split('_')[0];
+        reason.forEach(r => {
+          viewedReason.push(CANCEL_ORDER_REASON.find(e => e.value === r));
+        });
+        return (
+          <List
+            dataSource={viewedReason}
+            renderItem={item => {
+              return item.value !== 'OTHER'
+                ? `[${requestBy}] ${item.label}`
+                : JSON.parse(cancelledTransaction.description).note
+                ? `[${requestBy}] ${note}`
+                : `[${requestBy}] Reason`;
+            }}
+          />
+        );
+      } else {
+        return '-';
+      }
     }
   };
   getTagStatusColors = record => {

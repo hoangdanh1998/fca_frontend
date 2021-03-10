@@ -102,47 +102,16 @@ class GeneralInformation extends React.Component {
 
   handleImageSlide = () => {
     const images = [];
-    if (this.props.partner.images) {
-      images.forEach(image =>
+    if (this.props.partner.imageLink) {
+      const imageLinks = [];
+      imageLinks.push(this.props.partner.imageLink);
+      imageLinks.forEach(image => {
         images.push(
-          <div>
+          <div style={{ width: '100%' }}>
             <Image width={'90%'} className={styles.image} preview={false} src={image} />
           </div>,
-        ),
-      );
-      return images;
-    } else if (this.props.partner.imageLink) {
-      return (
-        <div>
-          <Image
-            width={'90%'}
-            className={styles.image}
-            preview={false}
-            src={this.props.partner.imageLink}
-          />
-        </div>
-      );
-    } else {
-      images.push(
-        <div>
-          <Image
-            width={'90%'}
-            className={styles.image}
-            preview={false}
-            src={PARTNER_INFORMATION.storeImage}
-          />
-        </div>,
-      );
-      images.push(
-        <div>
-          <Image
-            width={'90%'}
-            className={styles.image}
-            preview={false}
-            src={PARTNER_INFORMATION.storeImage}
-          />
-        </div>,
-      );
+        );
+      });
       return images;
     }
   };
