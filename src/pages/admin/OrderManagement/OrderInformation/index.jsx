@@ -6,7 +6,6 @@ import NumberFormat from 'react-number-format';
 import { Descriptions, Space, Table, Row, Col, Steps, Skeleton, List, Tag } from 'antd';
 import Button from 'antd-button-color';
 import 'antd-button-color/dist/css/style.less';
-// import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import {
   CloseCircleOutlined,
   CheckCircleOutlined,
@@ -18,7 +17,6 @@ import CancelOrderModal from '../CancelOrderModal/index';
 import ConfirmationPopup from '../../../../components/atom/ConfirmationPopup/index';
 import {
   ORDER_STATUS,
-  DATE_TIME_FORMAT_CALL_API,
   DATE_TIME_FORMAT,
   TIME_FORMAT,
   CANCEL_ORDER_REASON,
@@ -186,12 +184,6 @@ class OrderInformation extends React.Component {
 
   render() {
     const { order } = this.props;
-    // console.log(
-    //   'transaction',
-    //   order.transaction
-    //     ? order.transaction.find(t => t.toStatus === ORDER_STATUS.CANCELLATION).description
-    //     : [],
-    // );
     const itemColumns = [
       {
         title: 'No.',
@@ -274,7 +266,11 @@ class OrderInformation extends React.Component {
                 {Object.assign({}, Object.assign({}, order.partner).address).description}
               </Descriptions.Item>
             </Descriptions>
-            <Descriptions column={1} contentStyle={{ display: 'flex', flex: 1 }} title="Other">
+            <Descriptions
+              column={1}
+              contentStyle={{ display: 'flex', flex: 1 }}
+              title="Other Information"
+            >
               <Descriptions.Item label="Date">
                 {moment(order.createdAt).format(DATE_TIME_FORMAT)}
               </Descriptions.Item>
