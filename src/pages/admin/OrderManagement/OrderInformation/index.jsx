@@ -107,12 +107,14 @@ class OrderInformation extends React.Component {
   handleCancelOrder = values => {
     console.log('values', values);
     this.hideModalCancelOrder();
+    const reason = JSON.stringify(values);
     const { dispatch } = this.props;
     dispatch({
       type: 'order/cancelOrder',
       payload: {
         status: ORDER_STATUS.CANCELLATION,
         id: this.state.cancelOrder.id,
+        description: reason,
       },
     });
   };
