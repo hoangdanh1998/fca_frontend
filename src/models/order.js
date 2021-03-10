@@ -1,6 +1,7 @@
 import { router } from 'umi';
 import { getOrderList, getOrder, cancelOrder, closeOrder } from '@/services/order';
 import AdminNotification from '../components/Notification';
+import { ORDER_STATUS } from '../../config/constants';
 
 const notification = new AdminNotification();
 
@@ -78,22 +79,20 @@ const Model = {
       };
     },
     handleGetOrder(state, action) {
+      action.payload.order.transaction.unshift({
+        toStatus: ORDER_STATUS.INITIALIZATION,
+        createdAt: action.payload.order.createdAt,
+      });
       return {
         ...state,
         order: action.payload.order,
       };
     },
     handleChangeOrderStatus(state, action) {
-      // const updatedOrderList = Array.from(state.allOrderList, order => {
-      //   if (order.id == action.payload.id) {
-      //     order.status = action.payload.status;
-      //   }
-      //   return order;
-      // });
-      // return {
-      //   ...state,
-      //   allOrderList: updatedOrderList,
-      // };
+      action.payload.order.transaction.unshift({
+        toStatus: ORDER_STATUS.INITIALIZATION,
+        createdAt: action.payload.order.createdAt,
+      });
       return { ...state, order: action.payload.order };
     },
   },

@@ -3,10 +3,17 @@ import moment from 'moment';
 import { router } from 'umi';
 import { connect } from 'dva';
 import NumberFormat from 'react-number-format';
-import { Descriptions, Space, Table, Row, Col, Steps, Skeleton } from 'antd';
+import { Descriptions, Space, Table, Row, Col, Steps, Skeleton, List, Tag } from 'antd';
 import Button from 'antd-button-color';
 import 'antd-button-color/dist/css/style.less';
-import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
+// import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
+import {
+  CloseCircleOutlined,
+  CheckCircleOutlined,
+  CheckOutlined,
+  CloseOutlined,
+  SyncOutlined,
+} from '@ant-design/icons';
 import CancelOrderModal from '../CancelOrderModal/index';
 import ConfirmationPopup from '../../../../components/atom/ConfirmationPopup/index';
 import {
@@ -14,6 +21,7 @@ import {
   DATE_TIME_FORMAT_CALL_API,
   DATE_TIME_FORMAT,
   TIME_FORMAT,
+  CANCEL_ORDER_REASON,
 } from '../../../../../config/constants';
 import { convertStringToCamel } from '../../../../utils/utils';
 import styles from './index.less';
@@ -47,13 +55,70 @@ class OrderInformation extends React.Component {
       const result = Array.from(transaction, t => {
         return (
           <Steps.Step
-            status="finish"
+            status="process"
             title={convertStringToCamel(t.toStatus)}
             subTitle={moment(t.createdAt).format(TIME_FORMAT)}
           />
         );
       });
       return result;
+    }
+  };
+  handleViewReason = (order = {}) => {
+    if (order && order != {} && order != null) {
+      const cancelledTransaction = order.transaction.find(
+        t => t.toStatus === ORDER_STATUS.CANCELLATION,
+      );
+      const reason = JSON.parse(cancelledTransaction.description).reason;
+      const note = JSON.parse(cancelledTransaction.description).note
+        ? JSON.parse(cancelledTransaction.description).note
+        : '';
+      const requestBy = JSON.parse(cancelledTransaction.description).requestBy.split('_')[0];
+      const viewedReason = [];
+      reason.forEach(r => {
+        viewedReason.push(CANCEL_ORDER_REASON.find(e => e.value === r));
+      });
+      return (
+        <List
+          dataSource={viewedReason}
+          renderItem={item => {
+            return item.value !== 'OTHER'
+              ? `[${requestBy}] ${item.label}`
+              : JSON.parse(cancelledTransaction.description).note
+              ? `[${requestBy}] ${note}`
+              : `[${requestBy}] Reason`;
+          }}
+        />
+      );
+    }
+  };
+  getTagStatusColors = record => {
+    switch (record.status) {
+      case ORDER_STATUS.RECEPTION:
+        return {
+          color: 'success',
+          icon: <CheckCircleOutlined />,
+        };
+      case ORDER_STATUS.REJECTION:
+        return {
+          color: 'error',
+          icon: <CloseCircleOutlined />,
+        };
+      case ORDER_STATUS.CANCELLATION:
+        return {
+          color: 'default',
+          icon: <CloseCircleOutlined />,
+        };
+      case ORDER_STATUS.CLOSURE:
+        return {
+          color: 'default',
+          icon: <CheckCircleOutlined />,
+        };
+      default:
+        return {
+          color: 'processing',
+          icon: <SyncOutlined spin />,
+        };
     }
   };
 
@@ -121,7 +186,12 @@ class OrderInformation extends React.Component {
 
   render() {
     const { order } = this.props;
-    console.log('transaction', Object.assign({}, order));
+    // console.log(
+    //   'transaction',
+    //   order.transaction
+    //     ? order.transaction.find(t => t.toStatus === ORDER_STATUS.CANCELLATION).description
+    //     : [],
+    // );
     const itemColumns = [
       {
         title: 'No.',
@@ -209,12 +279,21 @@ class OrderInformation extends React.Component {
                 {moment(order.createdAt).format(DATE_TIME_FORMAT)}
               </Descriptions.Item>
               <Descriptions.Item label="Status">
-                {convertStringToCamel(order.status)}
+                <Tag
+                  color={this.getTagStatusColors(order).color}
+                  icon={this.getTagStatusColors(order).icon}
+                >
+                  {convertStringToCamel(order.status)}
+                </Tag>
               </Descriptions.Item>
-              <Descriptions.Item label="">
-                <br />
-                <br />
-              </Descriptions.Item>
+              {order.status === ORDER_STATUS.CANCELLATION ? (
+                <Descriptions.Item label="Reason">{this.handleViewReason(order)}</Descriptions.Item>
+              ) : (
+                <Descriptions.Item label="">
+                  <br />
+                  <br />
+                </Descriptions.Item>
+              )}
             </Descriptions>
           </Space>
           <Table

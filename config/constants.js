@@ -153,8 +153,8 @@ export const CANCEL_ORDER_REASON = [
     value: 'PARTNER_ORDER-OUT-OF-STOCK',
   },
   {
-    label: 'Others',
-    value: 'OTHERS',
+    label: 'Other',
+    value: 'OTHER',
   },
 ];
 // LICENSE TYPE
