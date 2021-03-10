@@ -22,7 +22,7 @@ class DataTable extends React.Component {
     };
   }
 
-  componentDidMount() {
+  componentWillMount() {
     const { dispatch } = this.props;
     dispatch({
       type: 'partner/getPartnerList',

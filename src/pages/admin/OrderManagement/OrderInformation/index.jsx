@@ -29,7 +29,7 @@ class OrderInformation extends React.Component {
     cancelOrder: {},
     isDone: false,
   };
-  componentDidMount() {
+  componentWillMount() {
     const { dispatch } = this.props;
     const url = window.location.href;
     const id = url.substring(url.indexOf('=') + 1);

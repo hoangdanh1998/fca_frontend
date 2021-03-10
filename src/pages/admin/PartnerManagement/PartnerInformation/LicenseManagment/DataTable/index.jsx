@@ -19,9 +19,9 @@ class DataTable extends React.Component {
     };
   }
 
-  componentDidMount() {
+  componentWillMount() {
     const { dispatch } = this.props;
-    console.log('componentDidMount');
+    console.log('componentWillMount');
     // dispatch({
     //   type: 'partner/getPartnerList',
     //   payload: {
