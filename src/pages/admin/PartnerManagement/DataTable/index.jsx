@@ -104,7 +104,7 @@ class DataTable extends React.Component {
               onSearch={this.handleClickSearch}
               style={{ width: 300 }}
               allowClear
-              placeholder="Enter name"
+              placeholder="Enter name, address"
             />
             <Radio.Group
               style={{ display: 'flex' }}
