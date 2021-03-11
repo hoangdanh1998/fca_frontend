@@ -3,12 +3,14 @@ import moment from 'moment';
 import NumberFormat from 'react-number-format';
 import { router } from 'umi';
 import { connect } from 'dva';
-import { Select, Radio } from 'antd';
+import { Select, Radio, Tag } from 'antd';
+import { CheckCircleOutlined, CloseCircleOutlined, ClockCircleOutlined } from '@ant-design/icons';
 import { convertStringToCamel } from '../../../../../utils/utils';
 import DataTable from './DataTable/index.jsx';
 import ConfirmationPopup from '../../../../../components/atom/ConfirmationPopup/index.jsx';
 import {
   PARTNER_ITEM_STATUS,
+  REQUESTED_ITEM_STATUS,
   DATE_FORMAT,
   SHOW_ITEMS_OPTIONS,
   PARTNER_STATUS_ITEM_OPTIONS,
@@ -23,6 +25,36 @@ class ItemManagement extends React.Component {
     partner: {},
     itemFCAGroup: {},
     showItemOption: 'All',
+  };
+
+  getTagStatusColors = record => {
+    switch (record.status) {
+      case REQUESTED_ITEM_STATUS.APPROVED:
+        return {
+          color: 'success',
+          icon: <CheckCircleOutlined />,
+        };
+      case REQUESTED_ITEM_STATUS.REJECTED:
+        return {
+          color: 'error',
+          icon: <CloseCircleOutlined />,
+        };
+      case REQUESTED_ITEM_STATUS.PROCESS:
+        return {
+          color: 'processing',
+          icon: <ClockCircleOutlined />,
+        };
+      case PARTNER_ITEM_STATUS.ACTIVE:
+        return {
+          color: 'success',
+          icon: <CheckCircleOutlined />,
+        };
+      case PARTNER_ITEM_STATUS.ARCHIVE:
+        return {
+          color: 'error',
+          icon: <CloseCircleOutlined />,
+        };
+    }
   };
 
   handleChangeTableFilter = event => {
@@ -73,13 +105,14 @@ class ItemManagement extends React.Component {
         render: (text, object, index) => {
           return index + 1;
         },
-        width: '5%',
+        align: 'right',
+        width: '1%',
       },
       {
         title: 'Item Name',
         dataIndex: 'name',
         key: 'name',
-        width: '25%',
+        width: '20%',
       },
       {
         title: 'Item Price',
@@ -89,6 +122,7 @@ class ItemManagement extends React.Component {
         render: (text, record, index) => (
           <NumberFormat value={record.price} displayType={'text'} thousandSeparator={true} />
         ),
+        align: 'right',
       },
       {
         title: 'FCA Group',
@@ -103,15 +137,12 @@ class ItemManagement extends React.Component {
         key: 'status',
         width: '10%',
         render: (text, record, index) => (
-          <Select
-            size="small"
-            defaultValue={convertStringToCamel(record.status)}
-            onChange={value => {
-              this.handleStatusChange(value, record);
-            }}
-            style={{ width: '100%' }}
-            options={PARTNER_STATUS_ITEM_OPTIONS}
-          />
+          <Tag
+            color={this.getTagStatusColors(record).color}
+            icon={this.getTagStatusColors(record).icon}
+          >
+            {convertStringToCamel(record.status)}
+          </Tag>
         ),
       },
       {
@@ -123,81 +154,7 @@ class ItemManagement extends React.Component {
         render: (text, record, index) => {
           return moment(record.createdAt).format(DATE_FORMAT);
         },
-      },
-    ];
-    const itemColumns = allColumns;
-    itemColumns.push({
-      title: 'Item Image',
-      render: (text, record, index) => (
-        <a href={record.imageLink ? record.imageLink : IMAGE_ADDRESS} target="_blank">
-          <p>Click to view</p>
-        </a>
-      ),
-      width: '10%',
-    });
-    const requestedItemColumns = [
-      {
-        title: 'No.',
-        render: (text, object, index) => {
-          return index + 1;
-        },
-        width: '5%',
-      },
-      {
-        title: 'Item Name',
-        dataIndex: 'name',
-        key: 'name',
-        width: '25%',
-      },
-      {
-        title: 'Item Price',
-        dataIndex: 'price',
-        key: 'price',
-        width: '10%',
-        render: (text, record, index) => (
-          <NumberFormat value={record.price} displayType={'text'} thousandSeparator={true} />
-        ),
-      },
-      {
-        title: 'FCA Group',
-        dataIndex: ['fcaItem', 'name'],
-        key: ['fcaItem', 'name'],
-        width: '10%',
-        render: (text, record, index) => (
-          <Select
-            size="small"
-            defaultValue={record.fcaGroup}
-            onChange={value => {
-              this.handleFCAGroupChange(value, record);
-            }}
-            style={{ width: '100%' }}
-            options={FCA_ITEM_LIST}
-          />
-        ),
-      },
-      {
-        title: 'Item Status',
-        dataIndex: 'status',
-        key: 'status',
-        width: '10%',
-        render: (text, record, index) => (
-          <Select
-            size="small"
-            defaultValue={record.itemStatus}
-            onChange={value => {
-              this.handleStatusChange(value, record);
-            }}
-            style={{ width: '100%' }}
-            options={ITEM_STATUS_OPTIONS}
-          />
-        ),
-      },
-      {
-        title: 'Register Date',
-        dataIndex: 'createdAt',
-        key: 'createdAt',
-        width: '10%',
-        sorter: (a, b) => moment(a.createdAt, DATE_FORMAT) - moment(b.createdAt, DATE_FORMAT),
+        align: 'right',
       },
     ];
     return (
@@ -223,25 +180,23 @@ class ItemManagement extends React.Component {
             message={this.state.itemFCAGroup}
             hideModal={this.hideModalFCAGroup}
           />
-          {this.state.showItemOption === 'Requested items' ? (
-            <DataTable
-              columnList={requestedItemColumns}
-              dataList={partner.requestItems}
-              totalRecords={partner.requestItems.length}
-            />
-          ) : this.state.showItemOption === 'Usable items' ? (
-            <DataTable
-              columnList={itemColumns}
-              dataList={partner.items}
-              totalRecords={partner.items.length}
-            />
-          ) : (
-            <DataTable
-              columnList={allColumns}
-              dataList={partner.items.concat(partner.requestItems)}
-              totalRecords={partner.items.length}
-            />
-          )}
+          <DataTable
+            columnList={allColumns}
+            dataList={
+              this.state.showItemOption === 'Requested items'
+                ? partner.requestItems
+                : this.state.showItemOption === 'Usable items'
+                ? partner.items
+                : partner.items.concat(partner.requestItems)
+            }
+            totalRecords={
+              this.state.showItemOption === 'Requested items'
+                ? partner.requestItems.length
+                : this.state.showItemOption === 'Usable items'
+                ? partner.items.length
+                : partner.items.concat(partner.requestItems).length
+            }
+          />
         </div>
       </>
     );

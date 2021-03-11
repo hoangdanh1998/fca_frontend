@@ -166,18 +166,22 @@ export const LICENSE_PACKAGE = [
   {
     label: '1 month',
     value: 1,
+    price: 39000,
   },
   {
     label: '3 months',
     value: 3,
+    price: 109000,
   },
   {
     label: '6 months',
     value: 6,
+    price: 229000,
   },
   {
     label: '12 months',
     value: 12,
+    price: 549000,
   },
 ];
 export const ITEM_STATUS_OPTIONS = [
