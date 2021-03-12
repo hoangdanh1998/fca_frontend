@@ -63,74 +63,72 @@ class ItemInformation extends React.Component {
     // const partner = Object.assign({}, this.props.partner);
     return (
       <div className={styles.applicationManagementContainer}>
-        <div
-          direction="vertical"
-          style={{ backgroundColor: 'white', padding: '2.5%', display: 'flex', flex: 1 }}
-        >
-          <Descriptions
-            contentStyle={{ display: 'flex', flex: 1 }}
-            title={
-              <Space direction="horizontal">
-                {item.name}
-                <EditOutlined
-                  style={{ color: '#1890ff' }}
-                  // onClick={this.handleVisibleChangeProfile}
-                />
-              </Space>
-            }
-            extra={
-              <Button
-                type={item.status === PARTNER_ITEM_STATUS.ACTIVE ? 'danger' : 'success'}
-                with="ghost"
-                icon={
-                  item.status === PARTNER_ITEM_STATUS.ACTIVE ? (
-                    <CloseOutlined style={{ fontSize: 15, color: 'red' }} />
-                  ) : (
-                    <CheckOutlined style={{ fontSize: 15, color: 'green' }} />
-                  )
+        <div style={{ backgroundColor: 'white', padding: '2.5%', display: 'flex', flex: 1 }}>
+          <Row style={{ width: '100%' }}>
+            <Col style={{ width: '100%', height: 'auto' }} span={8}>
+              <Card bordered>
+                <Carousel style={{ width: '80%', height: 'auto', marginLeft: '10%' }} autoplay>
+                  <Image height="100%" width="100%" preview={false} src={item.imageLink} />
+                  <Image height="100%" width="100%" preview={false} src={item.imageLink} />
+                </Carousel>
+              </Card>
+            </Col>
+            <Col style={{ backgroundColor: 'green' }} span={16}>
+              <Descriptions
+                contentStyle={{ display: 'flex', flex: 1 }}
+                title={
+                  <Space direction="horizontal">
+                    {item.name}
+                    <EditOutlined
+                      style={{ color: '#1890ff' }}
+                      // onClick={this.handleVisibleChangeProfile}
+                    />
+                  </Space>
                 }
-                onClick={() => {
-                  // this.handleVisibleUpdateStatus(PARTNER_STATUS.APPROVED);
-                }}
-              >
-                {convertStringToCamel(
-                  item.status === PARTNER_ITEM_STATUS.ACTIVE
-                    ? PARTNER_ITEM_STATUS.ARCHIVE
-                    : PARTNER_ITEM_STATUS.ACTIVE,
-                )}
-              </Button>
-            }
-          >
-            <Descriptions.Item label="FCA Group">{item.fcaItem.name}</Descriptions.Item>
-            <Descriptions.Item label="Status">
-              <Tag
-                color={item.status === PARTNER_ITEM_STATUS.ACTIVE ? 'green' : 'red'}
-                icon={
-                  item.status === PARTNER_ITEM_STATUS.ACTIVE ? (
-                    <CheckCircleOutlined />
-                  ) : (
-                    <CloseCircleOutlined />
-                  )
+                extra={
+                  <Button
+                    type={item.status === PARTNER_ITEM_STATUS.ACTIVE ? 'danger' : 'success'}
+                    with="ghost"
+                    icon={
+                      item.status === PARTNER_ITEM_STATUS.ACTIVE ? (
+                        <CloseOutlined style={{ fontSize: 15, color: 'red' }} />
+                      ) : (
+                        <CheckOutlined style={{ fontSize: 15, color: 'green' }} />
+                      )
+                    }
+                    onClick={() => {
+                      // this.handleVisibleUpdateStatus(PARTNER_STATUS.APPROVED);
+                    }}
+                  >
+                    {convertStringToCamel(
+                      item.status === PARTNER_ITEM_STATUS.ACTIVE
+                        ? PARTNER_ITEM_STATUS.ARCHIVE
+                        : PARTNER_ITEM_STATUS.ACTIVE,
+                    )}
+                  </Button>
                 }
               >
-                {item.status}
-              </Tag>
-            </Descriptions.Item>
-            <Descriptions.Item label="Price">
-              <NumberFormat value={item.price} displayType={'text'} thousandSeparator={true} />
-            </Descriptions.Item>
-          </Descriptions>
-          <Space direction="horizontal" style={{ display: 'flex' }}>
-            <div style={{ display: 'flex', flex: 1 }}>
-              <Image className={styles.image} preview={false} src={item.imageLink} />
-            </div>
-            <div style={{ display: 'flex', flex: 1 }}>
-              <Image className={styles.image} preview={false} src={item.imageLink} />
-            </div>
-            <div style={{ display: 'flex', flex: 1 }}>
-              <Image className={styles.image} preview={false} src={item.imageLink} />
-            </div>
-          </Space>
+                <Descriptions.Item label="FCA Group">{item.fcaItem.name}</Descriptions.Item>
+                <Descriptions.Item label="Status">
+                  <Tag
+                    color={item.status === PARTNER_ITEM_STATUS.ACTIVE ? 'green' : 'red'}
+                    icon={
+                      item.status === PARTNER_ITEM_STATUS.ACTIVE ? (
+                        <CheckCircleOutlined />
+                      ) : (
+                        <CloseCircleOutlined />
+                      )
+                    }
+                  >
+                    {item.status}
+                  </Tag>
+                </Descriptions.Item>
+                <Descriptions.Item label="Price">
+                  <NumberFormat value={item.price} displayType={'text'} thousandSeparator={true} />
+                </Descriptions.Item>
+              </Descriptions>
+            </Col>
+          </Row>
         </div>
       </div>
     );

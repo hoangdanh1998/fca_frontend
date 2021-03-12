@@ -8,6 +8,7 @@ import { CheckCircleOutlined, CloseCircleOutlined, ClockCircleOutlined } from '@
 import { convertStringToCamel } from '../../../../../utils/utils';
 import DataTable from './DataTable/index.jsx';
 import ConfirmationPopup from '../../../../../components/atom/ConfirmationPopup/index.jsx';
+import ItemDetailsModal from './ItemDetailsModal/index.jsx';
 import {
   PARTNER_ITEM_STATUS,
   REQUESTED_ITEM_STATUS,
@@ -22,6 +23,7 @@ class ItemManagement extends React.Component {
   state = {
     visibleChangeStatus: false,
     visibleFCAGroupChange: false,
+    visibleViewDetails: false,
     partner: {},
     itemFCAGroup: {},
     showItemOption: 'All',
@@ -162,9 +164,16 @@ class ItemManagement extends React.Component {
         key: 'action',
         width: '5%',
         render: (text, record, index) => (
-          <Space direction="horizontal" style={{ display: 'flex' }}>
+          <Space
+            onClick={() => {
+              this.setState({ visibleViewDetails: true });
+            }}
+            direction="horizontal"
+            style={{ display: 'flex' }}
+          >
             <a
-              href={`/fca-management/partner-management/partner-information/item-information?id=${record.id}`}
+              // href={`/fca-management/partner-management/partner-information/item-information?id=${record.id}`}
+              href="#"
             >
               View
             </a>
@@ -185,7 +194,7 @@ class ItemManagement extends React.Component {
             />
             <br />
           </div>
-          <ConfirmationPopup
+          {/* <ConfirmationPopup
             visible={this.state.visibleChangeStatus}
             message={this.state.partner}
             hideModal={this.hideModalStatus}
@@ -194,7 +203,8 @@ class ItemManagement extends React.Component {
             visible={this.state.visibleFCAGroupChange}
             message={this.state.itemFCAGroup}
             hideModal={this.hideModalFCAGroup}
-          />
+          /> */}
+          <ItemDetailsModal visible={this.state.visibleViewDetails} />
           <DataTable
             columnList={allColumns}
             dataList={
