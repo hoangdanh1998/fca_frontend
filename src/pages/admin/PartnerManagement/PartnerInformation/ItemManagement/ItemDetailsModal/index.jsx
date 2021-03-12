@@ -29,6 +29,7 @@ import {
 import styles from './index.less';
 import ViewItem from './ViewItemComponent/index';
 import EditItem from './EditItemComponent/index';
+import ConfirmationPopup from '../../../../../../components/atom/ConfirmationPopup/index';
 import { convertStringToCamel } from '../../../../../../utils/utils';
 import { PARTNER_ITEM } from '../../../../../../../config/seedingData';
 import { PARTNER_ITEM_STATUS, DATE_FORMAT } from '../../../../../../../config/constants';
@@ -37,6 +38,7 @@ import { PARTNER_ITEM_STATUS, DATE_FORMAT } from '../../../../../../../config/co
   partner: partner.partner,
 }))
 class ItemDetailsModal extends React.Component {
+  state = { viewMode: 'view', visibleChangeStatus: false, confirmMessage: {} };
   componentWillMount() {
     // const { dispatch } = this.props;
     // const url = window.location.href;
@@ -72,21 +74,73 @@ class ItemDetailsModal extends React.Component {
         };
     }
   };
+  handleChangeMode = mode => {
+    this.setState({ viewMode: mode });
+  };
+
+  handleVisibleChangeStatus = toStatus => {
+    this.setState({
+      visibleChangeStatus: true,
+      message: {
+        name: this.props.item.name,
+        property: 'status',
+        from: this.props.item.status,
+        to: toStatus,
+      },
+    });
+  };
+
+  handleUpdateItem = values => {
+    alert(JSON.stringify(values));
+  };
 
   render() {
-    const item = PARTNER_ITEM;
+    const { item, visible } = this.props;
     // const partner = Object.assign({}, this.props.partner);
     return (
       <Modal
-        visible={this.props.visible}
+        visible={visible}
         style={{ textAlign: 'center' }}
         title="PARTNER'S ITEM"
         footer={null}
         width="80%"
         bodyStyle={{ textAlign: 'left' }}
+        onCancel={() => {
+          this.setState({ viewMode: 'view' });
+          this.props.hideModal();
+        }}
       >
-        {/* <ViewItem item={item} display="flex" /> */}
-        <EditItem item={item} display="flex" />
+        <Row style={{ width: '100%', height: '100%' }}>
+          <Col style={{ width: '100%', height: '100%' }} span={8}>
+            <Card bordered>
+              <Carousel style={{ width: '95%', height: 'auto', marginLeft: '2.5%' }} autoplay>
+                <Image height="100%" width="100%" preview={false} src={item.imageLink} />
+                <Image height="100%" width="100%" preview={false} src={item.imageLink} />
+              </Carousel>
+            </Card>
+          </Col>
+          <Col style={{ width: '100%', height: '100%' }} span={16}>
+            {this.state.viewMode === 'view' ? (
+              <ViewItem
+                item={item}
+                onChangeMode={() => this.handleChangeMode('edit')}
+                askConfirm={toStatus => {
+                  this.handleVisibleChangeStatus(toStatus);
+                }}
+              />
+            ) : (
+              <EditItem
+                item={item}
+                onChangeMode={() => this.handleChangeMode('view')}
+                onUpdateItem={values => this.handleUpdateItem(values)}
+              />
+            )}
+          </Col>
+        </Row>
+        <ConfirmationPopup
+          message={this.state.confirmMessage}
+          visible={this.state.visibleChangeStatus}
+        />
       </Modal>
     );
   }

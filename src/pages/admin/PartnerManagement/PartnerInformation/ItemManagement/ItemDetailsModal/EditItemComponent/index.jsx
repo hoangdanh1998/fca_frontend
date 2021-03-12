@@ -77,99 +77,59 @@ class ViewItem extends React.Component {
   };
 
   render() {
-    const { item, display } = this.props;
+    const { item } = this.props;
     return (
-      <Row style={{ width: '100%', height: '100%', display: { display } }}>
-        <Col style={{ width: '100%', height: '100%' }} span={8}>
-          <Card bordered>
-            <Carousel style={{ width: '95%', height: 'auto', marginLeft: '2.5%' }} autoplay>
-              <Image height="100%" width="100%" preview={false} src={item.imageLink} />
-              <Image height="100%" width="100%" preview={false} src={item.imageLink} />
-            </Carousel>
-          </Card>
-        </Col>
-        <Col style={{ width: '100%', height: '100%' }} span={16}>
-          <Card
-            title={
-              <Space direction="horizontal">
-                {"Item's Information"}
-                <EditOutlined
-                  style={{ color: '#1890ff' }}
-                  // onClick={this.handleVisibleChangeProfile}
-                />
-              </Space>
-            }
-            extra={
-              <Button
-                type={item.status === PARTNER_ITEM_STATUS.ACTIVE ? 'danger' : 'success'}
-                with="ghost"
-                icon={
-                  item.status === PARTNER_ITEM_STATUS.ACTIVE ? (
-                    <CloseOutlined style={{ fontSize: 15, color: 'red' }} />
-                  ) : (
-                    <CheckOutlined style={{ fontSize: 15, color: 'green' }} />
-                  )
-                }
-                onClick={() => {
-                  // this.handleVisibleUpdateStatus(PARTNER_STATUS.APPROVED);
-                }}
-              >
-                {convertStringToCamel(
-                  item.status === PARTNER_ITEM_STATUS.ACTIVE
-                    ? PARTNER_ITEM_STATUS.ARCHIVE
-                    : PARTNER_ITEM_STATUS.ACTIVE,
-                )}
-              </Button>
-            }
-          >
-            <Form
-              //   onFinish={this.onSubmit}
-              labelCol={{ span: 4 }}
-              wrapperCol={{ span: 20 }}
-              initialValues={{
-                name: item.id ? item.name : '',
-                fcaGroup: item.id ? item.fcaItem.id : '',
-                price: item.id ? item.price : '',
-              }}
-            >
-              <Form.Item rules={[{ required: true }]} name="name" label="Name">
-                <Input placeholder="Enter name" allowClear />
-              </Form.Item>
-              <Form.Item rules={[{ required: true }]} name="fcaGroup" label="FCA Group">
-                {/* <Input placeholder="" /> */}
-                <Select
-                  placeholder="Choose group"
-                  //   onChange={this.handleChangeActor}
-                  allowClear
-                  options={FCA_ITEM_LIST}
-                ></Select>
-              </Form.Item>
-              <Form.Item rules={[{ required: true }]} name="price" label="Price">
-                <InputNumber
-                  allowClear
-                  placeholder="Enter price"
-                  min={0}
-                  max={1000000}
-                  style={{ width: '100%' }}
-                  formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                  parser={value => value.replace(/\$\s?|(,*)/g, '')}
-                  //   onChange={onChange}
-                />
-              </Form.Item>
-              <Space direction="horizontal" style={{ display: 'flex', justifyContent: 'center' }}>
-                <Form.Item>
-                  <AntdButton htmlType="button">Cancel</AntdButton>
-                </Form.Item>
-                <Form.Item>
-                  <AntdButton type="primary" htmlType="submit">
-                    OK
-                  </AntdButton>
-                </Form.Item>
-              </Space>
-            </Form>
-          </Card>
-        </Col>
-      </Row>
+      <Card title={"Item's Information"}>
+        <Form
+          onFinish={values => {
+            this.props.onUpdateItem(values);
+          }}
+          labelCol={{ span: 4 }}
+          wrapperCol={{ span: 20 }}
+          initialValues={{
+            name: item.id ? item.name : '',
+            fcaGroup: item.id ? item.fcaItem.id : '',
+            price: item.id ? item.price : '',
+          }}
+        >
+          <Form.Item rules={[{ required: true }]} name="name" label="Name">
+            <Input placeholder="Enter name" allowClear />
+          </Form.Item>
+          <Form.Item rules={[{ required: true }]} name="fcaGroup" label="FCA Group">
+            {/* <Input placeholder="" /> */}
+            <Select
+              placeholder="Choose group"
+              //   onChange={this.handleChangeActor}
+              allowClear
+              options={FCA_ITEM_LIST}
+            ></Select>
+          </Form.Item>
+          <Form.Item rules={[{ required: true }]} name="price" label="Price">
+            <InputNumber
+              allowClear
+              placeholder="Enter price"
+              min={0}
+              max={1000000}
+              style={{ width: '100%' }}
+              formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+              parser={value => value.replace(/\$\s?|(,*)/g, '')}
+              //   onChange={onChange}
+            />
+          </Form.Item>
+          <Space direction="horizontal" style={{ display: 'flex', justifyContent: 'center' }}>
+            <Form.Item>
+              <AntdButton htmlType="button" onClick={this.props.onChangeMode}>
+                Cancel
+              </AntdButton>
+            </Form.Item>
+            <Form.Item>
+              <AntdButton type="primary" htmlType="submit">
+                OK
+              </AntdButton>
+            </Form.Item>
+          </Space>
+        </Form>
+      </Card>
     );
   }
 }

@@ -22,11 +22,12 @@ import styles from './index.less';
 class ItemManagement extends React.Component {
   state = {
     visibleChangeStatus: false,
-    visibleFCAGroupChange: false,
-    visibleViewDetails: false,
-    partner: {},
-    itemFCAGroup: {},
+    visibleItemModal: false,
     showItemOption: 'All',
+    partnerItem: {},
+    // partner: {},
+    // itemFCAGroup: {},
+    // visibleFCAGroupChange: false,
   };
 
   getTagStatusColors = record => {
@@ -62,41 +63,14 @@ class ItemManagement extends React.Component {
   handleChangeTableFilter = event => {
     this.setState({ showItemOption: event.target.value });
   };
-
-  handleStatusChange = (value, record) => {
-    this.setState({
-      visibleChangeStatus: true,
-      partner: {
-        name: record.name,
-        from: record.status,
-        to: value,
-        property: "item's status",
-        visible: true,
-      },
-    });
+  // handleChangeItemModalMode = () => {
+  //   this.setState({ itemModalMode: 'edit' });
+  // };
+  handleViewItemInformation = record => {
+    this.setState({ partnerItem: record, visibleItemModal: true });
   };
-  hideModalStatus = () => {
-    this.setState({
-      visibleChangeStatus: false,
-    });
-  };
-
-  handleFCAGroupChange = (value, record) => {
-    this.setState({
-      visibleFCAGroupChange: true,
-      itemFCAGroup: {
-        name: record.itemName,
-        from: record.fcaGroup,
-        to: value,
-        property: 'FCA Group',
-        visible: true,
-      },
-    });
-  };
-  hideModalFCAGroup = () => {
-    this.setState({
-      visibleFCAGroupChange: false,
-    });
+  handleHideItemInformation = () => {
+    this.setState({ partnerItem: {}, visibleItemModal: false });
   };
 
   render() {
@@ -166,7 +140,7 @@ class ItemManagement extends React.Component {
         render: (text, record, index) => (
           <Space
             onClick={() => {
-              this.setState({ visibleViewDetails: true });
+              this.handleViewItemInformation(record);
             }}
             direction="horizontal"
             style={{ display: 'flex' }}
@@ -204,7 +178,11 @@ class ItemManagement extends React.Component {
             message={this.state.itemFCAGroup}
             hideModal={this.hideModalFCAGroup}
           /> */}
-          <ItemDetailsModal visible={this.state.visibleViewDetails} />
+          <ItemDetailsModal
+            visible={this.state.visibleItemModal}
+            item={this.state.partnerItem}
+            hideModal={this.handleHideItemInformation}
+          />
           <DataTable
             columnList={allColumns}
             dataList={
