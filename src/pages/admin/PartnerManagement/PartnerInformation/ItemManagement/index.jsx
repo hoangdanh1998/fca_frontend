@@ -3,7 +3,7 @@ import moment from 'moment';
 import NumberFormat from 'react-number-format';
 import { router } from 'umi';
 import { connect } from 'dva';
-import { Select, Radio, Tag } from 'antd';
+import { Select, Radio, Tag, Space } from 'antd';
 import { CheckCircleOutlined, CloseCircleOutlined, ClockCircleOutlined } from '@ant-design/icons';
 import { convertStringToCamel } from '../../../../../utils/utils';
 import DataTable from './DataTable/index.jsx';
@@ -155,6 +155,21 @@ class ItemManagement extends React.Component {
           return moment(record.createdAt).format(DATE_FORMAT);
         },
         align: 'right',
+      },
+      {
+        title: 'Action',
+        dataIndex: 'action',
+        key: 'action',
+        width: '5%',
+        render: (text, record, index) => (
+          <Space direction="horizontal" style={{ display: 'flex' }}>
+            <a
+              href={`/fca-management/partner-management/partner-information/item-information?id=${record.id}`}
+            >
+              View
+            </a>
+          </Space>
+        ),
       },
     ];
     return (
