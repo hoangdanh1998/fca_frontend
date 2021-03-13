@@ -61,6 +61,10 @@ export const PARTNER_ITEM_STATUS = {
   ACTIVE: 'ACTIVE',
   ARCHIVE: 'ARCHIVE',
 };
+export const LICENSE_STATUS = {
+  ACTIVE: 'ACTIVE',
+  ARCHIVE: 'ARCHIVE',
+};
 
 // OPTIONS ARRAY
 export const PARTNER_STATUS_FILTER = [

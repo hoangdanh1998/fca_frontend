@@ -798,15 +798,15 @@ export const IMAGE_ADDRESS = 'https://image.flaticon.com/icons/png/512/1151/1151
 
 export const FCA_ITEM_LIST = [
   {
-    value: '1',
+    value: '91d94e22-14e9-4955-b5b7-66ef9a4a36d6',
     label: 'Iced Coffee',
   },
   {
-    value: '2',
+    value: '7d3714d3-f026-46af-82dc-8649f40d96ef',
     label: 'Iced Coffee With Milk',
   },
   {
-    value: '3',
+    value: 'ce8487fb-7108-40d0-b71e-36b1703043dc',
     label: 'Iced Chocolate',
   },
 ];
@@ -822,7 +822,7 @@ export const PARTNER_ITEM = {
   status: 'ACTIVE',
   imageLink: 'https://www.godairyfree.org/wp-content/uploads/2007/05/pics-iced-cocoa-vert.jpg',
   fcaItem: {
-    id: '3',
+    id: 'ce8487fb-7108-40d0-b71e-36b1703043dc',
     createdAt: '2021-02-22T15:23:12.083Z',
     updatedAt: '2021-02-22T15:23:12.083Z',
     deletedAt: null,
@@ -830,3 +830,46 @@ export const PARTNER_ITEM = {
     status: null,
   },
 };
+
+export const LICENSE_LIST = [
+  {
+    id: '44d112a9-f22c-454e-a96d-b0cc6e6ef3ba',
+    name: 'Gói bản quyền 1 tháng',
+    duration: '1',
+    price: '39000',
+    status: 'ACTIVE',
+    createdAt: '2021-02-22T15:23:12.083Z',
+    description:
+      'Tiết kiệm thời gian cho nhân viên phục vụ, tiếp nhận đơn hàng từ xa, chủ động trong việc chuẩn bị, đáp ứng cho nhu cầu trong giờ cao điểm. Công nghệ real-time đơn hàng hiện đại, đồng bộ việc trao đổi đơn hàng giữa Khách hàng và Đối tác',
+  },
+  {
+    id: '54d112a9-f22c-454e-a96d-b0cc6e6ef3ba',
+    name: 'Gói bản quyền 3 tháng',
+    duration: '3',
+    price: '109000',
+    status: 'ACTIVE',
+    createdAt: '2021-02-22T15:23:12.083Z',
+    description:
+      'Tiết kiệm thời gian cho nhân viên phục vụ, tiếp nhận đơn hàng từ xa, chủ động trong việc chuẩn bị, đáp ứng cho nhu cầu trong giờ cao điểm. Công nghệ real-time đơn hàng hiện đại, đồng bộ việc trao đổi đơn hàng giữa Khách hàng và Đối tác',
+  },
+  {
+    id: '64d112a9-f22c-454e-a96d-b0cc6e6ef3ba',
+    name: 'Gói bản quyền 6 tháng',
+    duration: '6',
+    price: '229000',
+    status: 'ACTIVE',
+    createdAt: '2021-02-22T15:23:12.083Z',
+    description:
+      'Tiết kiệm thời gian cho nhân viên phục vụ, tiếp nhận đơn hàng từ xa, chủ động trong việc chuẩn bị, đáp ứng cho nhu cầu trong giờ cao điểm. Công nghệ real-time đơn hàng hiện đại, đồng bộ việc trao đổi đơn hàng giữa Khách hàng và Đối tác',
+  },
+  {
+    id: '74d112a9-f22c-454e-a96d-b0cc6e6ef3ba',
+    name: 'Gói bản quyền 12 tháng',
+    duration: '12',
+    price: '549000',
+    status: 'ACTIVE',
+    createdAt: '2021-02-22T15:23:12.083Z',
+    description:
+      'Tiết kiệm thời gian cho nhân viên phục vụ, tiếp nhận đơn hàng từ xa, chủ động trong việc chuẩn bị, đáp ứng cho nhu cầu trong giờ cao điểm. Công nghệ real-time đơn hàng hiện đại, đồng bộ việc trao đổi đơn hàng giữa Khách hàng và Đối tác',
+  },
+];
