@@ -63,9 +63,6 @@ class ItemManagement extends React.Component {
   handleChangeTableFilter = event => {
     this.setState({ showItemOption: event.target.value });
   };
-  // handleChangeItemModalMode = () => {
-  //   this.setState({ itemModalMode: 'edit' });
-  // };
   handleViewItemInformation = record => {
     this.setState({ partnerItem: record, visibleItemModal: true });
   };

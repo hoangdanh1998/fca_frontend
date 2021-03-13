@@ -13,10 +13,11 @@ import {
   CloseCircleOutlined,
   CheckCircleOutlined,
 } from '@ant-design/icons';
-import styles from './index.less';
-import { convertStringToCamel } from '../../../../../../../utils/utils';
-import { PARTNER_ITEM } from '../../../../../../../../config/seedingData';
-import { PARTNER_ITEM_STATUS, DATE_FORMAT } from '../../../../../../../../config/constants';
+import {
+  PARTNER_ITEM_STATUS,
+  DATE_FORMAT,
+  REQUESTED_ITEM_STATUS,
+} from '../../../../../../../../config/constants';
 
 class ViewItem extends React.Component {
   getTagStatusColors = status => {
@@ -51,26 +52,30 @@ class ViewItem extends React.Component {
           </Space>
         }
         extra={
-          <Button
-            type={item.status === PARTNER_ITEM_STATUS.ACTIVE ? 'danger' : 'success'}
-            with="ghost"
-            icon={
-              item.status === PARTNER_ITEM_STATUS.ACTIVE ? (
-                <CloseOutlined style={{ fontSize: 15, color: 'red' }} />
-              ) : (
-                <CheckOutlined style={{ fontSize: 15, color: 'green' }} />
-              )
-            }
-            onClick={() => {
-              alert('Handle Change Status');
-            }}
-          >
-            {convertStringToCamel(
-              item.status === PARTNER_ITEM_STATUS.ACTIVE
-                ? PARTNER_ITEM_STATUS.ARCHIVE
-                : PARTNER_ITEM_STATUS.ACTIVE,
-            )}
-          </Button>
+          item.status === REQUESTED_ITEM_STATUS.PROCESS ? (
+            <Space direction="horizontal">
+              <Button
+                type={item.status === PARTNER_ITEM_STATUS.ACTIVE ? 'danger' : 'success'}
+                with="ghost"
+                icon={<CheckOutlined style={{ fontSize: 15, color: 'green' }} />}
+                onClick={() => {
+                  alert('Handle Change Status');
+                }}
+              >
+                Approve
+              </Button>
+              <Button
+                type={item.status === PARTNER_ITEM_STATUS.ACTIVE ? 'danger' : 'success'}
+                with="ghost"
+                icon={<CloseOutlined style={{ fontSize: 15, color: 'red' }} />}
+                onClick={() => {
+                  alert('Handle Change Status');
+                }}
+              >
+                Reject
+              </Button>
+            </Space>
+          ) : null
         }
       >
         <Descriptions

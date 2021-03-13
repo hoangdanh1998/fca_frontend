@@ -1,37 +1,12 @@
 import React from 'react';
 import { router } from 'umi';
 import { connect } from 'dva';
-import moment from 'moment';
-import NumberFormat from 'react-number-format';
-import {
-  Descriptions,
-  Tag,
-  Image,
-  Space,
-  Switch,
-  Carousel,
-  Layout,
-  Row,
-  Col,
-  Card,
-  Modal,
-} from 'antd';
-import Button from 'antd-button-color';
-import 'antd-button-color/dist/css/style.less';
-import {
-  EditOutlined,
-  CheckOutlined,
-  CloseOutlined,
-  ClockCircleOutlined,
-  CloseCircleOutlined,
-  CheckCircleOutlined,
-} from '@ant-design/icons';
+import { Image, Carousel, Row, Col, Card, Modal } from 'antd';
+import { CloseCircleOutlined, CheckCircleOutlined } from '@ant-design/icons';
 import styles from './index.less';
 import ViewItem from './ViewItemComponent/index';
 import EditItem from './EditItemComponent/index';
 import ConfirmationPopup from '../../../../../../components/atom/ConfirmationPopup/index';
-import { convertStringToCamel } from '../../../../../../utils/utils';
-import { PARTNER_ITEM } from '../../../../../../../config/seedingData';
 import { PARTNER_ITEM_STATUS, DATE_FORMAT } from '../../../../../../../config/constants';
 
 @connect(({ partner, loading }) => ({
@@ -96,7 +71,6 @@ class ItemDetailsModal extends React.Component {
 
   render() {
     const { item, visible } = this.props;
-    // const partner = Object.assign({}, this.props.partner);
     return (
       <Modal
         visible={visible}
@@ -110,16 +84,15 @@ class ItemDetailsModal extends React.Component {
           this.props.hideModal();
         }}
       >
-        <Row style={{ width: '100%', height: '100%' }}>
-          <Col style={{ width: '100%', height: '100%' }} span={8}>
-            <Card bordered>
-              <Carousel style={{ width: '95%', height: 'auto', marginLeft: '2.5%' }} autoplay>
-                <Image height="100%" width="100%" preview={false} src={item.imageLink} />
-                <Image height="100%" width="100%" preview={false} src={item.imageLink} />
+        <Row className={styles.bodyRow}>
+          <Col className={styles.bodyColImage} span={8}>
+            <Card>
+              <Carousel className={styles.bodyCarousel} autoplay>
+                <Image className={styles.bodyImage} preview={false} src={item.imageLink} />
               </Carousel>
             </Card>
           </Col>
-          <Col style={{ width: '100%', height: '100%' }} span={16}>
+          <Col className={styles.bodyColInformation} span={16}>
             {this.state.viewMode === 'view' ? (
               <ViewItem
                 item={item}
