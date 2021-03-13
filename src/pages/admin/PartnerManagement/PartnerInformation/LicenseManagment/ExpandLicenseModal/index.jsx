@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'dva';
 import moment from 'moment';
-import { Form, Space, Modal, Button, DatePicker, Radio } from 'antd';
+import NumberFormat from 'react-number-format';
+import { Form, Space, Modal, Button, DatePicker, Radio, Tag } from 'antd';
 import { DATE_FORMAT, LICENSE_PACKAGE } from '../../../../../../../config/constants';
 import styles from './index.less';
 
@@ -17,14 +18,19 @@ class ExpandLicenseModal extends React.Component {
       ? moment(this.props.storeLicense.licenseTo, DATE_FORMAT).add(1, 'months')
       : moment().add(1, 'months'),
     package: 1,
+    price: LICENSE_PACKAGE.find(license => license.value === 1).price,
   };
 
   handleChangePackage = e => {
     const value = e.target.value;
+    const packagePrice = LICENSE_PACKAGE.find(license => license.value === value).price;
+    console.log('packagePrice', packagePrice);
     this.setState({
       package: value,
       endDate: moment(this.state.startDate, DATE_FORMAT).add(value, 'months'),
+      price: packagePrice,
     });
+    console.log('statePrice', this.state.price);
   };
 
   handleChangeStartDate = value => {
@@ -38,6 +44,7 @@ class ExpandLicenseModal extends React.Component {
     console.log('startDate', this.state.startDate.format(DATE_FORMAT));
     console.log('endDate', this.state.endDate.format(DATE_FORMAT));
     console.log('package', this.state.package);
+    console.log('price', this.state.price);
   };
 
   render() {
@@ -66,6 +73,7 @@ class ExpandLicenseModal extends React.Component {
           initialValues={{
             startDate: this.state.startDate,
             package: 1,
+            price: this.state.price,
           }}
           onFinish={this.onSubmit}
         >
@@ -103,6 +111,24 @@ class ExpandLicenseModal extends React.Component {
               onChange={this.handleChangePackage}
               optionType="button"
             ></Radio.Group>
+          </Form.Item>
+
+          <Form.Item name="price" label="Price">
+            <div
+              style={{
+                width: '100%',
+                height: 'auto',
+              }}
+            >
+              <Tag style={{ width: '30%', marginLeft: '-50%' }} color="default">
+                <NumberFormat
+                  value={this.state.price}
+                  displayType={'text'}
+                  thousandSeparator={true}
+                />
+                {' VND'}
+              </Tag>
+            </div>
           </Form.Item>
           <Space direction="horizontal">
             <Form.Item>

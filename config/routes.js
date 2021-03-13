@@ -29,6 +29,14 @@ export default [
             hidden: true,
           },
           {
+            path: '/fca-management/partner-management/partner-information/item-information',
+            name: 'Partner Information',
+            component:
+              './admin/PartnerManagement/PartnerInformation/ItemManagement/ItemInformation/index',
+            authority: ['admin'],
+            hidden: true,
+          },
+          {
             name: 'Partner Management',
             path: '/fca-management/partner-management',
             component: './admin/PartnerManagement',

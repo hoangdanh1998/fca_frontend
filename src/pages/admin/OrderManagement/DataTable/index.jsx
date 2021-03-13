@@ -30,7 +30,7 @@ class DataTable extends React.Component {
     };
   }
 
-  componentDidMount() {
+  componentWillMount() {
     const { dispatch } = this.props;
     dispatch({
       type: 'order/getOrderList',
@@ -44,10 +44,11 @@ class DataTable extends React.Component {
     });
   }
 
-  onChangePaging = page => {
+  onChangePaging = (page, pageSize) => {
     const { dispatch } = this.props;
     this.setState({
       pageIndex: page,
+      pageSize: pageSize,
     });
     dispatch({
       type: 'order/getOrderList',
@@ -55,8 +56,8 @@ class DataTable extends React.Component {
         createdDate: this.state.createdDate,
         status: this.state.status,
         phone: this.state.phone,
-        skip: parseInt((page - 1) * PAGE_SIZE),
-        limit: this.state.pageSize,
+        skip: parseInt((page - 1) * pageSize),
+        limit: pageSize,
       },
     });
   };
@@ -166,13 +167,9 @@ class DataTable extends React.Component {
                 pageSize: this.state.pageSize,
                 total: totalOrder,
                 onChange: this.onChangePaging,
+                showSizeChanger: true,
               }}
               bordered
-              loading={
-                this.props.isLoadingTags ||
-                this.props.isLoadingTableContact ||
-                this.props.isLoadingGetAllContacts
-              }
             ></Table>
           </div>
         </div>

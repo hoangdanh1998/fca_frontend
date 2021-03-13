@@ -12,7 +12,7 @@ import styles from './index.less';
   partner: partner.partner,
 }))
 class PartnerInformation extends React.Component {
-  componentDidMount() {
+  componentWillMount() {
     const { dispatch } = this.props;
     const url = window.location.href;
     const id = url.substring(url.indexOf('=') + 1);

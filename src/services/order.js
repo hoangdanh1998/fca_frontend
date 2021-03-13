@@ -18,7 +18,7 @@ export async function getOrder(params) {
 export async function cancelOrder(params) {
   return request(`/api/order/${params.id}/status`, {
     method: 'PUT',
-    data: { status: params.status },
+    data: { status: params.status, description: params.description },
   }).catch(error => error);
 }
 

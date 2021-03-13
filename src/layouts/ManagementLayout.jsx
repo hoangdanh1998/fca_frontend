@@ -61,7 +61,14 @@ class ManagementLayout extends React.Component {
               title={title}
               backIcon={false}
               extra={[
-                <Button key="1" type="primary">
+                <Button
+                  key="1"
+                  type="primary"
+                  onClick={() => {
+                    localStorage.removeItem('authority');
+                    window.location.href = '/';
+                  }}
+                >
                   Logout
                 </Button>,
               ]}

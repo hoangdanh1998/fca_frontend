@@ -798,15 +798,35 @@ export const IMAGE_ADDRESS = 'https://image.flaticon.com/icons/png/512/1151/1151
 
 export const FCA_ITEM_LIST = [
   {
-    value: 1,
+    value: '1',
     label: 'Iced Coffee',
   },
   {
-    value: 2,
+    value: '2',
     label: 'Iced Coffee With Milk',
   },
   {
-    value: 3,
+    value: '3',
     label: 'Iced Chocolate',
   },
 ];
+
+export const PARTNER_ITEM = {
+  id: 'ed8c5c09-6bcf-4247-83b6-e2f6803314a0',
+  createdAt: '2021-02-22T15:42:18.653Z',
+  updatedAt: '2021-02-22T15:42:18.653Z',
+  deletedAt: null,
+  partner: null,
+  name: 'Cacao đá',
+  price: '25000',
+  status: 'ACTIVE',
+  imageLink: 'https://www.godairyfree.org/wp-content/uploads/2007/05/pics-iced-cocoa-vert.jpg',
+  fcaItem: {
+    id: '3',
+    createdAt: '2021-02-22T15:23:12.083Z',
+    updatedAt: '2021-02-22T15:23:12.083Z',
+    deletedAt: null,
+    name: 'Cacao',
+    status: null,
+  },
+};

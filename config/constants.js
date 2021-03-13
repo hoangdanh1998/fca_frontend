@@ -14,6 +14,10 @@ export const APPLICATION_TITLE_FONT_FAMILY = "'Open Sans', sans-serif";
 
 export const SHOW_ITEMS_OPTIONS = [
   {
+    label: 'All',
+    value: 'All',
+  },
+  {
     label: 'Usable items',
     value: 'Usable items',
   },
@@ -126,35 +130,35 @@ export const PARTNER_STATUS_ITEM_OPTIONS = [
 export const CANCEL_ORDER_REASON = [
   {
     label: 'Delivery is late',
-    value: 'PARTNER_DRINK_LATE',
+    value: 'CUSTOMER_PARTNER-DELIVERY-LATE',
   },
   {
     label: 'Drink has problem',
-    value: 'PARTNER_DRINK_PROBLEM',
+    value: 'CUSTOMER_DRINK-HAS-PROBLEM',
   },
-  // {
-  //   label: 'Drink is wrong',
-  //   value: 'PARTNER_DRINK_WRONG',
-  // },
-  // {
-  //   label: 'System has problem',
-  //   value: 'SYSTEM',
-  // },
   {
     label: 'Customer personal reason',
-    value: 'CUSTOMER_PERSONAL_REASON',
+    value: 'CUSTOMER_PERSONAL-REASON',
   },
   {
     label: 'Customer can not find store',
-    value: 'CUSTOMER_STORE_NOT_FOUND',
+    value: 'CUSTOMER_STORE-NOT-FOUND',
   },
   {
     label: 'Partner can not find customer',
-    value: 'PARTNER_CUSTOMER_NOT_FOUND',
+    value: 'PARTNER_CUSTOMER-NOT-FOUND',
   },
   {
-    label: 'Others',
-    value: 'OTHERS',
+    label: 'Partner need to close store',
+    value: 'PARTNER_CLOSE-STORE',
+  },
+  {
+    label: 'The order is out of stock',
+    value: 'PARTNER_ORDER-OUT-OF-STOCK',
+  },
+  {
+    label: 'Other',
+    value: 'OTHER',
   },
 ];
 // LICENSE TYPE
@@ -162,18 +166,22 @@ export const LICENSE_PACKAGE = [
   {
     label: '1 month',
     value: 1,
+    price: 39000,
   },
   {
     label: '3 months',
     value: 3,
+    price: 109000,
   },
   {
     label: '6 months',
     value: 6,
+    price: 229000,
   },
   {
     label: '12 months',
     value: 12,
+    price: 549000,
   },
 ];
 export const ITEM_STATUS_OPTIONS = [

@@ -89,6 +89,23 @@ const routes = [
             exact: true,
           },
           {
+            path:
+              '/fca-management/partner-management/partner-information/item-information',
+            name: 'Partner Information',
+            component: __IS_BROWSER
+              ? _dvaDynamic({
+                  component: () =>
+                    import(/* webpackChunkName: "p__admin__PartnerManagement__PartnerInformation__ItemManagement__ItemInformation__index" */ '../admin/PartnerManagement/PartnerInformation/ItemManagement/ItemInformation/index'),
+                  LoadingComponent: require('/Users/pkimanh03/Documents/capstone/fca_frontend/src/components/PageLoading/index')
+                    .default,
+                })
+              : require('../admin/PartnerManagement/PartnerInformation/ItemManagement/ItemInformation/index')
+                  .default,
+            authority: ['admin'],
+            hidden: true,
+            exact: true,
+          },
+          {
             name: 'Partner Management',
             path: '/fca-management/partner-management',
             component: __IS_BROWSER
