@@ -192,7 +192,7 @@ class GeneralInformation extends React.Component {
           }
         >
           <Descriptions.Item label="Telephone">
-            {partner.phone ? partner.phone : '-'}
+            {partner.account ? partner.account.phone : '-'}
           </Descriptions.Item>
           <Descriptions.Item label="Status">
             <Tag color={this.getTagStatusColors()} icon={this.getTagStatusIcons()}>

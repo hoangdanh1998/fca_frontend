@@ -264,7 +264,7 @@ class OrderInformation extends React.Component {
                 {Object.assign({}, order.partner).name}
               </Descriptions.Item>
               <Descriptions.Item label="Phone">
-                {Object.assign({}, order.partner).phone}
+                {Object.assign({}, Object.assign({}, order.partner).account).phone}
               </Descriptions.Item>
               <Descriptions.Item label="Address">
                 {Object.assign({}, Object.assign({}, order.partner).address).description}
