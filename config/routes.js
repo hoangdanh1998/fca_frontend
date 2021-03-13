@@ -28,14 +28,14 @@ export default [
             authority: ['admin'],
             hidden: true,
           },
-          {
-            path: '/fca-management/partner-management/partner-information/item-information',
-            name: 'Partner Information',
-            component:
-              './admin/PartnerManagement/PartnerInformation/ItemManagement/ItemInformation/index',
-            authority: ['admin'],
-            hidden: true,
-          },
+          // {
+          //   path: '/fca-management/partner-management/partner-information/item-information',
+          //   name: 'Partner Information',
+          //   component:
+          //     './admin/PartnerManagement/PartnerInformation/ItemManagement/ItemInformation/index',
+          //   authority: ['admin'],
+          //   hidden: true,
+          // },
           {
             name: 'Partner Management',
             path: '/fca-management/partner-management',
@@ -53,6 +53,12 @@ export default [
             name: 'Order Management',
             path: '/fca-management/order-management',
             component: './admin/OrderManagement',
+            authority: ['admin'],
+          },
+          {
+            name: 'License Management',
+            path: '/fca-management/license-management',
+            component: './admin/LicenseManagement',
             authority: ['admin'],
           },
         ],

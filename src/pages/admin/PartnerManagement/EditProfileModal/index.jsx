@@ -44,7 +44,7 @@ class EditProfileModal extends React.Component {
           wrapperCol={{ span: 20 }}
           initialValues={{
             name: partner.id ? partner.name : '',
-            phone: partner.id ? partner.phone : '',
+            phone: partner.id ? partner.account.phone : '',
             address: partner.id ? partner.address.description : '',
           }}
         >
