@@ -13,13 +13,11 @@ import styles from './index.less';
 import { convertStringToCamel } from '../../../utils/utils';
 import {
   DATE_FORMAT,
-  ORDER_STATUS,
-  DATE_TIME_FORMAT,
   DATE_TIME_FORMAT_CALL_API,
   LICENSE_STATUS,
 } from '../../../../config/constants';
 
-@connect(({ order, loading }) => ({}))
+@connect(({ license, loading }) => ({}))
 class LicenseManagement extends React.Component {
   state = { visibleDetailsModal: false, visibleCreateModal: false, license: {}, page: 1 };
 

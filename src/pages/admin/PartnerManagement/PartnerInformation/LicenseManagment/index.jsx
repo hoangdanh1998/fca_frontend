@@ -7,7 +7,7 @@ import InsertButton from '../../../../../components/atom/InsertButton/index.jsx'
 import ExpandLicenseModal from '../LicenseManagment/ExpandLicenseModal/index.jsx';
 import styles from './index.less';
 import { PARTNER_LICENSE_LIST, PARTNER_LAST_LICENSE } from '../../../../../../config/seedingData';
-import { DATE_FORMAT } from '../../../../../../config/constants';
+import { DATE_FORMAT, PARTNER_STATUS } from '../../../../../../config/constants';
 
 class LicenseManagement extends React.Component {
   state = { visibleChangeExpirationDate: false, partnerLicense: PARTNER_LAST_LICENSE };
@@ -73,7 +73,9 @@ class LicenseManagement extends React.Component {
       <>
         <div className={styles.applicationManagementContainer}>
           <div className={styles.applicationHeader}>
-            <InsertButton onClick={this.handleChangeExpirationDate} />
+            {partner.status === PARTNER_STATUS.APPROVED ? (
+              <InsertButton onClick={this.handleChangeExpirationDate} />
+            ) : null}
           </div>
           {this.state.visibleChangeExpirationDate ? (
             <ExpandLicenseModal

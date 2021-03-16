@@ -1,5 +1,6 @@
 import React from 'react';
 import { Table, Input, Space, DatePicker, Radio } from 'antd';
+import NumberFormat from 'react-number-format';
 import moment from 'moment';
 import { connect } from 'dva';
 import {
@@ -8,15 +9,14 @@ import {
   DATE_FORMAT,
   ORDER_STATUS_FILTER,
 } from '../../../../../config/constants';
-import { LICENSE_LIST } from '../../../../../config/seedingData';
 import styles from './index.less';
 
-// @connect(({ order, loading }) => {
-//   return {
-//     dataList: order.allOrderList,
-//     totalOrder: order.totalOrder,
-//   };
-// })
+@connect(({ license, loading }) => {
+  return {
+    dataList: license.allFcaLicenseList,
+    totalFcaLicense: license.totalFcaLicense,
+  };
+})
 class DataTable extends React.Component {
   constructor(props) {
     super(props);
@@ -27,18 +27,15 @@ class DataTable extends React.Component {
     };
   }
 
-  componentWillMount() {
-    // const { dispatch } = this.props;
-    // dispatch({
-    //   type: 'order/getOrderList',
-    //   payload: {
-    //     createdDate: this.state.createdDate,
-    //     status: this.state.status,
-    //     phone: this.state.phone,
-    //     skip: this.state.skip,
-    //     limit: this.state.pageSize,
-    //   },
-    // });
+  async componentWillMount() {
+    const { dispatch } = this.props;
+    await dispatch({
+      type: 'license/getFcaLicenseList',
+      payload: {
+        skip: this.state.skip,
+        limit: this.state.pageSize,
+      },
+    });
   }
 
   onChangePaging = (page, pageSize) => {
@@ -60,10 +57,8 @@ class DataTable extends React.Component {
   };
 
   render() {
-    // const { columnList, dataList, totalLicense } = this.props;
-    const columnList = this.props.columnList;
-    const dataList = LICENSE_LIST;
-    const totalLicense = LICENSE_LIST.length;
+    const { dataList, totalFcaLicense, columnList } = this.props;
+    console.log('dataList', dataList);
     return (
       <div>
         <div>
@@ -75,7 +70,7 @@ class DataTable extends React.Component {
               pagination={{
                 current: this.state.page,
                 pageSize: this.state.pageSize,
-                total: totalLicense,
+                total: totalFcaLicense,
                 onChange: this.onChangePaging,
                 showSizeChanger: true,
               }}

@@ -145,9 +145,10 @@ class PartnerManagement extends React.Component {
         key: 'createdAt',
         align: 'right',
         sorter: (a, b) =>
-          moment(a.createdAt, DATE_FORMAT_CALL_API) - moment(b.createdAt, DATE_FORMAT_CALL_API),
+          moment(a.expirationDate, DATE_FORMAT_CALL_API) -
+          moment(b.expirationDate, DATE_FORMAT_CALL_API),
         render: (text, record, index) => {
-          return moment().format(DATE_FORMAT);
+          return record.expirationDate ? moment(record.expirationDate).format(DATE_FORMAT) : '-';
         },
       },
       {
