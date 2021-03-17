@@ -185,16 +185,22 @@ class ItemManagement extends React.Component {
             dataList={
               this.state.showItemOption === 'Requested items'
                 ? partner.requestItems
+                  ? partner.requestItems
+                  : []
                 : this.state.showItemOption === 'Usable items'
                 ? partner.items
-                : partner.items.concat(partner.requestItems)
+                  ? partner.items
+                  : []
+                : partner.items && partner.requestItems
+                ? partner.items.concat(partner.requestItems)
+                : []
             }
             totalRecords={
               this.state.showItemOption === 'Requested items'
-                ? partner.requestItems.length
+                ? partner?.requestItems?.length
                 : this.state.showItemOption === 'Usable items'
-                ? partner.items.length
-                : partner.items.concat(partner.requestItems).length
+                ? partner?.items?.length
+                : partner?.items?.concat(partner?.requestItems)?.length
             }
           />
         </div>

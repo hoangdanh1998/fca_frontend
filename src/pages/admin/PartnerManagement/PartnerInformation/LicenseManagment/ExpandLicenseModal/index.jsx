@@ -2,10 +2,11 @@ import React from 'react';
 import { connect } from 'dva';
 import moment from 'moment';
 import NumberFormat from 'react-number-format';
-import { Form, Space, Modal, Button, DatePicker, Radio, Tag } from 'antd';
+import { Form, Space, Modal, Button, DatePicker, Radio, Tag, Select, Input } from 'antd';
 import { DATE_FORMAT, LICENSE_PACKAGE } from '../../../../../../../config/constants';
 import styles from './index.less';
 
+// @connect(({ license, loading }) => ({}))
 class ExpandLicenseModal extends React.Component {
   constructor(props) {
     super(props);
@@ -22,8 +23,10 @@ class ExpandLicenseModal extends React.Component {
   };
 
   handleChangePackage = e => {
-    const value = e.target.value;
-    const packagePrice = LICENSE_PACKAGE.find(license => license.value === value).price;
+    // const value = e.target.value;
+    const value = e;
+    const packagePrice = this.props.packages.find(license => license.value === value).price;
+    const selectedDuration = this.props.packages.find(p => p.id === value).duration;
     console.log('packagePrice', packagePrice);
     this.setState({
       package: value,
@@ -48,8 +51,7 @@ class ExpandLicenseModal extends React.Component {
   };
 
   render() {
-    const { lastLicense, hideModal } = this.props;
-    console.log('lastLicense', lastLicense);
+    const { lastLicense, hideModal, packages } = this.props;
     return (
       <Modal
         title="CREATE LICENSE"
@@ -72,10 +74,11 @@ class ExpandLicenseModal extends React.Component {
         <Form
           initialValues={{
             startDate: this.state.startDate,
-            package: 1,
+            package: packages ? packages[0].value : '',
             price: this.state.price,
           }}
           onFinish={this.onSubmit}
+          // style={{ textAlign: 'left' }}
         >
           <Space direction="horizontal" className={styles.space}>
             <Form.Item
@@ -104,23 +107,26 @@ class ExpandLicenseModal extends React.Component {
               />
             </Form.Item>
           </Space>
-          <Form.Item name="package" label="Package">
-            <Radio.Group
+          <Form.Item labelCol={{ span: 4 }} name="package" label="Package">
+            {/* <Radio.Group
               className={styles.radio}
-              options={LICENSE_PACKAGE}
+              // options={LICENSE_PACKAGE}
+              options={packages}
               onChange={this.handleChangePackage}
               optionType="button"
-            ></Radio.Group>
+              size="small"
+            ></Radio.Group> */}
+            <Select options={packages ? packages : []} onSelect={this.handleChangePackage} />
           </Form.Item>
 
-          <Form.Item name="price" label="Price">
+          <Form.Item labelCol={{ span: 4 }} name="price" label="Price">
             <div
               style={{
                 width: '100%',
                 height: 'auto',
               }}
             >
-              <Tag style={{ width: '30%', marginLeft: '-50%' }} color="default">
+              <Tag style={{ width: '100%', height: 'auto' }} color="default">
                 <NumberFormat
                   value={this.state.price}
                   displayType={'text'}

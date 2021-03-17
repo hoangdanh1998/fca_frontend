@@ -7,8 +7,11 @@ import InsertButton from '../../../../../components/atom/InsertButton/index.jsx'
 import ExpandLicenseModal from '../LicenseManagment/ExpandLicenseModal/index.jsx';
 import styles from './index.less';
 import { PARTNER_LICENSE_LIST, PARTNER_LAST_LICENSE } from '../../../../../../config/seedingData';
-import { DATE_FORMAT, PARTNER_STATUS } from '../../../../../../config/constants';
+import { DATE_FORMAT, PARTNER_STATUS, PAGE_SIZE } from '../../../../../../config/constants';
 
+@connect(({ partner, loading }) => ({
+  // allFcaLicenseList: partner.allFcaLicenseList,
+}))
 class LicenseManagement extends React.Component {
   state = { visibleChangeExpirationDate: false, partnerLicense: PARTNER_LAST_LICENSE };
 
@@ -24,6 +27,20 @@ class LicenseManagement extends React.Component {
     });
   };
 
+  handleCreatePartnerLicense = values => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'partner/createPartnerLicense',
+      payload: {
+        partnerId: this.props.partner.id,
+        fcaLicenseId: values.fcaLicenseId,
+        startDate: values.startDate,
+        endDate: values.endDate,
+        price: values.price,
+      },
+    });
+  };
+
   render() {
     const lastLicense = this.props.lastLicense ? this.props.lastLicense : null;
     const partner = this.props.partner;
@@ -36,26 +53,38 @@ class LicenseManagement extends React.Component {
         align: 'right',
       },
       {
+        title: 'Package',
+        dataIndex: ['fcaLicense', 'name'],
+        key: ['fcaLicense', 'name'],
+        width: '35%',
+      },
+      {
         title: 'Start Date',
         dataIndex: 'startDate',
         key: 'startDate',
-        width: '25%',
+        width: '15%',
         sorter: (a, b) => moment(a.createdDate, DATE_FORMAT) - moment(b.createdDate, DATE_FORMAT),
+        render: (text, record, index) => {
+          return moment(record.startDate).format(DATE_FORMAT);
+        },
         align: 'right',
       },
       {
         title: 'End Date',
         dataIndex: 'endDate',
         key: 'endDate',
-        width: '25%',
+        width: '15%',
         sorter: (a, b) => moment(a.createdDate, DATE_FORMAT) - moment(b.createdDate, DATE_FORMAT),
+        render: (text, record, index) => {
+          return moment(record.endDate).format(DATE_FORMAT);
+        },
         align: 'right',
       },
       {
         title: 'Price',
         dataIndex: 'price',
         key: 'price',
-        width: '25%',
+        width: '15%',
         render: (text, record, index) => (
           <NumberFormat value={record.price} displayType={'text'} thousandSeparator={true} />
         ),
@@ -65,8 +94,11 @@ class LicenseManagement extends React.Component {
         title: 'Created Date',
         dataIndex: 'createdDate',
         key: 'createdDate',
-        width: '25%',
+        width: '15%',
         sorter: (a, b) => moment(a.createdDate, DATE_FORMAT) - moment(b.createdDate, DATE_FORMAT),
+        render: (text, record, index) => {
+          return moment(record.createdAt).format(DATE_FORMAT);
+        },
       },
     ];
     return (
@@ -79,8 +111,12 @@ class LicenseManagement extends React.Component {
           </div>
           {this.state.visibleChangeExpirationDate ? (
             <ExpandLicenseModal
+              packages={this.props.packages}
               {...(lastLicense ? (lastLicense = { lastLicense }) : null)}
               hideModal={this.hideModalExpirationDate}
+              submitModal={values => {
+                this.handleCreatePartnerLicense(values);
+              }}
             ></ExpandLicenseModal>
           ) : null}
           <DataTable

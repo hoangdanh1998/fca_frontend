@@ -5,7 +5,12 @@ import { connect } from 'dva';
 import { Space, Tag } from 'antd';
 import DataTable from '../PartnerManagement/DataTable/index.jsx';
 import ConfirmationPopup from '../../../components/atom/ConfirmationPopup/index.jsx';
-import { DATE_FORMAT, DATE_FORMAT_CALL_API, PARTNER_STATUS } from '../../../../config/constants';
+import {
+  DATE_FORMAT,
+  DATE_FORMAT_CALL_API,
+  PARTNER_STATUS,
+  PAGE_SIZE,
+} from '../../../../config/constants';
 import { convertStringToCamel } from '../../../utils/utils';
 import { CheckCircleOutlined, CloseCircleOutlined, ClockCircleOutlined } from '@ant-design/icons';
 import styles from './index.less';
