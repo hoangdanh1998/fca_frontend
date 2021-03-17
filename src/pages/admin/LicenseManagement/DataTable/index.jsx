@@ -24,11 +24,13 @@ class DataTable extends React.Component {
       pageIndex: 1,
       skip: 0,
       pageSize: PAGE_SIZE,
+      loading: false,
     };
   }
 
   async componentWillMount() {
     const { dispatch } = this.props;
+    this.setState({ loading: true });
     await dispatch({
       type: 'license/getFcaLicenseList',
       payload: {
@@ -36,6 +38,7 @@ class DataTable extends React.Component {
         limit: this.state.pageSize,
       },
     });
+    this.setState({ loading: false });
   }
 
   onChangePaging = (page, pageSize) => {
@@ -44,16 +47,13 @@ class DataTable extends React.Component {
       pageIndex: page,
       pageSize: pageSize,
     });
-    // dispatch({
-    //   type: 'order/getOrderList',
-    //   payload: {
-    //     createdDate: this.state.createdDate,
-    //     status: this.state.status,
-    //     phone: this.state.phone,
-    //     skip: parseInt((page - 1) * pageSize),
-    //     limit: pageSize,
-    //   },
-    // });
+    dispatch({
+      type: 'license/getFcaLicenseList',
+      payload: {
+        skip: parseInt((page - 1) * pageSize),
+        limit: this.state.pageSize,
+      },
+    });
   };
 
   render() {
@@ -75,6 +75,7 @@ class DataTable extends React.Component {
                 showSizeChanger: true,
               }}
               bordered
+              loading={this.state.loading}
             ></Table>
           </div>
         </div>

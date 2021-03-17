@@ -50,7 +50,6 @@ class LicenseManagement extends React.Component {
       },
     });
     if (this.props.createdLicense.id) {
-      // alert(JSON.stringify(createdLicense));
       const newLicenses = this.state.licenses;
       newLicenses.push(this.props.createdLicense);
       this.setState({
@@ -140,8 +139,6 @@ class LicenseManagement extends React.Component {
           ) : null}
           <DataTable
             columnList={columnList}
-            // dataList={this.state.licenses}
-            // totalRecords={this.state.licenses.length}
             dataList={partner.licenses ? partner.licenses : []}
             totalRecords={partner.licenses ? partner.licenses.length : 0}
           />
