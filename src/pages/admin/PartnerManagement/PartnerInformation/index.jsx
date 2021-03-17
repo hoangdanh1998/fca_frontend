@@ -34,6 +34,7 @@ class PartnerInformation extends React.Component {
   }
 
   render() {
+    console.log('partner-information', this.props.partner);
     const { partner, allFcaLicenseList } = this.props;
     return (
       <div className={styles.applicationManagementContainer}>

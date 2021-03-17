@@ -3,34 +3,44 @@ import { connect } from 'dva';
 import moment from 'moment';
 import NumberFormat from 'react-number-format';
 import { Form, Space, Modal, Button, DatePicker, Radio, Tag, Select, Input } from 'antd';
-import { DATE_FORMAT, LICENSE_PACKAGE } from '../../../../../../../config/constants';
+import {
+  DATE_FORMAT,
+  LICENSE_PACKAGE,
+  DATE_FORMAT_CALL_API,
+} from '../../../../../../../config/constants';
 import styles from './index.less';
 
-// @connect(({ license, loading }) => ({}))
 class ExpandLicenseModal extends React.Component {
   constructor(props) {
     super(props);
   }
   state = {
-    startDate: this.props.lastLicense
-      ? moment(this.props.storeLicense.licenseTo, DATE_FORMAT)
+    // startDate: this.props.lastLicense
+    //   ? moment(this.props.storeLicense.licenseTo, DATE_FORMAT)
+    //   : moment(),
+    // endDate: this.props.lastLicense
+    //   ? moment(this.props.storeLicense.licenseTo, DATE_FORMAT).add(1, 'months')
+    //   : moment().add(1, 'months'),
+    // package: 1,
+    // price: LICENSE_PACKAGE.find(license => license.value === 1).price,
+    startDate: moment(),
+    endDate: this.props.packages
+      ? moment().add(this.props.packages[0].duration, 'months')
       : moment(),
-    endDate: this.props.lastLicense
-      ? moment(this.props.storeLicense.licenseTo, DATE_FORMAT).add(1, 'months')
-      : moment().add(1, 'months'),
-    package: 1,
-    price: LICENSE_PACKAGE.find(license => license.value === 1).price,
+    package: this.props.packages ? this.props.packages[0].value : '',
+    price: this.props.packages ? this.props.packages[0].price : 0,
   };
 
   handleChangePackage = e => {
     // const value = e.target.value;
     const value = e;
-    const packagePrice = this.props.packages.find(license => license.value === value).price;
-    const selectedDuration = this.props.packages.find(p => p.id === value).duration;
-    console.log('packagePrice', packagePrice);
+    const selectedPackage = this.props.packages.find(p => p.value === value);
+    const packagePrice = selectedPackage.price;
+    const selectedDuration = selectedPackage.duration;
     this.setState({
       package: value,
-      endDate: moment(this.state.startDate, DATE_FORMAT).add(value, 'months'),
+      // endDate: moment(this.state.startDate, DATE_FORMAT).add(value, 'months'),
+      endDate: moment(this.state.startDate, DATE_FORMAT).add(selectedDuration, 'months'),
       price: packagePrice,
     });
     console.log('statePrice', this.state.price);
@@ -44,10 +54,16 @@ class ExpandLicenseModal extends React.Component {
   };
 
   onSubmit = values => {
-    console.log('startDate', this.state.startDate.format(DATE_FORMAT));
-    console.log('endDate', this.state.endDate.format(DATE_FORMAT));
+    console.log('startDate', this.state.startDate.format(DATE_FORMAT_CALL_API));
+    console.log('endDate', this.state.endDate.format(DATE_FORMAT_CALL_API));
     console.log('package', this.state.package);
     console.log('price', this.state.price);
+    this.props.submitModal({
+      fcaLicenseId: this.state.package,
+      startDate: this.state.startDate.format(DATE_FORMAT_CALL_API),
+      endDate: this.state.endDate.format(DATE_FORMAT_CALL_API),
+      price: this.state.price,
+    });
   };
 
   render() {
@@ -78,7 +94,6 @@ class ExpandLicenseModal extends React.Component {
             price: this.state.price,
           }}
           onFinish={this.onSubmit}
-          // style={{ textAlign: 'left' }}
         >
           <Space direction="horizontal" className={styles.space}>
             <Form.Item
@@ -108,14 +123,6 @@ class ExpandLicenseModal extends React.Component {
             </Form.Item>
           </Space>
           <Form.Item labelCol={{ span: 4 }} name="package" label="Package">
-            {/* <Radio.Group
-              className={styles.radio}
-              // options={LICENSE_PACKAGE}
-              options={packages}
-              onChange={this.handleChangePackage}
-              optionType="button"
-              size="small"
-            ></Radio.Group> */}
             <Select options={packages ? packages : []} onSelect={this.handleChangePackage} />
           </Form.Item>
 

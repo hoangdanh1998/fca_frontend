@@ -11,9 +11,18 @@ import { DATE_FORMAT, PARTNER_STATUS, PAGE_SIZE } from '../../../../../../config
 
 @connect(({ partner, loading }) => ({
   // allFcaLicenseList: partner.allFcaLicenseList,
+  // partner: partner.partner,
+  createdLicense: partner.createdLicense,
 }))
 class LicenseManagement extends React.Component {
-  state = { visibleChangeExpirationDate: false, partnerLicense: PARTNER_LAST_LICENSE };
+  constructor(props) {
+    super(props);
+    this.state = {
+      visibleChangeExpirationDate: false,
+      partnerLicense: PARTNER_LAST_LICENSE,
+      licenses: this.props.partner.licenses ? this.props.partner.licenses : [],
+    };
+  }
 
   handleChangeExpirationDate = () => {
     this.setState({
@@ -27,9 +36,10 @@ class LicenseManagement extends React.Component {
     });
   };
 
-  handleCreatePartnerLicense = values => {
+  handleCreatePartnerLicense = async values => {
+    this.hideModalExpirationDate();
     const { dispatch } = this.props;
-    dispatch({
+    await dispatch({
       type: 'partner/createPartnerLicense',
       payload: {
         partnerId: this.props.partner.id,
@@ -39,6 +49,14 @@ class LicenseManagement extends React.Component {
         price: values.price,
       },
     });
+    if (this.props.createdLicense.id) {
+      // alert(JSON.stringify(createdLicense));
+      const newLicenses = this.state.licenses;
+      newLicenses.push(this.props.createdLicense);
+      this.setState({
+        licenses: newLicenses,
+      });
+    }
   };
 
   render() {
@@ -53,7 +71,7 @@ class LicenseManagement extends React.Component {
         align: 'right',
       },
       {
-        title: 'Package',
+        title: 'License Package',
         dataIndex: ['fcaLicense', 'name'],
         key: ['fcaLicense', 'name'],
         width: '35%',
@@ -95,6 +113,7 @@ class LicenseManagement extends React.Component {
         dataIndex: 'createdDate',
         key: 'createdDate',
         width: '15%',
+        align: 'right',
         sorter: (a, b) => moment(a.createdDate, DATE_FORMAT) - moment(b.createdDate, DATE_FORMAT),
         render: (text, record, index) => {
           return moment(record.createdAt).format(DATE_FORMAT);
@@ -121,6 +140,8 @@ class LicenseManagement extends React.Component {
           ) : null}
           <DataTable
             columnList={columnList}
+            // dataList={this.state.licenses}
+            // totalRecords={this.state.licenses.length}
             dataList={partner.licenses ? partner.licenses : []}
             totalRecords={partner.licenses ? partner.licenses.length : 0}
           />

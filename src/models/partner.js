@@ -7,6 +7,7 @@ import {
 } from '@/services/partner';
 import { getFcaLicenseList } from '@/services/license';
 import AdminNotification from '../components/Notification';
+import { LICENSE_STATUS } from '../../config/constants';
 
 const notification = new AdminNotification();
 
@@ -18,6 +19,7 @@ const Model = {
     partner: {},
     allFcaLicenseList: [],
     totalFcaLicense: 0,
+    createdLicense: {},
   },
   effects: {
     *getPartnerList({ payload }, { call, put }) {
@@ -109,24 +111,25 @@ const Model = {
     },
 
     handleCreatePartnerLicense(state, action) {
-      const newPartner = state.partner.licenses.unshift(action.payload.license);
-      return { ...state, partner: newPartner };
+      const newPartner = state.partner;
+      newPartner.licenses = [...state.partner.licenses, action.payload.license];
+      return { ...state, partner: newPartner, createdLicense: action.payload.license };
     },
 
     handleGetFcaLicenseList(state, action) {
       const convertedLicenses =
         action.payload.license.length > 0
-          ? action.payload.license.map(license => {
-              return {
-                label: license.name,
-                value: license.id,
-                price: license.price,
-                duration: license.duration,
-              };
-            })
+          ? action.payload.license
+              .filter(license => license.status === LICENSE_STATUS.ACTIVE)
+              .map(license => {
+                return {
+                  label: license.name,
+                  value: license.id,
+                  price: license.price,
+                  duration: license.duration,
+                };
+              })
           : [];
-      console.log('reducer', action.payload.license);
-      console.log('reverted-reducer', convertedLicenses);
       return {
         ...state,
         allFcaLicenseList: convertedLicenses,
