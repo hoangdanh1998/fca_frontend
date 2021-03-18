@@ -11,18 +11,13 @@ import { LICENSE_STATUS, DATE_FORMAT } from '../../../../../config/constants';
 import { convertStringToCamel } from '../../../../utils/utils';
 
 class LicenseDetailModal extends React.Component {
-  state = { viewMode: 'view' };
-  componentWillMount() {}
-
   handleUpdateLicense = values => {
-    alert(JSON.stringify(values));
-  };
-  handleChangeMode = mode => {
-    this.setState({ viewMode: mode });
+    // alert(JSON.stringify(values));
+    this.props.submitModal(values);
   };
 
   render() {
-    const { license, visible } = this.props;
+    const { license, visible, mode } = this.props;
     return (
       <Modal
         visible={visible}
@@ -31,16 +26,15 @@ class LicenseDetailModal extends React.Component {
         footer={null}
         bodyStyle={{ textAlign: 'left' }}
         onCancel={() => {
-          this.setState({ viewMode: 'view' });
           this.props.hideModal();
         }}
       >
-        {this.state.viewMode === 'view' ? (
-          <ViewLicense onChangeMode={() => this.handleChangeMode('edit')} license={license} />
+        {mode === 'view' ? (
+          <ViewLicense license={license} />
         ) : (
           <UpdateLicense
             onUpdateLicense={values => this.handleUpdateLicense(values)}
-            onChangeMode={() => this.handleChangeMode('view')}
+            onChangeMode={() => this.props.hideModal()}
             license={license}
           />
         )}

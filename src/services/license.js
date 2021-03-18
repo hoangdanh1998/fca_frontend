@@ -18,3 +18,17 @@ export async function createFcaLicense(params) {
     },
   });
 }
+
+export async function cloneFcaLicense(params) {
+  return request(`/api/fca-license`, {
+    method: 'POST',
+    data: {
+      basedLicenseId: params.licenseId,
+      name: params.name,
+      duration: params.duration,
+      price: params.price,
+      description: params.description,
+      startDate: params.startDate,
+    },
+  });
+}

@@ -1,5 +1,5 @@
 import { router } from 'umi';
-import { getFcaLicenseList, createFcaLicense } from '@/services/license';
+import { getFcaLicenseList, createFcaLicense, cloneFcaLicense } from '@/services/license';
 import AdminNotification from '../components/Notification';
 
 const notification = new AdminNotification();
@@ -25,6 +25,19 @@ const Model = {
     },
     *createFcaLicense({ payload }, { call, put }) {
       const response = yield call(createFcaLicense, payload);
+
+      if (response.type && response.type === 'HttpError') {
+        notification.fail('Something went wrong. Please try again.');
+        return;
+      }
+      notification.success('Success');
+      yield put({
+        type: 'handleCreateFcaLicense',
+        payload: response.data,
+      });
+    },
+    *cloneFcaLicense({ payload }, { call, put }) {
+      const response = yield call(cloneFcaLicense, payload);
 
       if (response.type && response.type === 'HttpError') {
         notification.fail('Something went wrong. Please try again.');

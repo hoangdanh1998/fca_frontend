@@ -17,10 +17,11 @@ class ViewLicense extends React.Component {
         contentStyle={{ fontWeight: 'bold' }}
         labelStyle={{ textAlign: 'left', width: '20%' }}
         title={
-          <Space direction="horizontal">
-            {license.name}
-            <EditOutlined style={{ color: '#1890ff' }} onClick={this.props.onChangeMode} />
-          </Space>
+          license.name
+          // <Space direction="horizontal">
+          //   {license.name}
+          //   <EditOutlined style={{ color: '#1890ff' }} onClick={this.props.onChangeMode} />
+          // </Space>
         }
       >
         <Descriptions.Item label="Duration">{`${license.duration} month(s)`}</Descriptions.Item>
@@ -41,10 +42,16 @@ class ViewLicense extends React.Component {
             {convertStringToCamel(license.status)}
           </Tag>
         </Descriptions.Item>
+        <Descriptions.Item label="Start Date">
+          {moment(license.startDate).format(DATE_FORMAT)}
+        </Descriptions.Item>
+        <Descriptions.Item label="End Date">
+          {license.endDate ? moment(license.startDate).format(DATE_FORMAT) : '-'}
+        </Descriptions.Item>
+        <Descriptions.Item label="Description">{license.description}</Descriptions.Item>
         <Descriptions.Item label="Create Date">
           {moment(license.createdAt).format(DATE_FORMAT)}
         </Descriptions.Item>
-        <Descriptions.Item label="Description">{license.description}</Descriptions.Item>
       </Descriptions>
     );
   }

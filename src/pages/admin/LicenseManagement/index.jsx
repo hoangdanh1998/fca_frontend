@@ -25,16 +25,17 @@ import {
 
 @connect(({ license, loading }) => ({}))
 class LicenseManagement extends React.Component {
-  state = { visibleDetailsModal: false, visibleCreateModal: false, license: {}, page: 1 };
+  state = { visibleDetailsModal: false, visibleCreateModal: false, license: {}, page: 1, mode: '' };
 
   setPage = page => {
     this.setState({ page: page });
   };
 
-  handleVisibleDetailsModal = record => {
+  handleVisibleDetailsModal = (record, modalMode) => {
     this.setState({
       visibleDetailsModal: true,
       license: record,
+      mode: modalMode,
     });
   };
   handleVisibleCreateModal = () => {
@@ -46,6 +47,22 @@ class LicenseManagement extends React.Component {
     await dispatch({
       type: 'license/createFcaLicense',
       payload: {
+        name: values.name,
+        duration: `${values.duration}`,
+        price: `${values.price}`,
+        description: values.description,
+        startDate: moment(values.startDate).format(DATE_TIME_FORMAT_CALL_API),
+      },
+    });
+    this.hideModal();
+  };
+
+  handleCloneLicense = async values => {
+    const { dispatch } = this.props;
+    await dispatch({
+      type: 'license/cloneFcaLicense',
+      payload: {
+        licenseId: values.licenseId,
         name: values.name,
         duration: `${values.duration}`,
         price: `${values.price}`,
@@ -116,7 +133,7 @@ class LicenseManagement extends React.Component {
         },
       },
       {
-        title: 'From Date',
+        title: 'Start Date',
         dataIndex: 'startDate',
         key: 'startDate',
         sorter: (a, b) =>
@@ -128,7 +145,7 @@ class LicenseManagement extends React.Component {
         align: 'right',
       },
       {
-        title: 'To Date',
+        title: 'End Date',
         dataIndex: 'endDate',
         key: 'endDate',
         sorter: (a, b) =>
@@ -147,10 +164,14 @@ class LicenseManagement extends React.Component {
           <Space direction="horizontal" style={{ display: 'flex' }}>
             <EyeOutlined
               onClick={() => {
-                this.handleVisibleDetailsModal(record);
+                this.handleVisibleDetailsModal(record, 'view');
               }}
             />
-            <CopyOutlined />
+            <CopyOutlined
+              onClick={() => {
+                this.handleVisibleDetailsModal(record, 'clone');
+              }}
+            />
             <CloseOutlined />
           </Space>
         ),
@@ -172,6 +193,10 @@ class LicenseManagement extends React.Component {
             visible={this.state.visibleDetailsModal}
             license={this.state.license}
             hideModal={this.hideModal}
+            mode={this.state.mode}
+            submitModal={values => {
+              this.handleCloneLicense(values);
+            }}
           />
           <CreateLicenseModal
             visible={this.state.visibleCreateModal}

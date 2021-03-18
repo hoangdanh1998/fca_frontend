@@ -18,7 +18,7 @@ class CreateLicenseModal extends React.Component {
       <Modal
         visible={visible}
         style={{ textAlign: 'center' }}
-        title="LICENSE INFORMATION"
+        title="CREATE FAST-COFFEE LICENSE"
         footer={null}
         bodyStyle={{ textAlign: 'left' }}
         onCancel={() => {
@@ -58,10 +58,10 @@ class CreateLicenseModal extends React.Component {
               parser={value => value.replace(/\$\s?|(,*)/g, '')}
             />
           </Form.Item>
-          <Form.Item rules={[{ required: true }]} name="startDate" label="From Date">
+          <Form.Item rules={[{ required: true }]} name="startDate" label="Start Date">
             <DatePicker
               showToday
-              placeholder="From date"
+              placeholder="Start Date"
               allowClear={false}
               format={DATE_FORMAT}
               style={{ width: '100%' }}
