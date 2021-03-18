@@ -14,6 +14,7 @@ const Model = {
   state: {
     allFcaLicenseList: [],
     totalFcaLicense: 0,
+    createdLicense: {},
   },
   effects: {
     *getFcaLicenseList({ payload }, { call, put }) {
@@ -84,8 +85,9 @@ const Model = {
       console.log('new-licenses', newLicenses);
       return {
         ...state,
-        allFcaLicenseList: newLicenses,
+        allFcaLicenseList: [...newLicenses],
         totalFcaLicense: newLicenses.length,
+        createdLicense: action.payload.license,
       };
     },
     handleUpdateFcaLicenseStatus(state, action) {

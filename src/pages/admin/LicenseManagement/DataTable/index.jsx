@@ -25,7 +25,6 @@ class DataTable extends React.Component {
       skip: 0,
       pageSize: PAGE_SIZE,
       loading: false,
-      page: 1,
     };
   }
 
@@ -71,7 +70,7 @@ class DataTable extends React.Component {
               dataSource={dataList}
               columns={columnList}
               pagination={{
-                current: this.state.page,
+                current: this.state.pageIndex,
                 pageSize: this.state.pageSize,
                 total: totalFcaLicense,
                 onChange: this.onChangePaging,
