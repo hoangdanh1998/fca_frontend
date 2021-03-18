@@ -25,6 +25,7 @@ class DataTable extends React.Component {
       skip: 0,
       pageSize: PAGE_SIZE,
       loading: false,
+      page: 1,
     };
   }
 
@@ -41,19 +42,21 @@ class DataTable extends React.Component {
     this.setState({ loading: false });
   }
 
-  onChangePaging = (page, pageSize) => {
+  onChangePaging = async (page, pageSize) => {
     const { dispatch } = this.props;
     this.setState({
       pageIndex: page,
       pageSize: pageSize,
+      loading: true,
     });
-    dispatch({
+    await dispatch({
       type: 'license/getFcaLicenseList',
       payload: {
         skip: parseInt((page - 1) * pageSize),
-        limit: this.state.pageSize,
+        limit: pageSize,
       },
     });
+    this.setState({ loading: false });
   };
 
   render() {

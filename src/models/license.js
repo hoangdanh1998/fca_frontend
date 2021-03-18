@@ -1,5 +1,10 @@
 import { router } from 'umi';
-import { getFcaLicenseList, createFcaLicense, cloneFcaLicense } from '@/services/license';
+import {
+  getFcaLicenseList,
+  createFcaLicense,
+  cloneFcaLicense,
+  updateFcaLicenseStatus,
+} from '@/services/license';
 import AdminNotification from '../components/Notification';
 
 const notification = new AdminNotification();
@@ -49,6 +54,19 @@ const Model = {
         payload: response.data,
       });
     },
+    *updateFcaLicenseStatus({ payload }, { call, put }) {
+      const response = yield call(updateFcaLicenseStatus, payload);
+
+      if (response.type && response.type === 'HttpError') {
+        notification.fail('Something went wrong. Please try again.');
+        return;
+      }
+      notification.success('Success');
+      yield put({
+        type: 'handleUpdateFcaLicenseStatus',
+        payload: response.data,
+      });
+    },
   },
 
   reducers: {
@@ -68,6 +86,20 @@ const Model = {
         ...state,
         allFcaLicenseList: newLicenses,
         totalFcaLicense: newLicenses.length,
+      };
+    },
+    handleUpdateFcaLicenseStatus(state, action) {
+      const newLicenses = state.allFcaLicenseList.map(license => {
+        if (license.id === action.payload.license.id) {
+          license.status = action.payload.license.status;
+        }
+        return license;
+      });
+
+      console.log('new-licenses', newLicenses);
+      return {
+        ...state,
+        allFcaLicenseList: newLicenses,
       };
     },
   },

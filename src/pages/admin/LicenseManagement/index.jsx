@@ -15,6 +15,7 @@ import DataTable from './DataTable/index';
 import InsertButton from '../../../components/atom/InsertButton/index';
 import LicenseDetailsModal from './LicenseDetailsModal/index';
 import CreateLicenseModal from './CreateLicenseModal/index';
+import ConfirmationPopup from '../../../components/atom/ConfirmationPopup/index';
 import styles from './index.less';
 import { convertStringToCamel } from '../../../utils/utils';
 import {
@@ -25,19 +26,20 @@ import {
 
 @connect(({ license, loading }) => ({}))
 class LicenseManagement extends React.Component {
-  state = { visibleDetailsModal: false, visibleCreateModal: false, license: {}, page: 1, mode: '' };
+  state = {
+    visibleDetailsModal: false,
+    visibleCreateModal: false,
+    visibleConfirmationModal: false,
+    license: {},
+    page: 1,
+    mode: '',
+    confirmationMessage: {},
+  };
 
   setPage = page => {
     this.setState({ page: page });
   };
 
-  handleVisibleDetailsModal = (record, modalMode) => {
-    this.setState({
-      visibleDetailsModal: true,
-      license: record,
-      mode: modalMode,
-    });
-  };
   handleVisibleCreateModal = () => {
     this.setState({ visibleCreateModal: true });
   };
@@ -57,6 +59,13 @@ class LicenseManagement extends React.Component {
     this.hideModal();
   };
 
+  handleVisibleDetailsModal = (record, modalMode) => {
+    this.setState({
+      visibleDetailsModal: true,
+      license: record,
+      mode: modalMode,
+    });
+  };
   handleCloneLicense = async values => {
     const { dispatch } = this.props;
     await dispatch({
@@ -72,10 +81,36 @@ class LicenseManagement extends React.Component {
     });
     this.hideModal();
   };
+
+  handleVisibleConfirmationModal = record => {
+    this.setState({
+      visibleConfirmationModal: true,
+      license: record,
+      confirmationMessage: {
+        name: record.name,
+        property: "package's status",
+        from: LICENSE_STATUS.ACTIVE,
+        to: LICENSE_STATUS.ARCHIVE,
+      },
+    });
+  };
+  handleChangeLicenseStatus = async () => {
+    const { dispatch } = this.props;
+    await dispatch({
+      type: 'license/updateFcaLicenseStatus',
+      payload: {
+        id: this.state.license.id,
+        status: LICENSE_STATUS.ARCHIVE,
+      },
+    });
+    this.hideModal();
+  };
+
   hideModal = () => {
     this.setState({
       visibleDetailsModal: false,
       visibleCreateModal: false,
+      visibleConfirmationModal: false,
       license: {},
     });
   };
@@ -145,34 +180,31 @@ class LicenseManagement extends React.Component {
         align: 'right',
       },
       {
-        title: 'End Date',
-        dataIndex: 'endDate',
-        key: 'endDate',
-        sorter: (a, b) =>
-          moment(a.endDate, DATE_TIME_FORMAT_CALL_API) -
-          moment(b.endDate, DATE_TIME_FORMAT_CALL_API),
-        render: (text, record, index) => {
-          return record.endDate ? moment(record.endDate).format(DATE_FORMAT) : '-';
-        },
-        align: 'right',
-      },
-      {
         title: 'Action',
         dataIndex: 'action',
         key: 'action',
         render: (text, record, index) => (
           <Space direction="horizontal" style={{ display: 'flex' }}>
             <EyeOutlined
+              style={{ color: 'black' }}
               onClick={() => {
                 this.handleVisibleDetailsModal(record, 'view');
               }}
             />
             <CopyOutlined
+              style={{ color: 'blue' }}
               onClick={() => {
                 this.handleVisibleDetailsModal(record, 'clone');
               }}
             />
-            <CloseOutlined />
+            <CloseOutlined
+              style={{ color: record.status === LICENSE_STATUS.ARCHIVE ? 'grey' : 'red' }}
+              onClick={() => {
+                if (record.status === LICENSE_STATUS.ACTIVE) {
+                  this.handleVisibleConfirmationModal(record);
+                }
+              }}
+            />
           </Space>
         ),
       },
@@ -204,6 +236,12 @@ class LicenseManagement extends React.Component {
               this.handleCreateLicense(values);
             }}
             hideModal={this.hideModal}
+          />
+          <ConfirmationPopup
+            visible={this.state.visibleConfirmationModal}
+            hideModal={this.hideModal}
+            onClickOK={this.handleChangeLicenseStatus}
+            message={this.state.confirmationMessage}
           />
         </div>
       </>

@@ -32,3 +32,13 @@ export async function cloneFcaLicense(params) {
     },
   });
 }
+
+export async function updateFcaLicenseStatus(params) {
+  return request(`/api/fca-license/${params.id}`, {
+    method: 'PUT',
+    data: {
+      id: params.id,
+      status: params.status,
+    },
+  });
+}
