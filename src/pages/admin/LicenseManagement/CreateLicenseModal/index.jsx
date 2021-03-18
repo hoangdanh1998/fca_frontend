@@ -1,7 +1,9 @@
 import React from 'react';
 import { router } from 'umi';
 import { connect } from 'dva';
-import { Space, Modal, Form, Input, InputNumber, Button } from 'antd';
+import moment from 'moment';
+import { Space, Modal, Form, Input, InputNumber, Button, DatePicker } from 'antd';
+import { DATE_FORMAT } from '../../../../../config/constants';
 
 class CreateLicenseModal extends React.Component {
   componentWillMount() {}
@@ -54,6 +56,16 @@ class CreateLicenseModal extends React.Component {
               style={{ width: '100%' }}
               formatter={value => `${value} month(s)`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
               parser={value => value.replace(/\$\s?|(,*)/g, '')}
+            />
+          </Form.Item>
+          <Form.Item rules={[{ required: true }]} name="startDate" label="From Date">
+            <DatePicker
+              showToday
+              placeholder="From date"
+              allowClear={false}
+              format={DATE_FORMAT}
+              style={{ width: '100%' }}
+              disabledDate={d => !d || d.isSameOrBefore(moment().subtract(1, 'day'))}
             />
           </Form.Item>
           <Form.Item rules={[{ required: true }]} name="description" label="Description">

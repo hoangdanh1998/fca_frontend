@@ -5,3 +5,16 @@ export async function getFcaLicenseList(params) {
     method: 'GET',
   });
 }
+
+export async function createFcaLicense(params) {
+  return request(`/api/fca-license`, {
+    method: 'POST',
+    data: {
+      name: params.name,
+      duration: params.duration,
+      price: params.price,
+      description: params.description,
+      startDate: params.startDate,
+    },
+  });
+}

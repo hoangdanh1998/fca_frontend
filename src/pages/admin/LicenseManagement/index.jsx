@@ -4,7 +4,13 @@ import { router } from 'umi';
 import moment from 'moment';
 import NumberFormat from 'react-number-format';
 import { Space, Tag } from 'antd';
-import { CloseCircleOutlined, CheckCircleOutlined } from '@ant-design/icons';
+import {
+  CloseCircleOutlined,
+  CheckCircleOutlined,
+  EyeOutlined,
+  CopyOutlined,
+  CloseOutlined,
+} from '@ant-design/icons';
 import DataTable from './DataTable/index';
 import InsertButton from '../../../components/atom/InsertButton/index';
 import LicenseDetailsModal from './LicenseDetailsModal/index';
@@ -34,8 +40,20 @@ class LicenseManagement extends React.Component {
   handleVisibleCreateModal = () => {
     this.setState({ visibleCreateModal: true });
   };
-  handleCreateLicense = values => {
-    alert(JSON.stringify(values));
+  handleCreateLicense = async values => {
+    // alert(JSON.stringify(values));
+    const { dispatch } = this.props;
+    await dispatch({
+      type: 'license/createFcaLicense',
+      payload: {
+        name: values.name,
+        duration: `${values.duration}`,
+        price: `${values.price}`,
+        description: values.description,
+        startDate: moment(values.startDate).format(DATE_TIME_FORMAT_CALL_API),
+      },
+    });
+    this.hideModal();
   };
   hideModal = () => {
     this.setState({
@@ -98,14 +116,26 @@ class LicenseManagement extends React.Component {
         },
       },
       {
-        title: 'Create Date',
-        dataIndex: 'createdAt',
-        key: 'createdAt',
+        title: 'From Date',
+        dataIndex: 'startDate',
+        key: 'startDate',
         sorter: (a, b) =>
-          moment(a.createdAt, DATE_TIME_FORMAT_CALL_API) -
-          moment(b.createdAt, DATE_TIME_FORMAT_CALL_API),
+          moment(a.startDate, DATE_TIME_FORMAT_CALL_API) -
+          moment(b.startDate, DATE_TIME_FORMAT_CALL_API),
         render: (text, record, index) => {
-          return moment(record.createdAt).format(DATE_FORMAT);
+          return moment(record.startDate).format(DATE_FORMAT);
+        },
+        align: 'right',
+      },
+      {
+        title: 'To Date',
+        dataIndex: 'endDate',
+        key: 'endDate',
+        sorter: (a, b) =>
+          moment(a.endDate, DATE_TIME_FORMAT_CALL_API) -
+          moment(b.endDate, DATE_TIME_FORMAT_CALL_API),
+        render: (text, record, index) => {
+          return record.endDate ? moment(record.endDate).format(DATE_FORMAT) : '-';
         },
         align: 'right',
       },
@@ -114,18 +144,19 @@ class LicenseManagement extends React.Component {
         dataIndex: 'action',
         key: 'action',
         render: (text, record, index) => (
-          <Space
-            direction="horizontal"
-            style={{ display: 'flex' }}
-            onClick={() => {
-              this.handleVisibleDetailsModal(record);
-            }}
-          >
-            <a href={'#'}>View</a>
+          <Space direction="horizontal" style={{ display: 'flex' }}>
+            <EyeOutlined
+              onClick={() => {
+                this.handleVisibleDetailsModal(record);
+              }}
+            />
+            <CopyOutlined />
+            <CloseOutlined />
           </Space>
         ),
       },
     ];
+    console.log('license-management');
     return (
       <>
         <div direction="horizontal" className={styles.applicationManagementContainer}>
