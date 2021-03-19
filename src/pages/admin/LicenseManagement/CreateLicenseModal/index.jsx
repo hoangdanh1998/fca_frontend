@@ -1,19 +1,22 @@
-import React from 'react';
-import { router } from 'umi';
-import { connect } from 'dva';
+import { Button, DatePicker, Form, Input, InputNumber, Modal, Space } from 'antd';
 import moment from 'moment';
-import { Space, Modal, Form, Input, InputNumber, Button, DatePicker } from 'antd';
+import React from 'react';
 import { DATE_FORMAT } from '../../../../../config/constants';
 
 class CreateLicenseModal extends React.Component {
-  componentWillMount() {}
+  state = {
+    isSubmitted: false,
+  }
 
+  formRef = React.createRef();
+ 
   handleUpdateLicense = values => {
     alert(JSON.stringify(values));
   };
-
+  
   render() {
     const { onSubmit, visible, hideModal } = this.props;
+
     return (
       <Modal
         visible={visible}
@@ -26,10 +29,11 @@ class CreateLicenseModal extends React.Component {
         }}
       >
         <Form
-          onFinish={values => {
-            onSubmit(values);
-            values = {};
+          onFinish={async (values) => {
+            this.setState({ isSubmitted: true })
+            await onSubmit(values);
           }}
+          ref={this.formRef}
           labelCol={{ span: 5 }}
           wrapperCol={{ span: 19 }}
         >
@@ -84,7 +88,7 @@ class CreateLicenseModal extends React.Component {
               </Button>
             </Form.Item>
             <Form.Item>
-              <Button type="primary" htmlType="submit">
+              <Button type="primary" htmlType="submit" loading={this.state.isSubmitted} >
                 OK
               </Button>
             </Form.Item>

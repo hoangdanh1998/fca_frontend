@@ -1,28 +1,27 @@
-import React from 'react';
-import { connect } from 'dva';
-import { router } from 'umi';
-import moment from 'moment';
-import NumberFormat from 'react-number-format';
-import { Space, Tag } from 'antd';
 import {
-  CloseCircleOutlined,
-  CheckCircleOutlined,
-  EyeOutlined,
-  CopyOutlined,
-  CloseOutlined,
+  CheckCircleOutlined, CloseCircleOutlined,
+
+
+
+  CloseOutlined, CopyOutlined, EyeOutlined
 } from '@ant-design/icons';
-import DataTable from './DataTable/index';
-import InsertButton from '../../../components/atom/InsertButton/index';
-import LicenseDetailsModal from './LicenseDetailsModal/index';
-import CreateLicenseModal from './CreateLicenseModal/index';
-import ConfirmationPopup from '../../../components/atom/ConfirmationPopup/index';
-import styles from './index.less';
-import { convertStringToCamel } from '../../../utils/utils';
+import { Space, Tag } from 'antd';
+import { connect } from 'dva';
+import moment from 'moment';
+import React from 'react';
+import NumberFormat from 'react-number-format';
 import {
   DATE_FORMAT,
   DATE_TIME_FORMAT_CALL_API,
-  LICENSE_STATUS,
+  LICENSE_STATUS
 } from '../../../../config/constants';
+import ConfirmationPopup from '../../../components/atom/ConfirmationPopup/index';
+import InsertButton from '../../../components/atom/InsertButton/index';
+import { convertStringToCamel } from '../../../utils/utils';
+import CreateLicenseModal from './CreateLicenseModal/index';
+import DataTable from './DataTable/index';
+import styles from './index.less';
+import LicenseDetailsModal from './LicenseDetailsModal/index';
 
 @connect(({ license, loading }) => ({}))
 class LicenseManagement extends React.Component {
@@ -230,13 +229,14 @@ class LicenseManagement extends React.Component {
               this.handleCloneLicense(values);
             }}
           />
-          <CreateLicenseModal
+          {this.state.visibleCreateModal ? (<CreateLicenseModal
             visible={this.state.visibleCreateModal}
             onSubmit={values => {
               this.handleCreateLicense(values);
             }}
             hideModal={this.hideModal}
-          />
+          />) : null}
+
           <ConfirmationPopup
             visible={this.state.visibleConfirmationModal}
             hideModal={this.hideModal}
