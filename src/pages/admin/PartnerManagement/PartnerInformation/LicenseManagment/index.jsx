@@ -7,10 +7,22 @@ import InsertButton from '../../../../../components/atom/InsertButton/index.jsx'
 import ExpandLicenseModal from '../LicenseManagment/ExpandLicenseModal/index.jsx';
 import styles from './index.less';
 import { PARTNER_LICENSE_LIST, PARTNER_LAST_LICENSE } from '../../../../../../config/seedingData';
-import { DATE_FORMAT } from '../../../../../../config/constants';
+import { DATE_FORMAT, PARTNER_STATUS, PAGE_SIZE } from '../../../../../../config/constants';
 
+@connect(({ partner, loading }) => ({
+  // allFcaLicenseList: partner.allFcaLicenseList,
+  // partner: partner.partner,
+  createdLicense: partner.createdLicense,
+}))
 class LicenseManagement extends React.Component {
-  state = { visibleChangeExpirationDate: false, partnerLicense: PARTNER_LAST_LICENSE };
+  constructor(props) {
+    super(props);
+    this.state = {
+      visibleChangeExpirationDate: false,
+      partnerLicense: PARTNER_LAST_LICENSE,
+      licenses: this.props.partner.licenses ? this.props.partner.licenses : [],
+    };
+  }
 
   handleChangeExpirationDate = () => {
     this.setState({
@@ -22,6 +34,28 @@ class LicenseManagement extends React.Component {
     this.setState({
       visibleChangeExpirationDate: false,
     });
+  };
+
+  handleCreatePartnerLicense = async values => {
+    this.hideModalExpirationDate();
+    const { dispatch } = this.props;
+    await dispatch({
+      type: 'partner/createPartnerLicense',
+      payload: {
+        partnerId: this.props.partner.id,
+        fcaLicenseId: values.fcaLicenseId,
+        startDate: values.startDate,
+        endDate: values.endDate,
+        price: values.price,
+      },
+    });
+    if (this.props.createdLicense.id) {
+      const newLicenses = this.state.licenses;
+      newLicenses.push(this.props.createdLicense);
+      this.setState({
+        licenses: newLicenses,
+      });
+    }
   };
 
   render() {
@@ -36,26 +70,38 @@ class LicenseManagement extends React.Component {
         align: 'right',
       },
       {
+        title: 'License Package',
+        dataIndex: ['fcaLicense', 'name'],
+        key: ['fcaLicense', 'name'],
+        width: '35%',
+      },
+      {
         title: 'Start Date',
         dataIndex: 'startDate',
         key: 'startDate',
-        width: '25%',
+        width: '15%',
         sorter: (a, b) => moment(a.createdDate, DATE_FORMAT) - moment(b.createdDate, DATE_FORMAT),
+        render: (text, record, index) => {
+          return moment(record.startDate).format(DATE_FORMAT);
+        },
         align: 'right',
       },
       {
         title: 'End Date',
         dataIndex: 'endDate',
         key: 'endDate',
-        width: '25%',
+        width: '15%',
         sorter: (a, b) => moment(a.createdDate, DATE_FORMAT) - moment(b.createdDate, DATE_FORMAT),
+        render: (text, record, index) => {
+          return moment(record.endDate).format(DATE_FORMAT);
+        },
         align: 'right',
       },
       {
         title: 'Price',
         dataIndex: 'price',
         key: 'price',
-        width: '25%',
+        width: '15%',
         render: (text, record, index) => (
           <NumberFormat value={record.price} displayType={'text'} thousandSeparator={true} />
         ),
@@ -65,20 +111,30 @@ class LicenseManagement extends React.Component {
         title: 'Created Date',
         dataIndex: 'createdDate',
         key: 'createdDate',
-        width: '25%',
+        width: '15%',
+        align: 'right',
         sorter: (a, b) => moment(a.createdDate, DATE_FORMAT) - moment(b.createdDate, DATE_FORMAT),
+        render: (text, record, index) => {
+          return moment(record.createdAt).format(DATE_FORMAT);
+        },
       },
     ];
     return (
       <>
         <div className={styles.applicationManagementContainer}>
           <div className={styles.applicationHeader}>
-            <InsertButton onClick={this.handleChangeExpirationDate} />
+            {partner.status === PARTNER_STATUS.APPROVED ? (
+              <InsertButton onClick={this.handleChangeExpirationDate} />
+            ) : null}
           </div>
           {this.state.visibleChangeExpirationDate ? (
             <ExpandLicenseModal
+              packages={this.props.packages}
               {...(lastLicense ? (lastLicense = { lastLicense }) : null)}
               hideModal={this.hideModalExpirationDate}
+              submitModal={values => {
+                this.handleCreatePartnerLicense(values);
+              }}
             ></ExpandLicenseModal>
           ) : null}
           <DataTable

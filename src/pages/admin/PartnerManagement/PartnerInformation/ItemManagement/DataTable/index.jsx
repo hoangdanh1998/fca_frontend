@@ -56,7 +56,7 @@ class DataTable extends React.Component {
           <div>
             <Table
               className={styles.table}
-              dataSource={dataList}
+              dataSource={dataList ? dataList : []}
               columns={columnList}
               pagination={{
                 current: this.state.skip,

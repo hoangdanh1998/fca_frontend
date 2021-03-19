@@ -1,6 +1,13 @@
 import { router } from 'umi';
-import { getPartnerList, updatePartnerStatus, getPartner } from '@/services/partner';
+import {
+  getPartnerList,
+  updatePartnerStatus,
+  getPartner,
+  createPartnerLicense,
+} from '@/services/partner';
+import { getFcaLicenseList } from '@/services/license';
 import AdminNotification from '../components/Notification';
+import { LICENSE_STATUS } from '../../config/constants';
 
 const notification = new AdminNotification();
 
@@ -10,6 +17,9 @@ const Model = {
     allPartnerList: [],
     totalPartner: 0,
     partner: {},
+    allFcaLicenseList: [],
+    totalFcaLicense: 0,
+    createdLicense: {},
   },
   effects: {
     *getPartnerList({ payload }, { call, put }) {
@@ -51,6 +61,33 @@ const Model = {
         payload: response.data,
       });
     },
+
+    *createPartnerLicense({ payload }, { call, put }) {
+      const response = yield call(createPartnerLicense, payload);
+
+      if (response.type && response.type === 'HttpError') {
+        notification.fail('Something went wrong. Please try again.');
+        return;
+      }
+      notification.success('Success');
+      yield put({
+        type: 'handleCreatePartnerLicense',
+        payload: response.data,
+      });
+    },
+
+    *getFcaLicenseList({ payload }, { call, put }) {
+      const response = yield call(getFcaLicenseList, payload);
+
+      if (response.type && response.type === 'HttpError') {
+        notification.fail('Something went wrong. Please try again.');
+        return;
+      }
+      yield put({
+        type: 'handleGetFcaLicenseList',
+        payload: response.data,
+      });
+    },
   },
 
   reducers: {
@@ -71,6 +108,33 @@ const Model = {
 
     handleUpdatePartnerStatus(state, action) {
       return { ...state, partner: action.payload.partner };
+    },
+
+    handleCreatePartnerLicense(state, action) {
+      const newPartner = state.partner;
+      newPartner.licenses = [...state.partner.licenses, action.payload.license];
+      return { ...state, partner: newPartner, createdLicense: action.payload.license };
+    },
+
+    handleGetFcaLicenseList(state, action) {
+      const convertedLicenses =
+        action.payload.license.length > 0
+          ? action.payload.license
+              .filter(license => license.status === LICENSE_STATUS.ACTIVE)
+              .map(license => {
+                return {
+                  label: license.name,
+                  value: license.id,
+                  price: license.price,
+                  duration: license.duration,
+                };
+              })
+          : [];
+      return {
+        ...state,
+        allFcaLicenseList: convertedLicenses,
+        totalFcaLicense: action.payload.count,
+      };
     },
   },
 };

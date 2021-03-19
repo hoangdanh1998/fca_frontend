@@ -7,25 +7,35 @@ import GeneralInformation from '../PartnerInformation/GeneralInformation/index.j
 import LicenseManagement from '../PartnerInformation/LicenseManagment/index.jsx';
 import ItemManagement from '../PartnerInformation/ItemManagement/index.jsx';
 import styles from './index.less';
+import { PAGE_SIZE } from '../../../../../config/constants';
 
 @connect(({ partner, loading }) => ({
   partner: partner.partner,
+  allFcaLicenseList: partner.allFcaLicenseList,
 }))
 class PartnerInformation extends React.Component {
-  componentWillMount() {
+  async componentWillMount() {
     const { dispatch } = this.props;
     const url = window.location.href;
     const id = url.substring(url.indexOf('=') + 1);
-    dispatch({
+    await dispatch({
       type: 'partner/getPartner',
       payload: {
         id: id,
       },
     });
+    dispatch({
+      type: 'partner/getFcaLicenseList',
+      payload: {
+        skip: 0,
+        limit: PAGE_SIZE,
+      },
+    });
   }
 
   render() {
-    const { partner } = this.props;
+    console.log('partner-information', this.props.partner);
+    const { partner, allFcaLicenseList } = this.props;
     return (
       <div className={styles.applicationManagementContainer}>
         <Tabs
@@ -46,7 +56,7 @@ class PartnerInformation extends React.Component {
             <ItemManagement partner={partner} />
           </Tabs.TabPane>
           <Tabs.TabPane tab="License Management" key="3">
-            <LicenseManagement partner={partner} />
+            <LicenseManagement partner={partner} packages={allFcaLicenseList} />
           </Tabs.TabPane>
         </Tabs>
       </div>

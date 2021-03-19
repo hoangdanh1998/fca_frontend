@@ -19,19 +19,19 @@ class DataTable extends React.Component {
     };
   }
 
-  componentWillMount() {
-    const { dispatch } = this.props;
-    console.log('componentWillMount');
-    // dispatch({
-    //   type: 'partner/getPartnerList',
-    //   payload: {
-    //     name: '',
-    //     status: '',
-    //     skip: this.state.skip,
-    //     limit: this.state.PAGE_SIZE,
-    //   },
-    // });
-  }
+  // componentWillMount() {
+  //   const { dispatch } = this.props;
+  //   console.log('componentWillMount');
+  //   dispatch({
+  //     type: 'partner/getPartnerList',
+  //     payload: {
+  //       name: '',
+  //       status: '',
+  //       skip: this.state.skip,
+  //       limit: this.state.PAGE_SIZE,
+  //     },
+  //   });
+  // }
 
   onChangePaging = page => {
     // const { dispatch } = this.props;

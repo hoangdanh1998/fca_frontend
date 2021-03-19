@@ -21,3 +21,10 @@ export async function updatePartnerStatus(params) {
     data: { status: params.status },
   }).catch(error => error);
 }
+
+export async function createPartnerLicense(params) {
+  return request(`/api/partner/${params.partnerId}/partner-license`, {
+    method: 'POST',
+    data: params,
+  }).catch(error => error);
+}

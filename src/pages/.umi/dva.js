@@ -22,6 +22,7 @@ export function _onCreate() {
   
   app.model({ namespace: 'admin', ...(require('/Users/pkimanh03/Documents/capstone/fca_frontend/src/models/admin.js').default) });
 app.model({ namespace: 'global', ...(require('/Users/pkimanh03/Documents/capstone/fca_frontend/src/models/global.js').default) });
+app.model({ namespace: 'license', ...(require('/Users/pkimanh03/Documents/capstone/fca_frontend/src/models/license.js').default) });
 app.model({ namespace: 'order', ...(require('/Users/pkimanh03/Documents/capstone/fca_frontend/src/models/order.js').default) });
 app.model({ namespace: 'partner', ...(require('/Users/pkimanh03/Documents/capstone/fca_frontend/src/models/partner.js').default) });
 app.model({ namespace: 'setting', ...(require('/Users/pkimanh03/Documents/capstone/fca_frontend/src/models/setting.js').default) });
