@@ -1,12 +1,9 @@
-import React from 'react';
-import { router } from 'umi';
-import { connect } from 'dva';
+import { CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
+import { Descriptions, Space } from 'antd';
 import moment from 'moment';
+import React from 'react';
 import NumberFormat from 'react-number-format';
-import { Space, Descriptions, Tag } from 'antd';
-import { CloseCircleOutlined, CheckCircleOutlined, EditOutlined } from '@ant-design/icons';
-import { LICENSE_STATUS, DATE_FORMAT } from '../../../../../../config/constants';
-import { convertStringToCamel } from '../../../../../utils/utils';
+import { DATE_FORMAT, LICENSE_STATUS } from '../../../../../../config/constants';
 
 class ViewLicense extends React.Component {
   render() {
@@ -69,7 +66,7 @@ class ViewLicense extends React.Component {
           {moment(license.startDate).format(DATE_FORMAT)}
         </Descriptions.Item>
         <Descriptions.Item label="End Date">
-          {license.endDate ? moment(license.startDate).format(DATE_FORMAT) : '-'}
+          {license.endDate ? moment(license.endDate).format(DATE_FORMAT) : '-'}
         </Descriptions.Item>
         <Descriptions.Item span={2} labelStyle={{ width: '20%' }} label="Description">
           {license.description}
