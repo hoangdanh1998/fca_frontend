@@ -1,15 +1,10 @@
 import React from 'react';
-import { Table, Input, Space, DatePicker, Radio } from 'antd';
-import NumberFormat from 'react-number-format';
-import moment from 'moment';
+import { Table, Dropdown, Menu, Icon } from 'antd';
 import { connect } from 'dva';
-import {
-  DATE_FORMAT_CALL_API,
-  PAGE_SIZE,
-  DATE_FORMAT,
-  ORDER_STATUS_FILTER,
-} from '../../../../../config/constants';
+import { PAGE_SIZE } from '../../../../../config/constants';
 import styles from './index.less';
+import 'antd/dist/antd.css';
+import ContextMenu from '../../../../components/atom/ContextMenu/index';
 
 @connect(({ license, loading }) => {
   return {
@@ -25,6 +20,12 @@ class DataTable extends React.Component {
       skip: 0,
       pageSize: PAGE_SIZE,
       loading: false,
+      visibleMenu: false,
+      menu: {
+        visible: false,
+        // x: 0,
+        // y: 0,
+      },
     };
   }
 
@@ -69,6 +70,13 @@ class DataTable extends React.Component {
               className={styles.table}
               dataSource={dataList}
               columns={columnList}
+              onRow={(record, rowIndex) => {
+                return {
+                  onClick: event => {
+                    this.props.onClickRow(record);
+                  },
+                };
+              }}
               pagination={{
                 current: this.state.pageIndex,
                 pageSize: this.state.pageSize,

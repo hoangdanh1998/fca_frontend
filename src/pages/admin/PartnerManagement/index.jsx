@@ -12,7 +12,12 @@ import {
   PAGE_SIZE,
 } from '../../../../config/constants';
 import { convertStringToCamel } from '../../../utils/utils';
-import { CheckCircleOutlined, CloseCircleOutlined, ClockCircleOutlined } from '@ant-design/icons';
+import {
+  CheckCircleOutlined,
+  CloseCircleOutlined,
+  ClockCircleOutlined,
+  EyeOutlined,
+} from '@ant-design/icons';
 import styles from './index.less';
 
 @connect(({ partner, loading }) => ({}))
@@ -127,7 +132,7 @@ class PartnerManagement extends React.Component {
         title: 'Address',
         dataIndex: ['address', 'description'],
         key: ['address', 'description'],
-        width: '40%',
+        width: '60%',
       },
       {
         title: 'Status',
@@ -155,19 +160,23 @@ class PartnerManagement extends React.Component {
         render: (text, record, index) => {
           return record.expirationDate ? moment(record.expirationDate).format(DATE_FORMAT) : '-';
         },
+        width: '20%',
       },
-      {
-        title: 'Action',
-        dataIndex: 'action',
-        key: 'action',
-        render: (text, record, index) => (
-          <Space direction="horizontal" style={{ display: 'flex' }}>
-            <a href={`/fca-management/partner-management/partner-information?id=${record.id}`}>
-              View
-            </a>
-          </Space>
-        ),
-      },
+      // {
+      //   title: 'Action',
+      //   dataIndex: 'action',
+      //   key: 'action',
+      //   render: (text, record, index) => (
+      //     <Space direction="horizontal" style={{ display: 'flex' }}>
+      //       <EyeOutlined
+      //         style={{ color: 'black' }}
+      //         onClick={() => {
+      //           this.handleViewPartner(record);
+      //         }}
+      //       />
+      //     </Space>
+      //   ),
+      // },
     ];
     return (
       <>

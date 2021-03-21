@@ -1,11 +1,11 @@
 import {
-  CheckCircleOutlined, CloseCircleOutlined,
-
-
-
-  CloseOutlined, CopyOutlined, EyeOutlined
+  CheckCircleOutlined,
+  CloseCircleOutlined,
+  CloseOutlined,
+  CopyOutlined,
+  EyeOutlined,
 } from '@ant-design/icons';
-import { Space, Tag } from 'antd';
+import { Space, Tag, Dropdown, Menu } from 'antd';
 import { connect } from 'dva';
 import moment from 'moment';
 import React from 'react';
@@ -13,7 +13,7 @@ import NumberFormat from 'react-number-format';
 import {
   DATE_FORMAT,
   DATE_TIME_FORMAT_CALL_API,
-  LICENSE_STATUS
+  LICENSE_STATUS,
 } from '../../../../config/constants';
 import ConfirmationPopup from '../../../components/atom/ConfirmationPopup/index';
 import InsertButton from '../../../components/atom/InsertButton/index';
@@ -33,6 +33,7 @@ class LicenseManagement extends React.Component {
     page: 1,
     mode: '',
     confirmationMessage: {},
+    record: {},
   };
 
   setPage = page => {
@@ -115,6 +116,60 @@ class LicenseManagement extends React.Component {
   };
 
   render() {
+    const menu = (
+      <Menu style={{ width: '50%' }}>
+        <Menu.Item>
+          <Space
+            onClick={() => {
+              this.handleVisibleDetailsModal(this.state.record, 'view');
+            }}
+            direction="horizontal"
+            style={{ display: 'flex' }}
+          >
+            <EyeOutlined style={{ color: 'black' }} />
+            <span style={{ color: 'black' }}>View details</span>
+          </Space>
+        </Menu.Item>
+        <Menu.Item key="2">
+          <Space
+            onClick={() => {
+              this.handleVisibleDetailsModal(this.state.record, 'clone');
+            }}
+            direction="horizontal"
+            style={{ display: 'flex' }}
+          >
+            <CopyOutlined
+              style={{ color: 'blue' }}
+              onClick={() => {
+                this.handleVisibleDetailsModal(this.state.record, 'clone');
+              }}
+            />
+            <span style={{ color: 'blue' }}>Clone new license</span>
+          </Space>
+        </Menu.Item>
+        <Menu.Item key="3">
+          <Space direction="horizontal" style={{ display: 'flex' }}>
+            <CloseOutlined
+              style={{
+                color: this.state.record.status === LICENSE_STATUS.ARCHIVE ? 'grey' : 'red',
+              }}
+              onClick={() => {
+                if (this.state.record.status === LICENSE_STATUS.ACTIVE) {
+                  this.handleVisibleConfirmationModal(this.state.record);
+                }
+              }}
+            />
+            <span
+              style={{
+                color: this.state.record.status === LICENSE_STATUS.ARCHIVE ? 'grey' : 'red',
+              }}
+            >
+              Archive license
+            </span>
+          </Space>
+        </Menu.Item>
+      </Menu>
+    );
     const columnList = [
       {
         title: 'No.',
@@ -127,6 +182,13 @@ class LicenseManagement extends React.Component {
         title: 'Name',
         dataIndex: 'name',
         key: 'name',
+        render: (text, record, index) => (
+          <div style={{ backgroundColor: 'red', height: '100%' }}>
+            <Dropdown overlay={menu} placement="bottomLeft" trigger={['click']}>
+              <p style={{ width: '100%', height: '100%' }}>{record.name}</p>
+            </Dropdown>
+          </div>
+        ),
       },
       {
         title: 'Duration',
@@ -178,35 +240,35 @@ class LicenseManagement extends React.Component {
         },
         align: 'right',
       },
-      {
-        title: 'Action',
-        dataIndex: 'action',
-        key: 'action',
-        render: (text, record, index) => (
-          <Space direction="horizontal" style={{ display: 'flex' }}>
-            <EyeOutlined
-              style={{ color: 'black' }}
-              onClick={() => {
-                this.handleVisibleDetailsModal(record, 'view');
-              }}
-            />
-            <CopyOutlined
-              style={{ color: 'blue' }}
-              onClick={() => {
-                this.handleVisibleDetailsModal(record, 'clone');
-              }}
-            />
-            <CloseOutlined
-              style={{ color: record.status === LICENSE_STATUS.ARCHIVE ? 'grey' : 'red' }}
-              onClick={() => {
-                if (record.status === LICENSE_STATUS.ACTIVE) {
-                  this.handleVisibleConfirmationModal(record);
-                }
-              }}
-            />
-          </Space>
-        ),
-      },
+      // {
+      //   title: 'Action',
+      //   dataIndex: 'action',
+      //   key: 'action',
+      //   render: (text, record, index) => (
+      //     <Space direction="horizontal" style={{ display: 'flex' }}>
+      //       <EyeOutlined
+      //         style={{ color: 'black' }}
+      //         onClick={() => {
+      //           this.handleVisibleDetailsModal(record, 'view');
+      //         }}
+      //       />
+      //       <CopyOutlined
+      //         style={{ color: 'blue' }}
+      //         onClick={() => {
+      //           this.handleVisibleDetailsModal(record, 'clone');
+      //         }}
+      //       />
+      //       <CloseOutlined
+      //         style={{ color: record.status === LICENSE_STATUS.ARCHIVE ? 'grey' : 'red' }}
+      //         onClick={() => {
+      //           if (record.status === LICENSE_STATUS.ACTIVE) {
+      //             this.handleVisibleConfirmationModal(record);
+      //           }
+      //         }}
+      //       />
+      //     </Space>
+      //   ),
+      // },
     ];
     console.log('license-management');
     return (
@@ -219,7 +281,13 @@ class LicenseManagement extends React.Component {
               }}
             />
           </div>
-          <DataTable columnList={columnList} />
+          <DataTable
+            columnList={columnList}
+            onClickRow={record => {
+              // this.handleVisibleDetailsModal(record, 'view');
+              this.setState({ record: record });
+            }}
+          />
           <LicenseDetailsModal
             visible={this.state.visibleDetailsModal}
             license={this.state.license}
@@ -229,13 +297,15 @@ class LicenseManagement extends React.Component {
               this.handleCloneLicense(values);
             }}
           />
-          {this.state.visibleCreateModal ? (<CreateLicenseModal
-            visible={this.state.visibleCreateModal}
-            onSubmit={values => {
-              this.handleCreateLicense(values);
-            }}
-            hideModal={this.hideModal}
-          />) : null}
+          {this.state.visibleCreateModal ? (
+            <CreateLicenseModal
+              visible={this.state.visibleCreateModal}
+              onSubmit={values => {
+                this.handleCreateLicense(values);
+              }}
+              hideModal={this.hideModal}
+            />
+          ) : null}
 
           <ConfirmationPopup
             visible={this.state.visibleConfirmationModal}

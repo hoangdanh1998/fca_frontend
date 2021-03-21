@@ -157,16 +157,22 @@ class OrderManagement extends React.Component {
         },
         align: 'right',
       },
-      {
-        title: 'Action',
-        dataIndex: 'action',
-        key: 'action',
-        render: (text, record, index) => (
-          <Space direction="horizontal" style={{ display: 'flex' }}>
-            <a href={`/fca-management/order-management/order-information?id=${record.id}`}>View</a>
-          </Space>
-        ),
-      },
+      // {
+      //   title: 'Action',
+      //   dataIndex: 'action',
+      //   key: 'action',
+      //   render: (text, record, index) => (
+      //     <Space direction="horizontal" style={{ display: 'flex' }}>
+      //       <a href={`/fca-management/order-management/order-information?id=${record.id}`}>View</a>
+      //     </Space>
+      //     //   <EyeOutlined
+      //     //   style={{ color: 'black' }}
+      //     //   onClick={() => {
+      //     //     this.handleViewPartner(record);
+      //     //   }}
+      //     // />
+      //   ),
+      // },
     ];
     return (
       <>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Table, Input, Space, Radio } from 'antd';
 import { connect } from 'dva';
+import { router } from 'umi';
 import styles from './index.less';
 import { PAGE_SIZE, PARTNER_STATUS_FILTER } from '../../../../../config/constants';
 
@@ -129,6 +130,15 @@ class DataTable extends React.Component {
               className={styles.table}
               dataSource={dataList}
               columns={columnList}
+              onRow={(record, rowIndex) => {
+                return {
+                  onClick: event => {
+                    router.push(
+                      `/fca-management/partner-management/partner-information?id=${record.id}`,
+                    );
+                  },
+                };
+              }}
               pagination={{
                 current: this.state.pageIndex,
                 pageSize: this.state.pageSize,

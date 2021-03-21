@@ -2,6 +2,7 @@ import React from 'react';
 import { Table, Input, Space, DatePicker, Radio } from 'antd';
 import moment from 'moment';
 import { connect } from 'dva';
+import { router } from 'umi';
 import {
   DATE_FORMAT_CALL_API,
   PAGE_SIZE,
@@ -162,6 +163,15 @@ class DataTable extends React.Component {
               className={styles.table}
               dataSource={dataList}
               columns={columnList}
+              onRow={(record, rowIndex) => {
+                return {
+                  onClick: event => {
+                    router.push(
+                      `/fca-management/order-management/order-information?id=${record.id}`,
+                    );
+                  },
+                };
+              }}
               pagination={{
                 current: this.state.page,
                 pageSize: this.state.pageSize,
