@@ -17,7 +17,7 @@ class DataTable extends React.Component {
       pageIndex: 1,
       skip: 0,
       pageSize: PAGE_SIZE,
-      name: '',
+      search: '',
       status: '',
     };
   }
@@ -27,7 +27,7 @@ class DataTable extends React.Component {
     dispatch({
       type: 'partner/getPartnerList',
       payload: {
-        name: this.state.name,
+        search: this.state.search,
         status: this.state.status,
         skip: this.state.skip,
         limit: this.state.pageSize,
@@ -44,7 +44,7 @@ class DataTable extends React.Component {
     dispatch({
       type: 'partner/getPartnerList',
       payload: {
-        name: this.state.name,
+        search: this.state.search,
         status: this.state.status,
         skip: parseInt((page - 1) * pageSize),
         limit: pageSize,
@@ -53,27 +53,27 @@ class DataTable extends React.Component {
   };
 
   handlePressSearch = e => {
-    this.setState({ name: e.target.value });
+    this.setState({ search: e.target.value });
     const { dispatch } = this.props;
     dispatch({
       type: 'partner/getPartnerList',
       payload: {
         skip: this.state.skip,
         limit: this.state.pageSize,
-        name: e.target.value,
+        search: e.target.value,
         status: this.state.status,
       },
     });
   };
   handleClickSearch = (value, event) => {
-    this.setState({ name: value });
+    this.setState({ search: value });
     const { dispatch } = this.props;
     dispatch({
       type: 'partner/getPartnerList',
       payload: {
         skip: this.state.skip,
         limit: this.state.pageSize,
-        name: value,
+        search: value,
         status: this.state.status,
       },
     });
@@ -86,7 +86,7 @@ class DataTable extends React.Component {
       payload: {
         skip: this.state.skip,
         limit: this.state.pageSize,
-        name: this.state.name,
+        search: this.state.search,
         status: e.target.value === 'ALL' ? '' : e.target.value,
       },
     });
