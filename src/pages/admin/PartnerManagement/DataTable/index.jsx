@@ -19,12 +19,14 @@ class DataTable extends React.Component {
       pageSize: PAGE_SIZE,
       search: '',
       status: '',
+      loading: false,
     };
   }
 
-  componentWillMount() {
+  async componentWillMount() {
+    this.setState({ loading: true });
     const { dispatch } = this.props;
-    dispatch({
+    await dispatch({
       type: 'partner/getPartnerList',
       payload: {
         search: this.state.search,
@@ -33,15 +35,17 @@ class DataTable extends React.Component {
         limit: this.state.pageSize,
       },
     });
+    this.setState({ loading: false });
   }
 
-  onChangePaging = (page, pageSize) => {
+  onChangePaging = async (page, pageSize) => {
     const { dispatch } = this.props;
     this.setState({
       pageIndex: page,
       pageSize: pageSize,
+      loading: true,
     });
-    dispatch({
+    await dispatch({
       type: 'partner/getPartnerList',
       payload: {
         search: this.state.search,
@@ -50,12 +54,13 @@ class DataTable extends React.Component {
         limit: pageSize,
       },
     });
+    this.setState({ loading: false });
   };
 
-  handlePressSearch = e => {
-    this.setState({ search: e.target.value });
+  handlePressSearch = async e => {
+    this.setState({ search: e.target.value, loading: true });
     const { dispatch } = this.props;
-    dispatch({
+    await dispatch({
       type: 'partner/getPartnerList',
       payload: {
         skip: this.state.skip,
@@ -64,11 +69,12 @@ class DataTable extends React.Component {
         status: this.state.status,
       },
     });
+    this.setState({ loading: false });
   };
-  handleClickSearch = (value, event) => {
-    this.setState({ search: value });
+  handleClickSearch = async (value, event) => {
+    this.setState({ search: value, loading: true });
     const { dispatch } = this.props;
-    dispatch({
+    await dispatch({
       type: 'partner/getPartnerList',
       payload: {
         skip: this.state.skip,
@@ -77,11 +83,12 @@ class DataTable extends React.Component {
         status: this.state.status,
       },
     });
+    this.setState({ loading: false });
   };
-  handleChangeFilter = e => {
-    this.setState({ status: e.target.value === 'ALL' ? '' : e.target.value });
+  handleChangeFilter = async e => {
+    this.setState({ status: e.target.value === 'ALL' ? '' : e.target.value, loading: true });
     const { dispatch } = this.props;
-    dispatch({
+    await dispatch({
       type: 'partner/getPartnerList',
       payload: {
         skip: this.state.skip,
@@ -90,6 +97,7 @@ class DataTable extends React.Component {
         status: e.target.value === 'ALL' ? '' : e.target.value,
       },
     });
+    this.setState({ loading: false });
   };
 
   render() {
@@ -117,6 +125,7 @@ class DataTable extends React.Component {
           </Space>
           <div>
             <Table
+              loading={this.state.loading}
               className={styles.table}
               dataSource={dataList}
               columns={columnList}
