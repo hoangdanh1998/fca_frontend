@@ -1,8 +1,16 @@
 import React from 'react';
 import { router } from 'umi';
 import { connect } from 'dva';
-import { Image, Carousel, Row, Col, Card, Modal } from 'antd';
-import { CloseCircleOutlined, CheckCircleOutlined } from '@ant-design/icons';
+import moment from 'moment';
+import NumberFormat from 'react-number-format';
+import { Image, Carousel, Row, Col, Card, Modal, Descriptions, Tag, Space } from 'antd';
+import {
+  EditOutlined,
+  CheckOutlined,
+  CloseOutlined,
+  CloseCircleOutlined,
+  CheckCircleOutlined,
+} from '@ant-design/icons';
 import styles from './index.less';
 import ViewItem from './ViewItemComponent/index';
 import EditItem from './EditItemComponent/index';
@@ -77,43 +85,45 @@ class ItemDetailsModal extends React.Component {
         style={{ textAlign: 'center' }}
         title="PARTNER'S ITEM"
         footer={null}
-        width="80%"
         bodyStyle={{ textAlign: 'left' }}
         onCancel={() => {
-          this.setState({ viewMode: 'view' });
           this.props.hideModal();
         }}
       >
-        <Row className={styles.bodyRow}>
-          <Col className={styles.bodyColImage} span={8}>
-            <Card>
-              <Carousel className={styles.bodyCarousel} autoplay>
-                <Image className={styles.bodyImage} preview={false} src={item.imageLink} />
-              </Carousel>
-            </Card>
-          </Col>
-          <Col className={styles.bodyColInformation} span={16}>
-            {this.state.viewMode === 'view' ? (
-              <ViewItem
-                item={item}
-                onChangeMode={() => this.handleChangeMode('edit')}
-                askConfirm={toStatus => {
-                  this.handleVisibleChangeStatus(toStatus);
-                }}
-              />
-            ) : (
-              <EditItem
-                item={item}
-                onChangeMode={() => this.handleChangeMode('view')}
-                onUpdateItem={values => this.handleUpdateItem(values)}
-              />
-            )}
-          </Col>
-        </Row>
-        <ConfirmationPopup
-          message={this.state.confirmMessage}
-          visible={this.state.visibleChangeStatus}
-        />
+        <Descriptions
+          column={1}
+          contentStyle={{ fontWeight: 'bold' }}
+          labelStyle={{ textAlign: 'left', width: '30%' }}
+          title={
+            <Space
+              direction="horizontal"
+              style={{
+                justifyContent: 'flex-start',
+                display: 'flex',
+              }}
+            >
+              {item.status === PARTNER_ITEM_STATUS.ACTIVE ? (
+                <CheckCircleOutlined style={{ color: 'green' }} />
+              ) : (
+                <CloseCircleOutlined style={{ color: 'red' }} />
+              )}
+              {item.name}
+            </Space>
+          }
+        >
+          <Descriptions.Item label="FCA Group">
+            {Object.assign({}, item.fcaItem).name}
+          </Descriptions.Item>
+          <Descriptions.Item label="Price">
+            <NumberFormat value={item.price} displayType={'text'} thousandSeparator={true} />
+          </Descriptions.Item>
+          <Descriptions.Item label="Registration Date">
+            {moment(item.createdAt).format(DATE_FORMAT)}
+          </Descriptions.Item>
+          <Descriptions.Item>
+            <Image className={styles.bodyImage} preview={false} src={item.imageLink} />
+          </Descriptions.Item>
+        </Descriptions>
       </Modal>
     );
   }
