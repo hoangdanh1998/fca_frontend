@@ -157,6 +157,7 @@ class PartnerManagement extends React.Component {
         sorter: (a, b) =>
           moment(a.expirationDate, DATE_FORMAT_CALL_API) -
           moment(b.expirationDate, DATE_FORMAT_CALL_API),
+        defaultSortOrder: 'ascend',
         render: (text, record, index) => {
           return record.expirationDate ? moment(record.expirationDate).format(DATE_FORMAT) : '-';
         },
