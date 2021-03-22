@@ -5,7 +5,7 @@ import {
   CopyOutlined,
   EyeOutlined,
 } from '@ant-design/icons';
-import { Space, Tag, Dropdown, Menu } from 'antd';
+import { Space, Tag, Dropdown, Menu, Table } from 'antd';
 import { connect } from 'dva';
 import moment from 'moment';
 import React from 'react';
@@ -148,7 +148,15 @@ class LicenseManagement extends React.Component {
           </Space>
         </Menu.Item>
         <Menu.Item key="3">
-          <Space direction="horizontal" style={{ display: 'flex' }}>
+          <Space
+            onClick={() => {
+              if (this.state.record.status === LICENSE_STATUS.ACTIVE) {
+                this.handleVisibleConfirmationModal(this.state.record);
+              }
+            }}
+            direction="horizontal"
+            style={{ display: 'flex' }}
+          >
             <CloseOutlined
               style={{
                 color: this.state.record.status === LICENSE_STATUS.ARCHIVE ? 'grey' : 'red',
@@ -183,11 +191,9 @@ class LicenseManagement extends React.Component {
         dataIndex: 'name',
         key: 'name',
         render: (text, record, index) => (
-          <div style={{ backgroundColor: 'red', height: '100%' }}>
-            <Dropdown overlay={menu} placement="bottomLeft" trigger={['click']}>
-              <p style={{ width: '100%', height: '100%' }}>{record.name}</p>
-            </Dropdown>
-          </div>
+          <Dropdown overlay={menu} placement="bottomLeft" trigger={['click']}>
+            <div style={{ display: 'flex', flex: 1 }}>{record.name}</div>
+          </Dropdown>
         ),
       },
       {

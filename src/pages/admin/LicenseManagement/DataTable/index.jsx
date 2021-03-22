@@ -3,8 +3,6 @@ import { Table, Dropdown, Menu, Icon } from 'antd';
 import { connect } from 'dva';
 import { PAGE_SIZE } from '../../../../../config/constants';
 import styles from './index.less';
-import 'antd/dist/antd.css';
-import ContextMenu from '../../../../components/atom/ContextMenu/index';
 
 @connect(({ license, loading }) => {
   return {
@@ -20,12 +18,6 @@ class DataTable extends React.Component {
       skip: 0,
       pageSize: PAGE_SIZE,
       loading: false,
-      visibleMenu: false,
-      menu: {
-        visible: false,
-        // x: 0,
-        // y: 0,
-      },
     };
   }
 
@@ -61,7 +53,6 @@ class DataTable extends React.Component {
 
   render() {
     const { dataList, totalFcaLicense, columnList } = this.props;
-    console.log('dataList', dataList);
     return (
       <div>
         <div>
