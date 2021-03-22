@@ -23,8 +23,16 @@ class ExpandLicenseModal extends React.Component {
     //   : moment().add(1, 'months'),
     // package: 1,
     // price: LICENSE_PACKAGE.find(license => license.value === 1).price,
-    startDate: moment(),
-    endDate: this.props.packages
+    startDate: this.props.lastLicense
+      ? moment(this.props.lastLicense.endDate).add(1, 'day')
+      : moment(),
+    endDate: this.props.lastLicense
+      ? this.props.packages
+        ? moment(this.props.lastLicense.endDate)
+            .add(1, 'day')
+            .add(this.props.packages[0].duration, 'months')
+        : moment(this.props.lastLicense.endDate).add(1, 'day')
+      : this.props.packages
       ? moment().add(this.props.packages[0].duration, 'months')
       : moment(),
     package: this.props.packages ? this.props.packages[0].value : '',
@@ -68,6 +76,8 @@ class ExpandLicenseModal extends React.Component {
 
   render() {
     const { lastLicense, hideModal, packages } = this.props;
+    console.log('lastLicense', lastLicense);
+    const disabledDate = lastLicense ? moment(lastLicense.endDate) : moment().subtract(1, 'day');
     return (
       <Modal
         title="CREATE LICENSE"
@@ -83,7 +93,8 @@ class ExpandLicenseModal extends React.Component {
               <b>{lastLicense.storeName}</b> has license
             </p>
             <p className={styles.message}>
-              from <b>{lastLicense.licenseFrom}</b> to <b>{lastLicense.licenseTo}</b>
+              from <b>{moment(lastLicense.startDate).format(DATE_FORMAT)}</b> to{' '}
+              <b>{moment(lastLicense.endDate).format(DATE_FORMAT)}</b>
             </p>
           </>
         ) : null}
@@ -108,6 +119,7 @@ class ExpandLicenseModal extends React.Component {
                 onChange={value => {
                   this.handleChangeStartDate(value);
                 }}
+                disabledDate={d => !d || d.isSameOrBefore(disabledDate)}
               />
             </Form.Item>
             <Form.Item className={styles.formItem} label="To">

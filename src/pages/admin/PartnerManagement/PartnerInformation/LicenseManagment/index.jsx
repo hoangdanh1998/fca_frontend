@@ -7,11 +7,14 @@ import InsertButton from '../../../../../components/atom/InsertButton/index.jsx'
 import ExpandLicenseModal from '../LicenseManagment/ExpandLicenseModal/index.jsx';
 import styles from './index.less';
 import { PARTNER_LICENSE_LIST, PARTNER_LAST_LICENSE } from '../../../../../../config/seedingData';
-import { DATE_FORMAT, PARTNER_STATUS, PAGE_SIZE } from '../../../../../../config/constants';
+import {
+  DATE_FORMAT,
+  PARTNER_STATUS,
+  PAGE_SIZE,
+  LICENSE_STATUS,
+} from '../../../../../../config/constants';
 
 @connect(({ partner, loading }) => ({
-  // allFcaLicenseList: partner.allFcaLicenseList,
-  // partner: partner.partner,
   createdLicense: partner.createdLicense,
 }))
 class LicenseManagement extends React.Component {
@@ -19,7 +22,6 @@ class LicenseManagement extends React.Component {
     super(props);
     this.state = {
       visibleChangeExpirationDate: false,
-      partnerLicense: PARTNER_LAST_LICENSE,
       licenses: this.props.partner.licenses ? this.props.partner.licenses : [],
     };
   }
@@ -59,7 +61,13 @@ class LicenseManagement extends React.Component {
   };
 
   render() {
-    const lastLicense = this.props.lastLicense ? this.props.lastLicense : null;
+    const lastLicense =
+      this.props.partner.licenses && this.props.partner.licenses.length > 0
+        ? this.props.partner.licenses[this.props.partner.licenses.length - 1].status ===
+          LICENSE_STATUS.ACTIVE
+          ? this.props.partner.licenses[this.props.partner.licenses.length - 1]
+          : null
+        : null;
     const partner = this.props.partner;
     const columnList = [
       {
@@ -130,7 +138,7 @@ class LicenseManagement extends React.Component {
           {this.state.visibleChangeExpirationDate ? (
             <ExpandLicenseModal
               packages={this.props.packages}
-              {...(lastLicense ? (lastLicense = { lastLicense }) : null)}
+              lastLicense={lastLicense ? { ...lastLicense, storeName: partner.name } : null}
               hideModal={this.hideModalExpirationDate}
               submitModal={values => {
                 this.handleCreatePartnerLicense(values);
