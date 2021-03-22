@@ -117,7 +117,7 @@ class LicenseManagement extends React.Component {
 
   render() {
     const menu = (
-      <Menu style={{ width: '50%' }}>
+      <Menu style={{ width: 200 }}>
         <Menu.Item>
           <Space
             onClick={() => {
@@ -181,9 +181,12 @@ class LicenseManagement extends React.Component {
     const columnList = [
       {
         title: 'No.',
-        render: (text, record, index) => {
-          return index + 1;
-        },
+        render: (text, record, index) => (
+          // return index + 1;
+          <Dropdown overlay={menu} placement="bottomLeft" trigger={['click']}>
+            <div style={{ textAlign: 'right', width: '100%' }}>{index + 1}</div>
+          </Dropdown>
+        ),
         align: 'right',
       },
       {
@@ -200,16 +203,20 @@ class LicenseManagement extends React.Component {
         title: 'Duration',
         dataIndex: 'duration',
         key: 'duration',
-        render: (text, record, index) => {
-          return `${record.duration} month(s)`;
-        },
+        render: (text, record, index) => (
+          <Dropdown overlay={menu} placement="bottomLeft" trigger={['click']}>
+            <div style={{ display: 'flex', flex: 1 }}>{`${record.duration} month(s)`}</div>
+          </Dropdown>
+        ),
       },
       {
         title: 'Price',
         dataIndex: 'price',
         key: 'price',
         render: (text, record, index) => (
-          <NumberFormat value={record.price} displayType={'text'} thousandSeparator={true} />
+          <Dropdown overlay={menu} placement="bottomLeft" trigger={['click']}>
+            <NumberFormat value={record.price} displayType={'text'} thousandSeparator={true} />
+          </Dropdown>
         ),
         align: 'right',
       },
@@ -219,18 +226,20 @@ class LicenseManagement extends React.Component {
         key: 'status',
         render: (text, record, index) => {
           return (
-            <Tag
-              color={record.status === LICENSE_STATUS.ACTIVE ? 'green' : 'red'}
-              icon={
-                record.status === LICENSE_STATUS.ACTIVE ? (
-                  <CheckCircleOutlined />
-                ) : (
-                  <CloseCircleOutlined />
-                )
-              }
-            >
-              {convertStringToCamel(record.status)}
-            </Tag>
+            <Dropdown overlay={menu} placement="bottomLeft" trigger={['click']}>
+              <Tag
+                color={record.status === LICENSE_STATUS.ACTIVE ? 'green' : 'red'}
+                icon={
+                  record.status === LICENSE_STATUS.ACTIVE ? (
+                    <CheckCircleOutlined />
+                  ) : (
+                    <CloseCircleOutlined />
+                  )
+                }
+              >
+                {convertStringToCamel(record.status)}
+              </Tag>
+            </Dropdown>
           );
         },
       },
@@ -241,9 +250,13 @@ class LicenseManagement extends React.Component {
         sorter: (a, b) =>
           moment(a.startDate, DATE_TIME_FORMAT_CALL_API) -
           moment(b.startDate, DATE_TIME_FORMAT_CALL_API),
-        render: (text, record, index) => {
-          return moment(record.startDate).format(DATE_FORMAT);
-        },
+        render: (text, record, index) => (
+          <Dropdown overlay={menu} placement="bottomLeft" trigger={['click']}>
+            <div style={{ textAlign: 'right', width: '100%' }}>
+              {moment(record.startDate).format(DATE_FORMAT)}
+            </div>
+          </Dropdown>
+        ),
         align: 'right',
       },
       // {
