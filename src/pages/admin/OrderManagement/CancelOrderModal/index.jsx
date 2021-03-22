@@ -19,29 +19,29 @@ class CancelOrderModal extends React.Component {
       const customerReason = CANCEL_ORDER_REASON.filter(reason => {
         return reason.value.startsWith('CUSTOMER');
       });
-      customerReason.push({ label: 'Other', value: 'OTHER' });
+      customerReason.push({ label: 'Khác', value: 'OTHER' });
       this.setState({ reasons: customerReason });
     }
     if (value.startsWith('PARTNER')) {
       const partnerReason = CANCEL_ORDER_REASON.filter(reason => {
         return reason.value.startsWith('PARTNER');
       });
-      partnerReason.push({ label: 'Other', value: 'OTHER' });
+      partnerReason.push({ label: 'Khác', value: 'OTHER' });
       this.setState({ reasons: partnerReason });
     }
   };
 
-  onSubmit = values => {
-    console.log('values', values);
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'order/cancelOrder',
-      payload: {
-        status: ORDER_STATUS.CANCELLATION,
-        id: this.props.order.id,
-      },
-    });
-  };
+  // onSubmit = values => {
+  //   console.log('values', values);
+  //   const { dispatch } = this.props;
+  //   dispatch({
+  //     type: 'order/cancelOrder',
+  //     payload: {
+  //       status: ORDER_STATUS.CANCELLATION,
+  //       id: this.props.order.id,
+  //     },
+  //   });
+  // };
 
   render() {
     const { visible, hideModal, order, submitModal } = this.props;
@@ -83,9 +83,6 @@ class CancelOrderModal extends React.Component {
           <Form.Item name="note" label="Note">
             <Input.TextArea />
           </Form.Item>
-          <p style={{ fontSize: 12 }}>
-            automatically refund the order amount to the customer if there is no feedback
-          </p>
           <Space direction="horizontal">
             <Form.Item>
               <Button htmlType="button" onClick={hideModal}>

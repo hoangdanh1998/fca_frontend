@@ -133,35 +133,35 @@ export const PARTNER_STATUS_ITEM_OPTIONS = [
 ];
 export const CANCEL_ORDER_REASON = [
   {
-    label: 'Delivery is late',
+    label: 'Cửa hàng giao hàng chậm',
     value: 'CUSTOMER_PARTNER-DELIVERY-LATE',
   },
   {
-    label: 'Drink has problem',
+    label: 'Món nước có vấn đề',
     value: 'CUSTOMER_DRINK-HAS-PROBLEM',
   },
   {
-    label: 'Customer personal reason',
+    label: 'Lí do cá nhận',
     value: 'CUSTOMER_PERSONAL-REASON',
   },
   {
-    label: 'Customer can not find store',
+    label: 'Không tìm thấy cửa hàng / Cửa hàng không mở cửa',
     value: 'CUSTOMER_STORE-NOT-FOUND',
   },
   {
-    label: 'Partner can not find customer',
-    value: 'PARTNER_CUSTOMER-NOT-FOUND',
+    label: 'Khách không nhận nước',
+    value: 'PARTNER_CUSTOMER-PROBLEM',
   },
   {
-    label: 'Partner need to close store',
+    label: 'Cần đóng cửa cửa hàng',
     value: 'PARTNER_CLOSE-STORE',
   },
   {
-    label: 'The order is out of stock',
+    label: 'Không đủ nguyên liệu',
     value: 'PARTNER_ORDER-OUT-OF-STOCK',
   },
   {
-    label: 'Other',
+    label: 'Khác',
     value: 'OTHER',
   },
 ];
