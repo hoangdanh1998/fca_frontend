@@ -3,7 +3,19 @@ import moment from 'moment';
 import { router } from 'umi';
 import { connect } from 'dva';
 import NumberFormat from 'react-number-format';
-import { Descriptions, Space, Table, Row, Col, Steps, Skeleton, List, Tag } from 'antd';
+import {
+  Descriptions,
+  Space,
+  Table,
+  Row,
+  Col,
+  Steps,
+  Skeleton,
+  List,
+  Tag,
+  Timeline,
+  Divider,
+} from 'antd';
 import Button from 'antd-button-color';
 import 'antd-button-color/dist/css/style.less';
 import {
@@ -53,11 +65,14 @@ class OrderInformation extends React.Component {
     if (this.props.order) {
       const result = Array.from(transaction, t => {
         return (
-          <Steps.Step
-            status="process"
-            title={convertStringToCamel(t.toStatus)}
-            subTitle={moment(t.createdAt).format(TIME_FORMAT)}
-          />
+          // <Steps.Step
+          //   status="process"
+          //   title={convertStringToCamel(t.toStatus)}
+          //   subTitle={moment(t.createdAt).format(TIME_FORMAT)}
+          // />
+          <Timeline.Item label={moment(t.createdAt).format(TIME_FORMAT)}>
+            {convertStringToCamel(t.toStatus)}
+          </Timeline.Item>
         );
       });
       return result;
@@ -180,9 +195,6 @@ class OrderInformation extends React.Component {
         values.note && values.note != '' ? ' - ' + values.note : ''
       }`;
     });
-    values.reason = convertedReason;
-    console.log('values', values);
-    // const reason = JSON.stringify(values);
     const reason = `[${
       values.requestBy.includes('PARTNER') ? 'Cửa hàng' : 'Khách'
     } huỷ] ${convertedReason.toString()}`;
@@ -206,12 +218,12 @@ class OrderInformation extends React.Component {
           return index + 1;
         },
         align: 'right',
-        width: '2%',
       },
       {
         title: 'Item',
         dataIndex: 'name',
         key: 'name',
+        width: '25%',
       },
       {
         title: 'Unit Price',
@@ -229,7 +241,6 @@ class OrderInformation extends React.Component {
         dataIndex: 'quantity',
         key: 'quantity',
         align: 'right',
-        width: '2%',
       },
       {
         title: 'Sub-total',
@@ -300,83 +311,83 @@ class OrderInformation extends React.Component {
                     {convertStringToCamel(order.status)}
                   </Tag>
                 </Descriptions.Item>
-                {order.status === ORDER_STATUS.CANCELLATION ? (
-                  <Descriptions.Item label="Reason">
-                    {this.handleViewReason(order)}
-                  </Descriptions.Item>
-                ) : (
-                  <Descriptions.Item label="">
-                    <br />
-                    <br />
-                  </Descriptions.Item>
-                )}
+                <Descriptions.Item label="Reason">{this.handleViewReason(order)}</Descriptions.Item>
               </Descriptions>
             </Space>
-            <Table
-              className={styles.table}
-              dataSource={order.items}
-              columns={itemColumns}
-              bordered
-              pagination={false}
-              footer={() => {
-                return (
-                  <Row>
-                    <Col flex={3} style={{ textAlign: 'left' }}>
-                      Total
-                    </Col>
-                    <Col flex={1} style={{ textAlign: 'right' }}>
-                      <NumberFormat
-                        value={order.total}
-                        displayType={'text'}
-                        thousandSeparator={true}
-                      />
-                    </Col>
-                  </Row>
-                );
-              }}
-            ></Table>
-            <br />
-            <Descriptions
-              title="Order Transaction"
-              extra={
-                <Space direction="horizontal">
-                  {order.status !== ORDER_STATUS.REJECTION &&
-                  order.status !== ORDER_STATUS.CANCELLATION &&
-                  order.status !== ORDER_STATUS.CLOSURE &&
-                  order.status !== ORDER_STATUS.RECEPTION ? (
-                    <>
-                      <Button
-                        style={{ width: '100%' }}
-                        type="success"
-                        with="ghost"
-                        icon={<CheckOutlined style={{ fontSize: 15, color: 'green' }} />}
-                        onClick={() => {
-                          this.handleVisibleCloseOrder(order);
-                        }}
-                      >
-                        Finish
-                      </Button>
-                      <Button
-                        style={{ width: '100%' }}
-                        type="danger"
-                        with="ghost"
-                        icon={<CloseOutlined style={{ fontSize: 20, color: 'red' }} />}
-                        onClick={() => {
-                          this.handleVisibleCancelOrder(order);
-                        }}
-                      >
-                        Cancel
-                      </Button>
-                    </>
-                  ) : null}
-                </Space>
-              }
-            >
-              <Descriptions.Item>
-                <br />
-                <Steps progressDot>{this.handleViewTransaction(order?.transaction)}</Steps>
-              </Descriptions.Item>
-            </Descriptions>
+            <Space direction="horizontal" style={{ width: '95%' }}>
+              <Descriptions column={2} title="Order's items">
+                <Descriptions.Item label="">
+                  <Table
+                    className={styles.table}
+                    dataSource={order.items}
+                    columns={itemColumns}
+                    bordered
+                    pagination={false}
+                    footer={() => {
+                      return (
+                        <Row>
+                          <Col flex={3} style={{ textAlign: 'left' }}>
+                            Total
+                          </Col>
+                          <Col flex={1} style={{ textAlign: 'right' }}>
+                            <NumberFormat
+                              value={order.total}
+                              displayType={'text'}
+                              thousandSeparator={true}
+                            />
+                          </Col>
+                        </Row>
+                      );
+                    }}
+                  />
+                </Descriptions.Item>
+                <Descriptions.Item label="">
+                  <Descriptions
+                    column={1}
+                    title="Order's Transaction"
+                    extra={
+                      <Space direction="horizontal">
+                        {order.status !== ORDER_STATUS.REJECTION &&
+                        order.status !== ORDER_STATUS.CANCELLATION &&
+                        order.status !== ORDER_STATUS.CLOSURE &&
+                        order.status !== ORDER_STATUS.RECEPTION ? (
+                          <>
+                            <Button
+                              style={{ width: '100%' }}
+                              type="success"
+                              with="ghost"
+                              icon={<CheckOutlined style={{ fontSize: 15, color: 'green' }} />}
+                              onClick={() => {
+                                this.handleVisibleCloseOrder(order);
+                              }}
+                            >
+                              Finish
+                            </Button>
+                            <Button
+                              style={{ width: '100%' }}
+                              type="danger"
+                              with="ghost"
+                              icon={<CloseOutlined style={{ fontSize: 20, color: 'red' }} />}
+                              onClick={() => {
+                                this.handleVisibleCancelOrder(order);
+                              }}
+                            >
+                              Cancel
+                            </Button>
+                          </>
+                        ) : null}
+                      </Space>
+                    }
+                  >
+                    <Descriptions.Item>
+                      <Timeline reverse style={{ width: '50%' }} mode="left" reverse>
+                        {this.handleViewTransaction(order?.transaction)}
+                      </Timeline>
+                    </Descriptions.Item>
+                  </Descriptions>
+                </Descriptions.Item>
+              </Descriptions>
+            </Space>
           </Space>
         )}
         <CancelOrderModal
