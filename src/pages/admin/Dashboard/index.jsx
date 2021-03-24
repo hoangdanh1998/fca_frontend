@@ -31,6 +31,8 @@ class Dashboard extends React.Component {
       startDate: moment(),
       endDate: moment(),
     },
+    searchPartnerList: this.props.filteredPartnerList,
+    searchLoading: false,
   };
 
   async componentWillMount() {
@@ -46,6 +48,13 @@ class Dashboard extends React.Component {
         toDate: '2021-3-26',
       },
     });
+    await dispatch({
+      type: 'statistics/filterPartner',
+      payload: {
+        search: '',
+      },
+    });
+    this.setState({ searchPartnerList: this.props.filteredPartnerList });
     this.setState({ loading: false });
   }
 
@@ -82,8 +91,30 @@ class Dashboard extends React.Component {
     });
   };
 
+  handleSearchPartner = async value => {
+    console.log('value', value);
+    const searchedList = this.state.searchPartnerList.filter(partner => {
+      return partner.label.search(value) != -1;
+    });
+    if (searchedList.length > 0) {
+      this.setState({ searchPartnerList: searchedList });
+    } else {
+      const { dispatch } = this.props;
+      this.setState({ searchLoading: true });
+      await dispatch({
+        type: 'statistics/filterPartner',
+        payload: {
+          search: value,
+        },
+      });
+      this.setState({
+        searchPartnerList: this.props.filteredPartnerList,
+        searchLoading: false,
+      });
+    }
+  };
+
   render() {
-    console.log('data-pie', this.props.orderStatisticsOfOnePartner);
     return this.state.loading ? (
       <Skeleton loading={this.state.loading} />
     ) : (
@@ -146,14 +177,14 @@ class Dashboard extends React.Component {
                 style={{ width: '27.5%', float: 'left' }}
               />
               <Select
+                showSearch
+                loading={this.state.searchLoading}
                 style={{ width: '27.5%', float: 'left', marginLeft: '2.5%' }}
                 placeholder="Select a partner"
+                options={this.state.searchPartnerList}
                 optionFilterProp="children"
-              >
-                <Select.Option value="jack">Jack</Select.Option>
-                <Select.Option value="lucy">Lucy</Select.Option>
-                <Select.Option value="tom">Tom</Select.Option>
-              </Select>
+                onSearch={this.handleSearchPartner}
+              ></Select>
             </div>
             {/* LINE CHART */}
             <div

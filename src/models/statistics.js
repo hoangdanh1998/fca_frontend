@@ -99,9 +99,15 @@ const Model = {
       };
     },
     handleFilterPartner(state, action) {
+      const convertedList = Array.from(action.payload.partners, partner => {
+        return {
+          label: partner.name,
+          value: partner.id,
+        };
+      });
       return {
         ...state,
-        filteredPartnerList: action.payload.license,
+        filteredPartnerList: convertedList,
       };
     },
   },
