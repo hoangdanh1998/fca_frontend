@@ -244,7 +244,7 @@ class LicenseManagement extends React.Component {
         },
       },
       {
-        title: 'Start Date',
+        title: 'Available From',
         dataIndex: 'startDate',
         key: 'startDate',
         sorter: (a, b) =>
