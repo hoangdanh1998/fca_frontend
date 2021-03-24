@@ -73,6 +73,20 @@ const routes = [
         authority: ['admin'],
         routes: [
           {
+            path: '/fca-management/dashboard',
+            name: 'Dashboard',
+            component: __IS_BROWSER
+              ? _dvaDynamic({
+                  component: () =>
+                    import(/* webpackChunkName: "p__admin__Dashboard__index" */ '../admin/Dashboard/index'),
+                  LoadingComponent: require('/Users/pkimanh03/Documents/capstone/fca_frontend/src/components/PageLoading/index')
+                    .default,
+                })
+              : require('../admin/Dashboard/index').default,
+            authority: ['admin'],
+            exact: true,
+          },
+          {
             path: '/fca-management/partner-management/partner-information',
             name: 'Partner Information',
             component: __IS_BROWSER

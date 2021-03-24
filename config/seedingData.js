@@ -873,3 +873,74 @@ export const LICENSE_LIST = [
       'Tiết kiệm thời gian cho nhân viên phục vụ, tiếp nhận đơn hàng từ xa, chủ động trong việc chuẩn bị, đáp ứng cho nhu cầu trong giờ cao điểm. Công nghệ real-time đơn hàng hiện đại, đồng bộ việc trao đổi đơn hàng giữa Khách hàng và Đối tác',
   },
 ];
+
+export const LINE_CHART_DATA = [
+  {
+    id: 'OrderTotalData',
+    color: 'hsl(167, 70%, 50%)',
+    data: [
+      {
+        x: '01/03',
+        y: 100,
+      },
+      {
+        x: '02/03',
+        y: 150,
+      },
+      {
+        x: '03/03',
+        y: 170,
+      },
+      {
+        x: '04/03',
+        y: 200,
+      },
+      {
+        x: '05/03',
+        y: 210,
+      },
+      {
+        x: '06/03',
+        y: 100,
+      },
+      {
+        x: '07/03',
+        y: 70,
+      },
+    ],
+  },
+];
+
+export const STATISTICS_PARTNER = {
+  TOTAL: 1000,
+  APPROVED: 800,
+  REJECTED: 100,
+  PROCESSING: 100,
+};
+
+export const PIE_CHART_DATA = [
+  {
+    id: 'Opening',
+    label: 'Opening',
+    value: 600,
+    color: 'hsl(129, 100%, 67%)',
+  },
+  {
+    id: 'Closing',
+    label: 'Closing',
+    value: 100,
+    color: 'hsl(0, 8%, 85%)',
+  },
+  // {
+  //   id: 'Archived',
+  //   label: 'Archived',
+  //   value: 50,
+  //   color: 'hsl(0, 3%, 58%)',
+  // },
+  // {
+  //   id: 'Warning',
+  //   label: 'Warning',
+  //   value: 50,
+  //   color: 'hsl(33, 100%, 67%)',
+  // },
+];

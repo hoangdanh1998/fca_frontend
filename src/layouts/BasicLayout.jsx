@@ -54,7 +54,7 @@ const BasicLayout = props => {
   } else if (window.location.pathname === '/') {
     const authorityJson = JSON.parse(authority);
     if (authorityJson && authorityJson.length && authorityJson[0] === 'admin') {
-      router.push('/fca-management/partner-management');
+      router.push('/fca-management/dashboard');
     }
   }
 

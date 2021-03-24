@@ -22,7 +22,7 @@ const Model = {
         yield setToken(response.token.accessToken);
         yield setAuthority('admin');
         yield reloadAuthorized();
-        router.push('/fca-management/partner-management');
+        router.push('/fca-management/dashboard');
       }
     },
 
