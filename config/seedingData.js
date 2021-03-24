@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 export const ORDER_LIST = [
   {
     id: 1,
@@ -880,7 +882,8 @@ export const LINE_CHART_DATA = [
     color: 'hsl(167, 70%, 50%)',
     data: [
       {
-        x: '01/03',
+        x: moment().format('DD/MM'),
+        value: moment().format('DD/MM/YYYY'),
         y: 100,
       },
       {
@@ -918,29 +921,44 @@ export const STATISTICS_PARTNER = {
   PROCESSING: 100,
 };
 
-export const PIE_CHART_DATA = [
+export const PIE_CHART_DATA_PARTNER = [
   {
     id: 'Opening',
     label: 'Opening',
     value: 600,
-    color: 'hsl(129, 100%, 67%)',
+    color: '#b3e2cd',
   },
   {
     id: 'Closing',
     label: 'Closing',
     value: 100,
-    color: 'hsl(0, 8%, 85%)',
+    color: '#dcd6d6',
   },
-  // {
-  //   id: 'Archived',
-  //   label: 'Archived',
-  //   value: 50,
-  //   color: 'hsl(0, 3%, 58%)',
-  // },
-  // {
-  //   id: 'Warning',
-  //   label: 'Warning',
-  //   value: 50,
-  //   color: 'hsl(33, 100%, 67%)',
-  // },
+];
+
+export const PIE_CHART_DATA_ORDER = [
+  {
+    id: 'Reception',
+    label: 'Reception',
+    value: 600,
+    color: '#b3e2cd',
+  },
+  {
+    id: 'Processing',
+    label: 'Processing',
+    value: 100,
+    color: '#DAE8FC',
+  },
+  {
+    id: 'Rejection',
+    label: 'Rejection',
+    value: 100,
+    color: '#F8CECC',
+  },
+  {
+    id: 'Cancellation',
+    label: 'Cancellation',
+    value: 100,
+    color: '#dcd6d6',
+  },
 ];

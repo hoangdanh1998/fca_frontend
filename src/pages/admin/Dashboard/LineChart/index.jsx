@@ -10,11 +10,12 @@ class LineChart extends React.Component {
   state = {};
 
   render() {
-    //   const data = this.props.data;
-    const data = LINE_CHART_DATA;
+    const data = this.props.data;
+    // const data = LINE_CHART_DATA;
     return (
       <ResponsiveLine
         data={data}
+        onClick={this.props.onClick}
         margin={{ top: 20, right: 20, bottom: 20, left: 30 }}
         xScale={{ type: 'point' }}
         yScale={{ type: 'linear', min: 'auto', max: 'auto', stacked: true, reverse: false }}
@@ -39,6 +40,7 @@ class LineChart extends React.Component {
           legendOffset: -40,
           legendPosition: 'middle',
         }}
+        color={{ scheme: 'pastel2' }}
         pointSize={10}
         pointColor={{ theme: 'background' }}
         pointBorderWidth={2}

@@ -4,14 +4,15 @@ import { router } from 'umi';
 import { connect } from 'dva';
 // import styles from './index.less';
 import { ResponsivePie } from '@nivo/pie';
-import { PIE_CHART_DATA } from '../../../../../config/seedingData';
+import { PIE_CHART_DATA_PARTNER } from '../../../../../config/seedingData';
 
 class PieChart extends React.Component {
   state = {};
 
   render() {
-    //   const data = this.props.data;
-    const data = PIE_CHART_DATA;
+    const data = this.props.data;
+    const legends = this.props.legends;
+    // const data = PIE_CHART_DATA_PARTNER;
     return (
       <ResponsivePie
         data={data}
@@ -19,8 +20,8 @@ class PieChart extends React.Component {
         innerRadius={0.5}
         padAngle={0.7}
         cornerRadius={3}
-        colors={{ scheme: 'pastel2' }}
-        // color={['#6ec215', '#c2bebe', '#f5ad42', '#696666']}
+        // colors={{ scheme: 'pastel2' }}
+        colors={{ datum: 'data.color' }}
         borderWidth={1}
         borderColor={{ from: 'color', modifiers: [['darker', 0.2]] }}
         radialLabelsSkipAngle={10}
@@ -28,83 +29,13 @@ class PieChart extends React.Component {
         radialLabelsLinkColor={{ from: 'color' }}
         sliceLabelsSkipAngle={10}
         sliceLabelsTextColor="#333333"
-        defs={[
-          {
-            id: 'dots',
-            type: 'patternDots',
-            background: 'inherit',
-            color: 'rgba(255, 255, 255, 0.3)',
-            size: 4,
-            padding: 1,
-            stagger: true,
-          },
-          {
-            id: 'lines',
-            type: 'patternLines',
-            background: 'inherit',
-            color: 'rgba(255, 255, 255, 0.3)',
-            rotation: -45,
-            lineWidth: 6,
-            spacing: 10,
-          },
-        ]}
-        // fill={[
-        //   {
-        //     match: {
-        //       id: 'ruby',
-        //     },
-        //     id: 'dots',
-        //   },
-        //   {
-        //     match: {
-        //       id: 'c',
-        //     },
-        //     id: 'dots',
-        //   },
-        //   {
-        //     match: {
-        //       id: 'go',
-        //     },
-        //     id: 'dots',
-        //   },
-        //   {
-        //     match: {
-        //       id: 'python',
-        //     },
-        //     id: 'dots',
-        //   },
-        //   {
-        //     match: {
-        //       id: 'scala',
-        //     },
-        //     id: 'lines',
-        //   },
-        //   {
-        //     match: {
-        //       id: 'lisp',
-        //     },
-        //     id: 'lines',
-        //   },
-        //   {
-        //     match: {
-        //       id: 'elixir',
-        //     },
-        //     id: 'lines',
-        //   },
-        //   {
-        //     match: {
-        //       id: 'javascript',
-        //     },
-        //     id: 'lines',
-        //   },
-        // ]}
         legends={[
           {
-            anchor: 'bottom',
-            direction: 'row',
+            anchor: legends.anchor,
+            direction: legends.direction,
             justify: false,
             translateX: 0,
-            translateY: 56,
+            translateY: 70,
             itemsSpacing: 0,
             itemWidth: 100,
             itemHeight: 18,
