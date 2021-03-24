@@ -22,20 +22,18 @@ export default [
         authority: ['admin'],
         routes: [
           {
+            path: '/fca-management/dashboard',
+            name: 'Dashboard',
+            component: './admin/Dashboard/index',
+            authority: ['admin'],
+          },
+          {
             path: '/fca-management/partner-management/partner-information',
             name: 'Partner Information',
             component: './admin/PartnerManagement/PartnerInformation/index',
             authority: ['admin'],
             hidden: true,
           },
-          // {
-          //   path: '/fca-management/partner-management/partner-information/item-information',
-          //   name: 'Partner Information',
-          //   component:
-          //     './admin/PartnerManagement/PartnerInformation/ItemManagement/ItemInformation/index',
-          //   authority: ['admin'],
-          //   hidden: true,
-          // },
           {
             name: 'Partner Management',
             path: '/fca-management/partner-management',

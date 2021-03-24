@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 export const ORDER_LIST = [
   {
     id: 1,
@@ -871,5 +873,92 @@ export const LICENSE_LIST = [
     createdAt: '2021-02-22T15:23:12.083Z',
     description:
       'Tiết kiệm thời gian cho nhân viên phục vụ, tiếp nhận đơn hàng từ xa, chủ động trong việc chuẩn bị, đáp ứng cho nhu cầu trong giờ cao điểm. Công nghệ real-time đơn hàng hiện đại, đồng bộ việc trao đổi đơn hàng giữa Khách hàng và Đối tác',
+  },
+];
+
+export const LINE_CHART_DATA = [
+  {
+    id: 'OrderTotalData',
+    color: 'hsl(167, 70%, 50%)',
+    data: [
+      {
+        x: moment().format('DD/MM'),
+        value: moment().format('DD/MM/YYYY'),
+        y: 100,
+      },
+      {
+        x: '02/03',
+        y: 150,
+      },
+      {
+        x: '03/03',
+        y: 170,
+      },
+      {
+        x: '04/03',
+        y: 200,
+      },
+      {
+        x: '05/03',
+        y: 210,
+      },
+      {
+        x: '06/03',
+        y: 100,
+      },
+      {
+        x: '07/03',
+        y: 70,
+      },
+    ],
+  },
+];
+
+export const STATISTICS_PARTNER = {
+  TOTAL: 1000,
+  APPROVED: 800,
+  REJECTED: 100,
+  PROCESSING: 100,
+};
+
+export const PIE_CHART_DATA_PARTNER = [
+  {
+    id: 'Opening',
+    label: 'Opening',
+    value: 600,
+    color: '#b3e2cd',
+  },
+  {
+    id: 'Closing',
+    label: 'Closing',
+    value: 100,
+    color: '#dcd6d6',
+  },
+];
+
+export const PIE_CHART_DATA_ORDER = [
+  {
+    id: 'Reception',
+    label: 'Reception',
+    value: 600,
+    color: '#b3e2cd',
+  },
+  {
+    id: 'Processing',
+    label: 'Processing',
+    value: 100,
+    color: '#DAE8FC',
+  },
+  {
+    id: 'Rejection',
+    label: 'Rejection',
+    value: 100,
+    color: '#F8CECC',
+  },
+  {
+    id: 'Cancellation',
+    label: 'Cancellation',
+    value: 100,
+    color: '#dcd6d6',
   },
 ];
