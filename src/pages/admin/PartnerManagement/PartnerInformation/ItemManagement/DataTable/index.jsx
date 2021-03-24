@@ -58,16 +58,19 @@ class DataTable extends React.Component {
               className={styles.table}
               dataSource={dataList ? dataList : []}
               columns={columnList}
+              onRow={(record, rowIndex) => {
+                return {
+                  onClick: event => {
+                    this.props.onClickRow(record);
+                  },
+                };
+              }}
               pagination={{
                 current: this.state.skip,
                 pageSize: this.state.PAGE_SIZE,
                 total: totalRecords,
                 onChange: this.onChangePaging,
               }}
-              // expandable={{
-              //   expandedRowRender: record => <p style={{ margin: 0 }}>{record.imageLink}</p>,
-              //   rowExpandable: record => record.name !== 'Not Expandable',
-              // }}
               bordered
             />
           </div>

@@ -3,16 +3,9 @@ import { router } from 'umi';
 import { connect } from 'dva';
 import moment from 'moment';
 import NumberFormat from 'react-number-format';
-import { Descriptions, Tag, Space, Card } from 'antd';
-import Button from 'antd-button-color';
-import 'antd-button-color/dist/css/style.less';
-import {
-  EditOutlined,
-  CheckOutlined,
-  CloseOutlined,
-  CloseCircleOutlined,
-  CheckCircleOutlined,
-} from '@ant-design/icons';
+import { Descriptions, Space, Image } from 'antd';
+import { CloseCircleOutlined, CheckCircleOutlined } from '@ant-design/icons';
+import styles from './index.less';
 import {
   PARTNER_ITEM_STATUS,
   DATE_FORMAT,
@@ -44,69 +37,40 @@ class ViewItem extends React.Component {
   render() {
     const { item } = this.props;
     return (
-      <Card
+      <Descriptions
+        column={1}
+        contentStyle={{ fontWeight: 'bold' }}
+        labelStyle={{ textAlign: 'left', width: '30%' }}
         title={
-          <Space direction="horizontal">
-            {"Item's Information"}
-            <EditOutlined style={{ color: '#1890ff' }} onClick={this.props.onChangeMode} />
+          <Space
+            direction="horizontal"
+            style={{
+              justifyContent: 'flex-start',
+              display: 'flex',
+            }}
+          >
+            {item.status === PARTNER_ITEM_STATUS.ACTIVE ? (
+              <CheckCircleOutlined style={{ color: 'green' }} />
+            ) : (
+              <CloseCircleOutlined style={{ color: 'red' }} />
+            )}
+            {item.name}
           </Space>
         }
-        extra={
-          item.status === REQUESTED_ITEM_STATUS.PROCESS ? (
-            <Space direction="horizontal">
-              <Button
-                type={item.status === PARTNER_ITEM_STATUS.ACTIVE ? 'danger' : 'success'}
-                with="ghost"
-                icon={<CheckOutlined style={{ fontSize: 15, color: 'green' }} />}
-                onClick={() => {
-                  alert('Handle Change Status');
-                }}
-              >
-                Approve
-              </Button>
-              <Button
-                type={item.status === PARTNER_ITEM_STATUS.ACTIVE ? 'danger' : 'success'}
-                with="ghost"
-                icon={<CloseOutlined style={{ fontSize: 15, color: 'red' }} />}
-                onClick={() => {
-                  alert('Handle Change Status');
-                }}
-              >
-                Reject
-              </Button>
-            </Space>
-          ) : null
-        }
       >
-        <Descriptions
-          column={1}
-          contentStyle={{ fontWeight: 'bold' }}
-          labelStyle={{ textAlign: 'left', width: '20%' }}
-        >
-          <Descriptions.Item label="Name">{item.name}</Descriptions.Item>
-          <Descriptions.Item label="FCA Group">{item.fcaItem.name}</Descriptions.Item>
-          <Descriptions.Item label="Status">
-            <Tag
-              color={item.status === PARTNER_ITEM_STATUS.ACTIVE ? 'green' : 'red'}
-              icon={
-                item.status === PARTNER_ITEM_STATUS.ACTIVE ? (
-                  <CheckCircleOutlined />
-                ) : (
-                  <CloseCircleOutlined />
-                )
-              }
-            >
-              {item.status}
-            </Tag>
-          </Descriptions.Item>
-          <Descriptions.Item label="Price">
-            <NumberFormat value={item.price} displayType={'text'} thousandSeparator={true} />
-          </Descriptions.Item>
-          <Descriptions.Item label="Registration Date">
-            {moment(item.createdAt).format(DATE_FORMAT)}
-          </Descriptions.Item>
-        </Descriptions>
-      </Card>
+        <Descriptions.Item label="FCA Group">
+          {Object.assign({}, item.fcaItem).name}
+        </Descriptions.Item>
+        <Descriptions.Item label="Price">
+          <NumberFormat value={item.price} displayType={'text'} thousandSeparator={true} />
+        </Descriptions.Item>
+        <Descriptions.Item label="Registration Date">
+          {moment(item.createdAt).format(DATE_FORMAT)}
+        </Descriptions.Item>
+        <Descriptions.Item>
+          <Image className={styles.bodyImage} preview={false} src={item.imageLink} />
+        </Descriptions.Item>
+      </Descriptions>
     );
   }
 }

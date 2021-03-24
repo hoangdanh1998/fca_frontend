@@ -3,7 +3,19 @@ import moment from 'moment';
 import { router } from 'umi';
 import { connect } from 'dva';
 import NumberFormat from 'react-number-format';
-import { Descriptions, Space, Table, Row, Col, Steps, Skeleton, List, Tag } from 'antd';
+import {
+  Descriptions,
+  Space,
+  Table,
+  Row,
+  Col,
+  Steps,
+  Skeleton,
+  List,
+  Tag,
+  Timeline,
+  Divider,
+} from 'antd';
 import Button from 'antd-button-color';
 import 'antd-button-color/dist/css/style.less';
 import {
@@ -33,30 +45,34 @@ class OrderInformation extends React.Component {
     closeOrder: {},
     visibleCancelOrder: false,
     cancelOrder: {},
-    isDone: false,
+    loading: false,
   };
-  componentWillMount() {
+  async componentWillMount() {
+    this.setState({ loading: true });
     const { dispatch } = this.props;
     const url = window.location.href;
     const id = url.substring(url.indexOf('=') + 1);
-    dispatch({
+    await dispatch({
       type: 'order/getOrder',
       payload: {
         id: id,
       },
     });
-    this.setState({ isDone: true });
+    this.setState({ loading: false });
   }
 
   handleViewTransaction = (transaction = []) => {
     if (this.props.order) {
       const result = Array.from(transaction, t => {
         return (
-          <Steps.Step
-            status="process"
-            title={convertStringToCamel(t.toStatus)}
-            subTitle={moment(t.createdAt).format(TIME_FORMAT)}
-          />
+          // <Steps.Step
+          //   status="process"
+          //   title={convertStringToCamel(t.toStatus)}
+          //   subTitle={moment(t.createdAt).format(TIME_FORMAT)}
+          // />
+          <Timeline.Item label={moment(t.createdAt).format(TIME_FORMAT)}>
+            {convertStringToCamel(t.toStatus)}
+          </Timeline.Item>
         );
       });
       return result;
@@ -67,28 +83,29 @@ class OrderInformation extends React.Component {
       const cancelledTransaction = order.transaction.find(
         t => t.toStatus === ORDER_STATUS.CANCELLATION,
       );
-      if (JSON.parse(cancelledTransaction.description)) {
-        const viewedReason = [];
-        const reason = JSON.parse(cancelledTransaction.description).reason;
-        const note = JSON.parse(cancelledTransaction.description).note
-          ? JSON.parse(cancelledTransaction.description).note
-          : '';
-        const requestBy = JSON.parse(cancelledTransaction.description).requestBy.split('_')[0];
-        reason.forEach(r => {
-          viewedReason.push(CANCEL_ORDER_REASON.find(e => e.value === r));
-        });
-        return (
-          <List
-            dataSource={viewedReason}
-            renderItem={item => {
-              return item.value !== 'OTHER'
-                ? `[${requestBy}] ${item.label}`
-                : JSON.parse(cancelledTransaction.description).note
-                ? `[${requestBy}] ${note}`
-                : `[${requestBy}] Reason`;
-            }}
-          />
-        );
+      if (cancelledTransaction) {
+        // const viewedReason = [];
+        // const reason = JSON.parse(cancelledTransaction.description).reason;
+        // const note = JSON.parse(cancelledTransaction.description).note
+        //   ? JSON.parse(cancelledTransaction.description).note
+        //   : '';
+        // const requestBy = JSON.parse(cancelledTransaction.description).requestBy.split('_')[0];
+        // reason.forEach(r => {
+        //   viewedReason.push(CANCEL_ORDER_REASON.find(e => e.value === r));
+        // });
+        // return (
+        //   <List
+        //     dataSource={viewedReason}
+        //     renderItem={item => {
+        //       return item.value !== 'OTHER'
+        //         ? `[${requestBy}] ${item.label}`
+        //         : JSON.parse(cancelledTransaction.description).note
+        //         ? `[${requestBy}] ${note}`
+        //         : `[${requestBy}] Reason`;
+        //     }}
+        //   />
+        // );
+        return cancelledTransaction.description;
       } else {
         return '-';
       }
@@ -172,9 +189,15 @@ class OrderInformation extends React.Component {
     });
   };
   handleCancelOrder = values => {
-    console.log('values', values);
     this.hideModalCancelOrder();
-    const reason = JSON.stringify(values);
+    const convertedReason = Array.from(values.reason, r => {
+      return `${CANCEL_ORDER_REASON.find(tmp => tmp.value === r).label}${
+        values.note && values.note != '' ? ' - ' + values.note : ''
+      }`;
+    });
+    const reason = `[${
+      values.requestBy.includes('PARTNER') ? 'Cửa hàng' : 'Khách'
+    } huỷ] ${convertedReason.toString()}`;
     const { dispatch } = this.props;
     dispatch({
       type: 'order/cancelOrder',
@@ -195,12 +218,12 @@ class OrderInformation extends React.Component {
           return index + 1;
         },
         align: 'right',
-        width: '2%',
       },
       {
         title: 'Item',
         dataIndex: 'name',
         key: 'name',
+        width: '25%',
       },
       {
         title: 'Unit Price',
@@ -218,7 +241,6 @@ class OrderInformation extends React.Component {
         dataIndex: 'quantity',
         key: 'quantity',
         align: 'right',
-        width: '2%',
       },
       {
         title: 'Sub-total',
@@ -234,134 +256,140 @@ class OrderInformation extends React.Component {
         align: 'right',
       },
     ];
-    return this.state.isDone ? (
+    return (
       <div className={styles.applicationManagementContainer}>
-        <Space
-          direction="vertical"
-          style={{
-            fontSize: 20,
-            color: 'black',
-            backgroundColor: 'white',
-            display: 'flex',
-            padding: '2.5%',
-          }}
-        >
-          <Space direction="horizontal" style={{ display: 'flex', flex: 1 }}>
-            <Descriptions column={1} contentStyle={{ display: 'flex', flex: 1 }} title="Customer">
-              <Descriptions.Item label="Name">
-                {Object.assign({}, order.customer).name}
-              </Descriptions.Item>
-              <Descriptions.Item label="Phone">
-                {Object.assign({}, order.customer).phone}
-              </Descriptions.Item>
-              <Descriptions.Item label="">
-                <br />
-                <br />
-              </Descriptions.Item>
-            </Descriptions>
-            <Descriptions column={1} contentStyle={{ display: 'flex', flex: 1 }} title="Partner">
-              <Descriptions.Item label="Name">
-                {Object.assign({}, order.partner).name}
-              </Descriptions.Item>
-              <Descriptions.Item label="Phone">
-                {Object.assign({}, Object.assign({}, order.partner).account).phone}
-              </Descriptions.Item>
-              <Descriptions.Item label="Address">
-                {Object.assign({}, Object.assign({}, order.partner).address).description}
-              </Descriptions.Item>
-            </Descriptions>
-            <Descriptions
-              column={1}
-              contentStyle={{ display: 'flex', flex: 1 }}
-              title="Other Information"
-            >
-              <Descriptions.Item label="Date">
-                {moment(order.createdAt).format(DATE_TIME_FORMAT)}
-              </Descriptions.Item>
-              <Descriptions.Item label="Status">
-                <Tag
-                  color={this.getTagStatusColors(order).color}
-                  icon={this.getTagStatusColors(order).icon}
-                >
-                  {convertStringToCamel(order.status)}
-                </Tag>
-              </Descriptions.Item>
-              {order.status === ORDER_STATUS.CANCELLATION ? (
-                <Descriptions.Item label="Reason">{this.handleViewReason(order)}</Descriptions.Item>
-              ) : (
+        {this.state.loading ? (
+          <Skeleton loading={this.state.loading} />
+        ) : (
+          <Space
+            direction="vertical"
+            style={{
+              fontSize: 20,
+              color: 'black',
+              backgroundColor: 'white',
+              display: 'flex',
+              padding: '2.5%',
+            }}
+          >
+            <Space direction="horizontal" style={{ display: 'flex', flex: 1 }}>
+              <Descriptions column={1} contentStyle={{ display: 'flex', flex: 1 }} title="Customer">
+                <Descriptions.Item label="Name">
+                  {Object.assign({}, order.customer).name}
+                </Descriptions.Item>
+                <Descriptions.Item label="Phone">
+                  {Object.assign({}, order.customer).phone}
+                </Descriptions.Item>
                 <Descriptions.Item label="">
                   <br />
                   <br />
                 </Descriptions.Item>
-              )}
-            </Descriptions>
+              </Descriptions>
+              <Descriptions column={1} contentStyle={{ display: 'flex', flex: 1 }} title="Partner">
+                <Descriptions.Item label="Name">
+                  {Object.assign({}, order.partner).name}
+                </Descriptions.Item>
+                <Descriptions.Item label="Phone">
+                  {Object.assign({}, Object.assign({}, order.partner).account).phone}
+                </Descriptions.Item>
+                <Descriptions.Item label="Address">
+                  {Object.assign({}, Object.assign({}, order.partner).address).description}
+                </Descriptions.Item>
+              </Descriptions>
+              <Descriptions
+                column={1}
+                contentStyle={{ display: 'flex', flex: 1 }}
+                title="Other Information"
+              >
+                <Descriptions.Item label="Date">
+                  {moment(order.createdAt).format(DATE_TIME_FORMAT)}
+                </Descriptions.Item>
+                <Descriptions.Item label="Status">
+                  <Tag
+                    color={this.getTagStatusColors(order).color}
+                    icon={this.getTagStatusColors(order).icon}
+                  >
+                    {convertStringToCamel(order.status)}
+                  </Tag>
+                </Descriptions.Item>
+                <Descriptions.Item label="Reason">{this.handleViewReason(order)}</Descriptions.Item>
+              </Descriptions>
+            </Space>
+            <Space direction="horizontal" style={{ width: '95%' }}>
+              <Descriptions column={2} title="Order's items">
+                <Descriptions.Item label="">
+                  <Table
+                    className={styles.table}
+                    dataSource={order.items}
+                    columns={itemColumns}
+                    bordered
+                    pagination={false}
+                    footer={() => {
+                      return (
+                        <Row>
+                          <Col flex={3} style={{ textAlign: 'left' }}>
+                            Total
+                          </Col>
+                          <Col flex={1} style={{ textAlign: 'right' }}>
+                            <NumberFormat
+                              value={order.total}
+                              displayType={'text'}
+                              thousandSeparator={true}
+                            />
+                          </Col>
+                        </Row>
+                      );
+                    }}
+                  />
+                </Descriptions.Item>
+                <Descriptions.Item label="">
+                  <Descriptions
+                    column={1}
+                    title="Order's Transaction"
+                    extra={
+                      <Space direction="horizontal">
+                        {order.status !== ORDER_STATUS.REJECTION &&
+                        order.status !== ORDER_STATUS.CANCELLATION &&
+                        order.status !== ORDER_STATUS.CLOSURE &&
+                        order.status !== ORDER_STATUS.RECEPTION ? (
+                          <>
+                            <Button
+                              style={{ width: '100%' }}
+                              type="success"
+                              with="ghost"
+                              icon={<CheckOutlined style={{ fontSize: 15, color: 'green' }} />}
+                              onClick={() => {
+                                this.handleVisibleCloseOrder(order);
+                              }}
+                            >
+                              Finish
+                            </Button>
+                            <Button
+                              style={{ width: '100%' }}
+                              type="danger"
+                              with="ghost"
+                              icon={<CloseOutlined style={{ fontSize: 20, color: 'red' }} />}
+                              onClick={() => {
+                                this.handleVisibleCancelOrder(order);
+                              }}
+                            >
+                              Cancel
+                            </Button>
+                          </>
+                        ) : null}
+                      </Space>
+                    }
+                  >
+                    <Descriptions.Item>
+                      <Timeline reverse style={{ width: '50%' }} mode="left" reverse>
+                        {this.handleViewTransaction(order?.transaction)}
+                      </Timeline>
+                    </Descriptions.Item>
+                  </Descriptions>
+                </Descriptions.Item>
+              </Descriptions>
+            </Space>
           </Space>
-          <Table
-            className={styles.table}
-            dataSource={order.items}
-            columns={itemColumns}
-            bordered
-            pagination={false}
-            footer={() => {
-              return (
-                <Row>
-                  <Col flex={3} style={{ textAlign: 'left' }}>
-                    Total
-                  </Col>
-                  <Col flex={1} style={{ textAlign: 'right' }}>
-                    <NumberFormat
-                      value={order.total}
-                      displayType={'text'}
-                      thousandSeparator={true}
-                    />
-                  </Col>
-                </Row>
-              );
-            }}
-          ></Table>
-          <br />
-          <Descriptions
-            title="Order Transaction"
-            extra={
-              <Space direction="horizontal">
-                {order.status !== ORDER_STATUS.REJECTION &&
-                order.status !== ORDER_STATUS.CANCELLATION &&
-                order.status !== ORDER_STATUS.CLOSURE &&
-                order.status !== ORDER_STATUS.RECEPTION ? (
-                  <>
-                    <Button
-                      style={{ width: '100%' }}
-                      type="success"
-                      with="ghost"
-                      icon={<CheckOutlined style={{ fontSize: 15, color: 'green' }} />}
-                      onClick={() => {
-                        this.handleVisibleCloseOrder(order);
-                      }}
-                    >
-                      Finish
-                    </Button>
-                    <Button
-                      style={{ width: '100%' }}
-                      type="danger"
-                      with="ghost"
-                      icon={<CloseOutlined style={{ fontSize: 20, color: 'red' }} />}
-                      onClick={() => {
-                        this.handleVisibleCancelOrder(order);
-                      }}
-                    >
-                      Cancel
-                    </Button>
-                  </>
-                ) : null}
-              </Space>
-            }
-          >
-            <Descriptions.Item>
-              <br />
-              <Steps progressDot>{this.handleViewTransaction(order?.transaction)}</Steps>
-            </Descriptions.Item>
-          </Descriptions>
-        </Space>
+        )}
         <CancelOrderModal
           visible={this.state.visibleCancelOrder}
           order={this.state.cancelOrder}
@@ -377,8 +405,6 @@ class OrderInformation extends React.Component {
           onClickOK={this.handleCloseOrder}
         />
       </div>
-    ) : (
-      <Skeleton active />
     );
   }
 }

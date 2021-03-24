@@ -2,6 +2,7 @@ import React from 'react';
 import { Table, Input, Space, DatePicker, Radio } from 'antd';
 import moment from 'moment';
 import { connect } from 'dva';
+import { router } from 'umi';
 import {
   DATE_FORMAT_CALL_API,
   PAGE_SIZE,
@@ -23,16 +24,17 @@ class DataTable extends React.Component {
       pageIndex: 1,
       skip: 0,
       pageSize: PAGE_SIZE,
-
+      loading: false,
       createdDate: moment().format(DATE_FORMAT_CALL_API),
       status: '',
       phone: '',
     };
   }
 
-  componentWillMount() {
+  async componentWillMount() {
+    this.setState({ loading: true });
     const { dispatch } = this.props;
-    dispatch({
+    await dispatch({
       type: 'order/getOrderList',
       payload: {
         createdDate: this.state.createdDate,
@@ -42,15 +44,17 @@ class DataTable extends React.Component {
         limit: this.state.pageSize,
       },
     });
+    this.setState({ loading: false });
   }
 
-  onChangePaging = (page, pageSize) => {
+  onChangePaging = async (page, pageSize) => {
     const { dispatch } = this.props;
     this.setState({
       pageIndex: page,
       pageSize: pageSize,
+      loading: true,
     });
-    dispatch({
+    await dispatch({
       type: 'order/getOrderList',
       payload: {
         createdDate: this.state.createdDate,
@@ -60,13 +64,14 @@ class DataTable extends React.Component {
         limit: pageSize,
       },
     });
+    this.setState({ loading: false });
   };
 
-  handlePressSearch = e => {
-    this.setState({ phone: e.target.value });
+  handlePressSearch = async e => {
+    this.setState({ phone: e.target.value, loading: true });
 
     const { dispatch } = this.props;
-    dispatch({
+    await dispatch({
       type: 'order/getOrderList',
       payload: {
         skip: this.state.skip,
@@ -76,12 +81,13 @@ class DataTable extends React.Component {
         phone: e.target.value,
       },
     });
+    this.setState({ loading: false });
   };
-  handleClickSearch = (value, event) => {
-    this.setState({ phone: value });
+  handleClickSearch = async (value, event) => {
+    this.setState({ phone: value, loading: true });
 
     const { dispatch } = this.props;
-    dispatch({
+    await dispatch({
       type: 'order/getOrderList',
       payload: {
         skip: this.state.skip,
@@ -91,12 +97,13 @@ class DataTable extends React.Component {
         phone: value,
       },
     });
+    this.setState({ loading: false });
   };
-  handleChangeFilter = e => {
-    this.setState({ status: e.target.value === 'ALL' ? '' : e.target.value });
+  handleChangeFilter = async e => {
+    this.setState({ status: e.target.value === 'ALL' ? '' : e.target.value, loading: true });
 
     const { dispatch } = this.props;
-    dispatch({
+    await dispatch({
       type: 'order/getOrderList',
       payload: {
         skip: this.state.skip,
@@ -106,12 +113,16 @@ class DataTable extends React.Component {
         phone: this.state.phone,
       },
     });
+    this.setState({ loading: false });
   };
-  handleChangeDate = value => {
-    this.setState({ createdDate: moment(value, DATE_FORMAT).format(DATE_FORMAT_CALL_API) });
+  handleChangeDate = async value => {
+    this.setState({
+      createdDate: moment(value, DATE_FORMAT).format(DATE_FORMAT_CALL_API),
+      loading: true,
+    });
 
     const { dispatch } = this.props;
-    dispatch({
+    await dispatch({
       type: 'order/getOrderList',
       payload: {
         skip: this.state.skip,
@@ -121,6 +132,7 @@ class DataTable extends React.Component {
         phone: this.state.phone,
       },
     });
+    this.setState({ loading: false });
   };
 
   render() {
@@ -159,9 +171,19 @@ class DataTable extends React.Component {
           </Space>
           <div>
             <Table
+              loading={this.state.loading}
               className={styles.table}
               dataSource={dataList}
               columns={columnList}
+              onRow={(record, rowIndex) => {
+                return {
+                  onClick: event => {
+                    router.push(
+                      `/fca-management/order-management/order-information?id=${record.id}`,
+                    );
+                  },
+                };
+              }}
               pagination={{
                 current: this.state.page,
                 pageSize: this.state.pageSize,

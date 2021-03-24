@@ -1,6 +1,7 @@
 import React from 'react';
 import { Table, Input, Space, Radio } from 'antd';
 import { connect } from 'dva';
+import { router } from 'umi';
 import styles from './index.less';
 import { PAGE_SIZE, PARTNER_STATUS_FILTER } from '../../../../../config/constants';
 
@@ -17,79 +18,87 @@ class DataTable extends React.Component {
       pageIndex: 1,
       skip: 0,
       pageSize: PAGE_SIZE,
-      name: '',
+      search: '',
       status: '',
+      loading: false,
     };
   }
 
-  componentWillMount() {
+  async componentWillMount() {
+    this.setState({ loading: true });
     const { dispatch } = this.props;
-    dispatch({
+    await dispatch({
       type: 'partner/getPartnerList',
       payload: {
-        name: this.state.name,
+        search: this.state.search,
         status: this.state.status,
         skip: this.state.skip,
         limit: this.state.pageSize,
       },
     });
+    this.setState({ loading: false });
   }
 
-  onChangePaging = (page, pageSize) => {
+  onChangePaging = async (page, pageSize) => {
     const { dispatch } = this.props;
     this.setState({
       pageIndex: page,
       pageSize: pageSize,
+      loading: true,
     });
-    dispatch({
+    await dispatch({
       type: 'partner/getPartnerList',
       payload: {
-        name: this.state.name,
+        search: this.state.search,
         status: this.state.status,
         skip: parseInt((page - 1) * pageSize),
         limit: pageSize,
       },
     });
+    this.setState({ loading: false });
   };
 
-  handlePressSearch = e => {
-    this.setState({ name: e.target.value });
+  handlePressSearch = async e => {
+    this.setState({ search: e.target.value, loading: true });
     const { dispatch } = this.props;
-    dispatch({
+    await dispatch({
       type: 'partner/getPartnerList',
       payload: {
         skip: this.state.skip,
         limit: this.state.pageSize,
-        name: e.target.value,
+        search: e.target.value,
         status: this.state.status,
       },
     });
+    this.setState({ loading: false });
   };
-  handleClickSearch = (value, event) => {
-    this.setState({ name: value });
+  handleClickSearch = async (value, event) => {
+    this.setState({ search: value, loading: true });
     const { dispatch } = this.props;
-    dispatch({
+    await dispatch({
       type: 'partner/getPartnerList',
       payload: {
         skip: this.state.skip,
         limit: this.state.pageSize,
-        name: value,
+        search: value,
         status: this.state.status,
       },
     });
+    this.setState({ loading: false });
   };
-  handleChangeFilter = e => {
-    this.setState({ status: e.target.value === 'ALL' ? '' : e.target.value });
+  handleChangeFilter = async e => {
+    this.setState({ status: e.target.value === 'ALL' ? '' : e.target.value, loading: true });
     const { dispatch } = this.props;
-    dispatch({
+    await dispatch({
       type: 'partner/getPartnerList',
       payload: {
         skip: this.state.skip,
         limit: this.state.pageSize,
-        name: this.state.name,
+        search: this.state.search,
         status: e.target.value === 'ALL' ? '' : e.target.value,
       },
     });
+    this.setState({ loading: false });
   };
 
   render() {
@@ -117,9 +126,19 @@ class DataTable extends React.Component {
           </Space>
           <div>
             <Table
+              loading={this.state.loading}
               className={styles.table}
               dataSource={dataList}
               columns={columnList}
+              onRow={(record, rowIndex) => {
+                return {
+                  onClick: event => {
+                    router.push(
+                      `/fca-management/partner-management/partner-information?id=${record.id}`,
+                    );
+                  },
+                };
+              }}
               pagination={{
                 current: this.state.pageIndex,
                 pageSize: this.state.pageSize,

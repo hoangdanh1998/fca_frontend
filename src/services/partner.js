@@ -2,7 +2,7 @@ import request from '@/utils/request';
 
 export async function getPartnerList(params) {
   return request(
-    `/api/partner?skip=${params.skip}&limit=${params.limit}&name=${params.name}&status=${params.status}`,
+    `/api/partner?skip=${params.skip}&limit=${params.limit}&search=${params.search}&status=${params.status}`,
     {
       method: 'GET',
     },

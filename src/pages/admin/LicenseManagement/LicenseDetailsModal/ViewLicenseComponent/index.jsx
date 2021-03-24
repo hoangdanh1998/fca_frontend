@@ -14,7 +14,6 @@ class ViewLicense extends React.Component {
         contentStyle={{ fontWeight: 'bold' }}
         labelStyle={{ textAlign: 'left', width: '40%' }}
         title={
-          // license.name
           <Space
             direction="horizontal"
             style={{
@@ -28,19 +27,6 @@ class ViewLicense extends React.Component {
               <CloseCircleOutlined color="red" />
             )}
             {license.name}
-            {/* <Tag
-              color={license.status === LICENSE_STATUS.ACTIVE ? 'green' : 'red'}
-              icon={
-                license.status === LICENSE_STATUS.ACTIVE ? (
-                  <CheckCircleOutlined />
-                ) : (
-                  <CloseCircleOutlined />
-                )
-              }
-            >
-              {convertStringToCamel(license.status)}
-            </Tag> */}
-            {/* <EditOutlined style={{ color: '#1890ff' }} onClick={this.props.onChangeMode} /> */}
           </Space>
         }
       >
@@ -48,20 +34,6 @@ class ViewLicense extends React.Component {
         <Descriptions.Item label="Price">
           <NumberFormat value={license.price} displayType={'text'} thousandSeparator={true} />
         </Descriptions.Item>
-        {/* <Descriptions.Item label="Status">
-          <Tag
-            color={license.status === LICENSE_STATUS.ACTIVE ? 'green' : 'red'}
-            icon={
-              license.status === LICENSE_STATUS.ACTIVE ? (
-                <CheckCircleOutlined />
-              ) : (
-                <CloseCircleOutlined />
-              )
-            }
-          >
-            {convertStringToCamel(license.status)}
-          </Tag>
-        </Descriptions.Item> */}
         <Descriptions.Item label="Start Date">
           {moment(license.startDate).format(DATE_FORMAT)}
         </Descriptions.Item>

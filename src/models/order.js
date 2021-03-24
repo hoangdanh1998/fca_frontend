@@ -79,20 +79,20 @@ const Model = {
       };
     },
     handleGetOrder(state, action) {
-      action.payload.order.transaction.unshift({
-        toStatus: ORDER_STATUS.INITIALIZATION,
-        createdAt: action.payload.order.createdAt,
-      });
+      // action.payload.order.transaction.unshift({
+      //   toStatus: ORDER_STATUS.INITIALIZATION,
+      //   createdAt: action.payload.order.createdAt,
+      // });
       return {
         ...state,
         order: action.payload.order,
       };
     },
     handleChangeOrderStatus(state, action) {
-      action.payload.order.transaction.unshift({
-        toStatus: ORDER_STATUS.INITIALIZATION,
-        createdAt: action.payload.order.createdAt,
-      });
+      // action.payload.order.transaction.unshift({
+      //   toStatus: ORDER_STATUS.INITIALIZATION,
+      //   createdAt: action.payload.order.createdAt,
+      // });
       return { ...state, order: action.payload.order };
     },
   },
