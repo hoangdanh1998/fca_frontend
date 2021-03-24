@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import { router } from 'umi';
 import { connect } from 'dva';
-import { Skeleton, DatePicker, Select, Divider } from 'antd';
+import { Skeleton, DatePicker, Select, Divider, Result, Button } from 'antd';
 import LineChart from './LineChart/index';
 import PieChart from './PieChart/index';
 import StatisticsBox from './StatisticsBox/index';
@@ -19,6 +19,7 @@ import {
   return {
     orderStatisticsOfOnePartner: statistics.orderStatisticOfOnePartner,
     filteredPartnerList: statistics.filteredPartnerList,
+    isError: statistics.isError,
   };
 })
 class Dashboard extends React.Component {
@@ -117,6 +118,22 @@ class Dashboard extends React.Component {
   render() {
     return this.state.loading ? (
       <Skeleton loading={this.state.loading} />
+    ) : this.props.isError ? (
+      <Result
+        status="warning"
+        title="There are some problem with your operation"
+        extra={
+          <Button
+            type="primary"
+            onClick={() => {
+              alert('again');
+              router.push('/fca-management/dashboard');
+            }}
+          >
+            Try again
+          </Button>
+        }
+      />
     ) : (
       <div className={styles.applicationManagementContainer}>
         {/* PARTNER STATISTICS */}
