@@ -3,7 +3,7 @@ import moment from 'moment';
 import React from 'react';
 import { DATE_FORMAT } from '../../../../../config/constants';
 
-class CreateLicenseModal extends React.Component {
+class CreateTransactionModal extends React.Component {
   state = {
     isSubmitted: false,
   };
@@ -21,7 +21,7 @@ class CreateLicenseModal extends React.Component {
       <Modal
         visible={visible}
         style={{ textAlign: 'center' }}
-        title="CREATE FAST-COFFEE LICENSE"
+        title="CREATE TRANSACTION"
         footer={null}
         bodyStyle={{ textAlign: 'left' }}
         onCancel={() => {
@@ -37,39 +37,21 @@ class CreateLicenseModal extends React.Component {
           labelCol={{ span: 5 }}
           wrapperCol={{ span: 19 }}
         >
+          <Form.Item rules={[{ required: true }]} name="phone" label="Phone">
+            <Input placeholder="Enter phone" allowClear />
+          </Form.Item>
           <Form.Item rules={[{ required: true }]} name="name" label="Name">
-            <Input placeholder="Enter name" allowClear />
+            <Input placeholder="Account name" disabled />
           </Form.Item>
           <Form.Item rules={[{ required: true }]} name="price" label="Price">
             <InputNumber
               allowClear
-              placeholder="Enter price"
-              min={0}
+              placeholder="Enter amount"
+              min={-1000000000}
               max={1000000000}
               style={{ width: '100%' }}
               formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
               parser={value => value.replace(/\$\s?|(,*)/g, '')}
-            />
-          </Form.Item>
-          <Form.Item rules={[{ required: true }]} name="duration" label="Duration">
-            <InputNumber
-              allowClear
-              placeholder="Enter duration"
-              min={0}
-              max={100}
-              style={{ width: '100%' }}
-              formatter={value => `${value} month(s)`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-              parser={value => value.replace(/\$\s?|(,*)/g, '')}
-            />
-          </Form.Item>
-          <Form.Item rules={[{ required: true }]} name="startDate" label="Start Date">
-            <DatePicker
-              showToday
-              placeholder="Start Date"
-              allowClear={false}
-              format={DATE_FORMAT}
-              style={{ width: '100%' }}
-              disabledDate={d => !d || d.isSameOrBefore(moment().subtract(1, 'day'))}
             />
           </Form.Item>
           <Form.Item rules={[{ required: true }]} name="description" label="Description">
@@ -99,4 +81,4 @@ class CreateLicenseModal extends React.Component {
   }
 }
 
-export default CreateLicenseModal;
+export default CreateTransactionModal;

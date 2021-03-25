@@ -161,6 +161,20 @@ const routes = [
             exact: true,
           },
           {
+            path: '/fca-management/transaction-management',
+            name: 'Transaction Management',
+            component: __IS_BROWSER
+              ? _dvaDynamic({
+                  component: () =>
+                    import(/* webpackChunkName: "p__admin__TransactionManagement__index" */ '../admin/TransactionManagement/index'),
+                  LoadingComponent: require('/Users/pkimanh03/Documents/capstone/fca_frontend/src/components/PageLoading/index')
+                    .default,
+                })
+              : require('../admin/TransactionManagement/index').default,
+            authority: ['admin'],
+            exact: true,
+          },
+          {
             component: () =>
               React.createElement(
                 require('/Users/pkimanh03/Documents/capstone/fca_frontend/node_modules/umi-build-dev/lib/plugins/404/NotFound.js')

@@ -59,6 +59,12 @@ export default [
             component: './admin/LicenseManagement',
             authority: ['admin'],
           },
+          {
+            path: '/fca-management/transaction-management',
+            name: 'Transaction Management',
+            component: './admin/TransactionManagement/index',
+            authority: ['admin'],
+          },
         ],
       },
       {

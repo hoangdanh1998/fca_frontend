@@ -9,6 +9,7 @@ const Model = {
   state: {
     orderStatisticOfOnePartner: {},
     filteredPartnerList: [],
+    isError: false,
   },
   effects: {
     *getOrderStatisticsByPartner({ payload }, { call, put }) {
@@ -16,6 +17,10 @@ const Model = {
 
       if (response.type && response.type === 'HttpError') {
         notification.fail('Something went wrong. Please try again.');
+        yield put({
+          type: 'handleError',
+          payload: 'true',
+        });
         return;
       }
       yield put({
@@ -38,6 +43,12 @@ const Model = {
   },
 
   reducers: {
+    handleError(state, action) {
+      return {
+        ...state,
+        isError: true,
+      };
+    },
     handleGetOrderStatisticsByPartner(state, action) {
       const convertedData = [];
       const cancelledReasonList = [];
@@ -95,6 +106,7 @@ const Model = {
       };
       return {
         ...state,
+        isError: false,
         orderStatisticOfOnePartner: result,
       };
     },
@@ -107,6 +119,7 @@ const Model = {
       });
       return {
         ...state,
+        isError: false,
         filteredPartnerList: convertedList,
       };
     },
