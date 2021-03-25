@@ -1,7 +1,8 @@
 import React from 'react';
-import { Table, Space, Input } from 'antd';
 import { connect } from 'dva';
-import { PAGE_SIZE } from '../../../../../config/constants';
+import moment from 'moment';
+import { Table, Space, Input, DatePicker, Divider } from 'antd';
+import { PAGE_SIZE, DATE_FORMAT } from '../../../../../config/constants';
 import styles from './index.less';
 
 // @connect(({ license, loading }) => {
@@ -57,7 +58,7 @@ class DataTable extends React.Component {
     return (
       <div>
         <div>
-          <Space direction="vertical">
+          <Space direction="horizontal">
             <Input.Search
               onPressEnter={this.handlePressSearch}
               onSearch={this.handleClickSearch}
@@ -65,8 +66,17 @@ class DataTable extends React.Component {
               allowClear
               placeholder="Enter phone"
             />
-            <br />
+            <DatePicker
+              ref="picker"
+              style={{ width: 300 }}
+              defaultValue={moment()}
+              // onChange={this.handleChangeDate}
+              allowClear={false}
+              format={DATE_FORMAT}
+            />
           </Space>
+          <br />
+          <br />
           <div>
             <Table
               className={styles.table}

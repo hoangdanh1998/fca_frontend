@@ -17,6 +17,7 @@ import {
 } from '../../../../config/constants';
 import InsertButton from '../../../components/atom/InsertButton/index';
 import { convertStringToCamel } from '../../../utils/utils';
+import CreateTransactionModal from './CreateTransactionModal/index';
 import DataTable from './DataTable/index';
 import styles from './index.less';
 
@@ -29,6 +30,12 @@ class TransactionManagement extends React.Component {
 
   setPage = page => {
     this.setState({ page: page });
+  };
+  handleVisibleCreateModal = () => {
+    this.setState({ visibleCreateModal: true });
+  };
+  hideModal = () => {
+    this.setState({ visibleCreateModal: false });
   };
 
   render() {
@@ -97,98 +104,40 @@ class TransactionManagement extends React.Component {
     const columnList = [
       {
         title: 'No.',
-        render: (text, record, index) => (
-          // return index + 1;
-          <Dropdown overlay={menu} placement="bottomLeft" trigger={['click']}>
-            <div style={{ textAlign: 'right', width: '100%' }}>{index + 1}</div>
-          </Dropdown>
-        ),
+        render: (text, record, index) => {
+          return index + 1;
+        },
         align: 'right',
-        // width: ''
+        width: '1%',
       },
       {
-        title: 'From',
-        dataIndex: 'from',
-        key: 'from',
-        render: (text, record, index) => (
-          <Dropdown overlay={menu} placement="bottomLeft" trigger={['click']}>
-            <div style={{ display: 'flex', flex: 1 }}>{record.from}</div>
-          </Dropdown>
-        ),
+        title: 'Account Phone',
+        dataIndex: 'phone',
+        key: 'phone',
         width: '15%',
         align: 'right',
       },
       {
-        title: 'To',
-        dataIndex: 'to',
-        key: 'to',
-        render: (text, record, index) => (
-          <Dropdown overlay={menu} placement="bottomLeft" trigger={['click']}>
-            <div style={{ display: 'flex', flex: 1 }}>{`${record.to} month(s)`}</div>
-          </Dropdown>
-        ),
+        title: 'Account Name',
+        dataIndex: 'name',
+        key: 'name',
         width: '15%',
-        align: 'right',
       },
       {
         title: 'Amount',
         dataIndex: 'amount',
         key: 'amount',
         render: (text, record, index) => (
-          <Dropdown overlay={menu} placement="bottomLeft" trigger={['click']}>
-            <NumberFormat value={record.amount} displayType={'text'} thousandSeparator={true} />
-          </Dropdown>
+          <NumberFormat value={record.amount} displayType={'text'} thousandSeparator={true} />
         ),
         align: 'right',
-        width: '10%',
+        width: '15%',
       },
       {
-        title: 'Type',
-        dataIndex: 'type',
-        key: 'type',
-        render: (text, record, index) => {
-          return (
-            <Dropdown overlay={menu} placement="bottomLeft" trigger={['click']}>
-              {/* <Tag
-                color={record.type === LICENSE_type.ACTIVE ? 'green' : 'red'}
-                icon={
-                  record.type === LICENSE_type.ACTIVE ? (
-                    <CheckCircleOutlined />
-                  ) : (
-                    <CloseCircleOutlined />
-                  )
-                }
-              > */}
-              {convertStringToCamel(record.type)}
-              {/* </Tag> */}
-            </Dropdown>
-          );
-        },
-        width: '10%',
-      },
-      {
-        title: 'Note',
-        dataIndex: 'note',
-        key: 'note',
-        render: (text, record, index) => {
-          return (
-            <Dropdown overlay={menu} placement="bottomLeft" trigger={['click']}>
-              {/* <Tag
-                color={record.note === LICENSE_note.ACTIVE ? 'green' : 'red'}
-                icon={
-                  record.note === LICENSE_note.ACTIVE ? (
-                    <CheckCircleOutlined />
-                  ) : (
-                    <CloseCircleOutlined />
-                  )
-                }
-              > */}
-              {convertStringToCamel(record.note)}
-              {/* </Tag> */}
-            </Dropdown>
-          );
-        },
-        width: '30%',
+        title: 'Description',
+        dataIndex: 'description',
+        key: 'description',
+        width: '40%',
       },
       {
         title: 'Created Date',
@@ -197,13 +146,9 @@ class TransactionManagement extends React.Component {
         sorter: (a, b) =>
           moment(a.createdDate, DATE_TIME_FORMAT_CALL_API) -
           moment(b.createdDate, DATE_TIME_FORMAT_CALL_API),
-        render: (text, record, index) => (
-          <Dropdown overlay={menu} placement="bottomLeft" trigger={['click']}>
-            <div style={{ textAlign: 'right', width: '100%' }}>
-              {moment(record.createdDate).format(DATE_FORMAT)}
-            </div>
-          </Dropdown>
-        ),
+        render: (text, record, index) => {
+          return moment(record.createdDate).format(DATE_FORMAT);
+        },
         align: 'right',
         width: '15%',
       },
@@ -214,7 +159,7 @@ class TransactionManagement extends React.Component {
           <div className={styles.applicationHeader}>
             <InsertButton
               onClick={() => {
-                // this.handleVisibleCreateModal();
+                this.handleVisibleCreateModal();
               }}
             />
           </div>
@@ -226,32 +171,11 @@ class TransactionManagement extends React.Component {
               this.setState({ record: record });
             }}
           />
-          {/* <LicenseDetailsModal
-            visible={this.state.visibleDetailsModal}
-            license={this.state.license}
-            hideModal={this.hideModal}
-            mode={this.state.mode}
-            submitModal={values => {
-              this.handleCloneLicense(values);
-            }}
-          />
-          {this.state.visibleCreateModal ? (
-            <CreateLicenseModal
-              visible={this.state.visibleCreateModal}
-              onSubmit={values => {
-                this.handleCreateLicense(values);
-              }}
-              hideModal={this.hideModal}
-            />
-          ) : null}
-
-          <ConfirmationPopup
-            visible={this.state.visibleConfirmationModal}
-            hideModal={this.hideModal}
-            onClickOK={this.handleChangeLicenseStatus}
-            message={this.state.confirmationMessage}
-          /> */}
         </div>
+        <CreateTransactionModal
+          visible={this.state.visibleCreateModal}
+          hideModal={this.hideModal}
+        />
       </>
     );
   }
