@@ -914,6 +914,97 @@ export const LINE_CHART_DATA = [
   },
 ];
 
+export const SPARTNER = {
+  data: {
+    TOTAL: { count: 63 },
+    PROCESSING: { count: 13 },
+    APPROVED: {
+      count: 45,
+      opening: { normal: 39, almostExpired: 1 },
+      closing: { normal: 4, expired: 1 },
+    },
+    REJECTED: { count: 5 },
+  },
+};
+
+export const S_APPROVED_PARTNER = {
+  data: {
+    total: 60,
+    opening: {
+      color: '#82B366',
+      total: 50,
+      normal: 45,
+      almostExpired: 5,
+    },
+    closing: {
+      color: '#B85450',
+      total: 10,
+      normal: 9,
+      expired: 1,
+    },
+  },
+};
+export const S_ORDER = {
+  data: {
+    total: 60,
+    details: [
+      {
+        label: 'Closure',
+        count: 50,
+        color: '#82B366',
+      },
+      {
+        label: 'Rejection',
+        count: 4,
+        color: '#B85450',
+      },
+      {
+        label: 'Cancellation',
+        count: 6,
+        color: 'whitesmoke',
+      },
+    ],
+  },
+};
+
+export const S_ITEM = {
+  data: {
+    total: 60,
+    details: [
+      {
+        label: 'Iced Coffee',
+        count: 50,
+        color: 'whitesmoke',
+      },
+      {
+        label: 'Iced Coffee with Milk',
+        count: 4,
+        color: 'whitesmoke',
+      },
+      {
+        label: 'Chocolate',
+        count: 6,
+        color: 'whitesmoke',
+      },
+      {
+        label: 'Iced Coffee',
+        count: 50,
+        color: 'whitesmoke',
+      },
+      {
+        label: 'Iced Coffee with Milk',
+        count: 4,
+        color: 'whitesmoke',
+      },
+      {
+        label: 'Chocolate',
+        count: 6,
+        color: 'whitesmoke',
+      },
+    ],
+  },
+};
+
 export const STATISTICS_PARTNER = {
   TOTAL: 1000,
   APPROVED: 800,

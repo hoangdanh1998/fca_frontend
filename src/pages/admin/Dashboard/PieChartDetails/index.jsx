@@ -12,6 +12,7 @@ class PieChartDetails extends React.Component {
   render() {
     const mode = this.props.mode;
     const data = this.props.data;
+    console.log('pie chart data', data[0]);
     const columnList = [
       {
         title: 'No.',
@@ -42,30 +43,60 @@ class PieChartDetails extends React.Component {
           <Descriptions
             column={1}
             title={
-              <Badge color="#b3e2cd" text={<span style={{ color: '#b3e2cd' }}>Opening</span>} />
+              <Badge
+                color={Object.assign({}, data[0]).color}
+                text={
+                  <span style={{ color: Object.assign({}, data[0]).color }}>
+                    {Object.assign({}, data[0]).label}
+                  </span>
+                }
+              />
             }
           >
             <Descriptions.Item labelStyle={{ width: '70%', marginLeft: '5%' }} label="Normal">
-              <NumberFormat value={450} displayType={'text'} thousandSeparator={true} />
+              <NumberFormat
+                value={Object.assign({}, Object.assign({}, data[0]).details).normal}
+                displayType={'text'}
+                thousandSeparator={true}
+              />
             </Descriptions.Item>
             <Descriptions.Item
               labelStyle={{ width: '70%', marginLeft: '5%' }}
               label="Almost expired"
             >
-              <NumberFormat value={1000} displayType={'text'} thousandSeparator={true} />
+              <NumberFormat
+                value={Object.assign({}, Object.assign({}, data[0]).details).almostExpired}
+                displayType={'text'}
+                thousandSeparator={true}
+              />
             </Descriptions.Item>
           </Descriptions>
           <Descriptions
             column={1}
             title={
-              <Badge color="#dcd6d6" text={<span style={{ color: '#dcd6d6' }}>Closing</span>} />
+              <Badge
+                color={Object.assign({}, data[1]).color}
+                text={
+                  <span style={{ color: Object.assign({}, data[1]).color }}>
+                    {Object.assign({}, data[1]).label}
+                  </span>
+                }
+              />
             }
           >
             <Descriptions.Item labelStyle={{ width: '70%', marginLeft: '5%' }} label="Normal">
-              50
+              <NumberFormat
+                value={Object.assign({}, Object.assign({}, data[1]).details).normal}
+                displayType={'text'}
+                thousandSeparator={true}
+              />
             </Descriptions.Item>
             <Descriptions.Item labelStyle={{ width: '70%', marginLeft: '5%' }} label="Expired">
-              50
+              <NumberFormat
+                value={Object.assign({}, Object.assign({}, data[1]).details).expired}
+                displayType={'text'}
+                thousandSeparator={true}
+              />
             </Descriptions.Item>
           </Descriptions>
         </div>

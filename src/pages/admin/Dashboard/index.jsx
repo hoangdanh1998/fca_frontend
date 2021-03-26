@@ -2,11 +2,10 @@ import React from 'react';
 import moment from 'moment';
 import { router } from 'umi';
 import { connect } from 'dva';
-import { Skeleton, DatePicker, Select, Divider, Result, Button } from 'antd';
-import LineChart from './LineChart/index';
-import PieChart from './PieChart/index';
+import { Skeleton, DatePicker, Select, Divider, Result, Button, Space, Row, Col, Card } from 'antd';
 import StatisticsBox from './StatisticsBox/index';
-import PieChartDetails from './PieChartDetails/index';
+import DataTable from './DataTable/index';
+import ExceptionBody from '../../../components/ExceptionBody/index';
 import styles from './index.less';
 import { DATE_FORMAT, DATE_FORMAT_CALL_API } from '../../../../config/constants';
 import {
@@ -19,6 +18,7 @@ import {
   return {
     orderStatisticsOfOnePartner: statistics.orderStatisticOfOnePartner,
     filteredPartnerList: statistics.filteredPartnerList,
+    partnerStatistics: statistics.partnerStatistics,
     isError: statistics.isError,
   };
 })
@@ -38,24 +38,28 @@ class Dashboard extends React.Component {
 
   async componentWillMount() {
     this.setState({ loading: true });
-    const { dispatch } = this.props;
-    await dispatch({
-      type: 'statistics/getOrderStatisticsByPartner',
-      payload: {
-        id: '9ceee651-7dea-4a0f-b517-b49166cb6cfb',
-        // fromDate: moment().format(DATE_FORMAT_CALL_API),
-        // toDate: moment().format(DATE_FORMAT_CALL_API),
-        fromDate: '2021-3-25',
-        toDate: '2021-3-26',
-      },
-    });
-    await dispatch({
-      type: 'statistics/filterPartner',
-      payload: {
-        search: '',
-      },
-    });
-    this.setState({ searchPartnerList: this.props.filteredPartnerList });
+    // const { dispatch } = this.props;
+    // await dispatch({
+    //   type: 'statistics/getOrderStatisticsByPartner',
+    //   payload: {
+    //     id: '9ceee651-7dea-4a0f-b517-b49166cb6cfb',
+    //     // fromDate: moment().format(DATE_FORMAT_CALL_API),
+    //     // toDate: moment().format(DATE_FORMAT_CALL_API),
+    //     fromDate: '2021-3-25',
+    //     toDate: '2021-3-26',
+    //   },
+    // });
+    // await dispatch({
+    //   type: 'statistics/getPartnerStatistics',
+    //   payload: {},
+    // });
+    // await dispatch({
+    //   type: 'statistics/filterPartner',
+    //   payload: {
+    //     search: '',
+    //   },
+    // });
+    // this.setState({ searchPartnerList: this.props.filteredPartnerList });
     this.setState({ loading: false });
   }
 
@@ -81,179 +85,104 @@ class Dashboard extends React.Component {
     });
   };
 
-  handleSelectPointLine = (point, event) => {
-    this.setState({
-      selectedPointLine: {
-        x: point.data.x,
-        y: point.data.y,
-        startDate: moment(point.data.value),
-        endDate: moment(point.data.value),
-      },
-    });
-  };
+  handleClickBox = action => {
+    alert(action);
+    switch (action) {
+      case 'Opening':
+        break;
 
-  handleSearchPartner = async value => {
-    console.log('value', value);
-    const searchedList = this.state.searchPartnerList.filter(partner => {
-      return partner.label.search(value) != -1;
-    });
-    if (searchedList.length > 0) {
-      this.setState({ searchPartnerList: searchedList });
-    } else {
-      const { dispatch } = this.props;
-      this.setState({ searchLoading: true });
-      await dispatch({
-        type: 'statistics/filterPartner',
-        payload: {
-          search: value,
-        },
-      });
-      this.setState({
-        searchPartnerList: this.props.filteredPartnerList,
-        searchLoading: false,
-      });
+      default:
+        break;
     }
   };
 
   render() {
+    const partnerColumnList = [
+      {
+        title: 'No.',
+        render: (text, record, index) => {
+          return index + 1;
+        },
+        align: 'right',
+      },
+      {
+        title: 'Name',
+        dataIndex: 'name',
+        key: 'name',
+        width: '20%',
+      },
+      {
+        title: 'Address',
+        dataIndex: ['address', 'description'],
+        key: ['address', 'description'],
+        width: '50%',
+      },
+      {
+        title: 'Expiration Date',
+        dataIndex: 'createdAt',
+        key: 'createdAt',
+        align: 'right',
+        sorter: (a, b) =>
+          moment(a.expirationDate, DATE_FORMAT_CALL_API) -
+          moment(b.expirationDate, DATE_FORMAT_CALL_API),
+        defaultSortOrder: 'ascend',
+        render: (text, record, index) => {
+          return record.expirationDate ? moment(record.expirationDate).format(DATE_FORMAT) : '-';
+        },
+        width: '25%',
+      },
+    ];
     return this.state.loading ? (
       <Skeleton loading={this.state.loading} />
     ) : this.props.isError ? (
-      <Result
-        status="warning"
-        title="There are some problem with your operation"
-        extra={
-          <Button
-            type="primary"
-            onClick={() => {
-              alert('again');
-              router.push('/fca-management/dashboard');
-            }}
-          >
-            Try again
-          </Button>
-        }
-      />
+      <ExceptionBody />
     ) : (
       <div className={styles.applicationManagementContainer}>
-        {/* PARTNER STATISTICS */}
-        <div style={{ height: 400, backgroundColor: 'white', width: '100%', float: 'left' }}>
-          <div style={{ height: 'auto', width: '95%', marginLeft: '2.5%', paddingTop: '2.5%' }}>
-            <h1 style={{ height: 50, fontSize: 25, fontWeight: 'bold' }}>Partner Statistic</h1>
-            <div
-              style={{
-                width: '50%',
-                float: 'left',
-                height: 350,
+        <Row>
+          <Col span={8}></Col>
+          <Col span={8}></Col>
+          <Col span={8}>
+            <DatePicker.RangePicker style={{ width: '100%' }} />
+          </Col>
+        </Row>
+        <br />
+        <Row>
+          <Col span={8}>
+            <StatisticsBox
+              onClick={action => {
+                this.handleClickBox(action);
               }}
-            >
-              <StatisticsBox />
-            </div>
-            <div style={{ width: '50%', float: 'left', height: 350 }}>
-              <h3 style={{ height: 50, fontWeight: 'bold', textAlign: 'center' }}>
-                Approved Partner
-              </h3>
-              <div style={{ width: '70%', float: 'left', height: 300 }}>
-                <div style={{ height: 250 }}>
-                  <PieChart
-                    data={PIE_CHART_DATA_PARTNER}
-                    legends={{ anchor: 'bottom', direction: 'row' }}
-                  />
-                </div>
-              </div>
-              <div style={{ width: '30%', float: 'left', height: 300 }}>
-                <div style={{ height: 250 }}>
-                  <PieChartDetails mode="partner" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <br />
-        <br />
+              subject="partner"
+            />
+          </Col>
+          <Col span={16}>
+            <Card title="Opening Partners" style={{ height: '100%' }}>
+              <DataTable columnList={partnerColumnList} />
+            </Card>
+          </Col>
+        </Row>
         <Divider />
-        {/* ORDER STATISTICS */}
-        <div style={{ height: 'auto', backgroundColor: 'white', width: '100%', float: 'left' }}>
-          <div style={{ height: 'auto', width: '95%', marginLeft: '2.5%', paddingTop: '2.5%' }}>
-            {/* SEARCH HEADER _ ORDER */}
-            <div style={{ height: 30, width: '100%' }}>
-              <div style={{ width: '40%', float: 'left' }}>
-                <h1 style={{ fontSize: 25, fontWeight: 'bold' }}>Order Statistic</h1>
-                <p>Cà phê sân vườn Mimosa</p>
-                <p>
-                  {this.state.orderStartDate.isSame(this.state.orderEndDate)
-                    ? ` on ${this.state.orderStartDate.format(DATE_FORMAT)}`
-                    : ` in ${this.state.orderStartDate?.format(
-                        DATE_FORMAT,
-                      )} - ${this.state.orderEndDate?.format(DATE_FORMAT)}`}
-                </p>
-              </div>
-              <DatePicker.RangePicker
-                onCalendarChange={this.handleChangeOrderDate}
-                onChange={this.handleChangeOrderDate}
-                style={{ width: '27.5%', float: 'left' }}
-              />
-              <Select
-                showSearch
-                loading={this.state.searchLoading}
-                style={{ width: '27.5%', float: 'left', marginLeft: '2.5%' }}
-                placeholder="Select a partner"
-                options={this.state.searchPartnerList}
-                optionFilterProp="children"
-                onSearch={this.handleSearchPartner}
-              ></Select>
-            </div>
-            {/* LINE CHART */}
-            <div
-              style={{
-                width: '100%',
-                float: 'left',
-                height: 330,
+        <Row>
+          <Col span={8}>
+            <StatisticsBox
+              onClick={action => {
+                this.handleClickBox(action);
               }}
-            >
-              <LineChart
-                onClick={(point, event) => {
-                  this.handleSelectPointLine(point, event);
-                }}
-                data={LINE_CHART_DATA}
-              />
-            </div>
-            {/* ORDER STATISTICS DETAILS */}
-            <br />
-            <div style={{ width: '100%', float: 'left', height: 'auto' }}>
-              <br />
-              <br />
-              <div style={{ width: '100%', float: 'left', height: 'auto' }}>
-                <div style={{ height: 300, width: '50%', float: 'left' }}>
-                  <PieChart
-                    // data={PIE_CHART_DATA_ORDER}
-                    data={this.props.orderStatisticsOfOnePartner.orderInChart}
-                    legends={{ anchor: 'bottom', direction: 'row' }}
-                  />
-                </div>
-                <div style={{ width: '50%', float: 'left', height: 'auto' }}>
-                  <h3
-                    style={{ height: 20, fontWeight: 'bold', textAlign: 'center', width: '100%' }}
-                  >
-                    Order Statistics
-                    {this.state.orderStartDate.isSame(this.state.orderEndDate)
-                      ? ` on ${this.state.orderStartDate.format(DATE_FORMAT)}`
-                      : ` in ${this.state.orderStartDate?.format(
-                          DATE_FORMAT,
-                        )} - ${this.state.orderEndDate?.format(DATE_FORMAT)}`}
-                  </h3>
-                  <p style={{ height: 15, textAlign: 'center', width: '100%' }}>
-                    {`Total: ${this.props.orderStatisticsOfOnePartner.orderTotal} orders`}
-                  </p>
-                  <PieChartDetails
-                    mode="order"
-                    data={this.props.orderStatisticsOfOnePartner.cancelledReasonList}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+              subject="order"
+            />
+          </Col>
+        </Row>
+        <Divider />
+        <Row>
+          <Col span={8}>
+            <StatisticsBox
+              onClick={action => {
+                this.handleClickBox(action);
+              }}
+              subject="item"
+            />
+          </Col>
+        </Row>
       </div>
     );
   }

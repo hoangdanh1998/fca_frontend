@@ -1,6 +1,7 @@
 import { router } from 'umi';
-import { getOrderStatisticsByPartner, filterPartner } from '@/services/statistics';
+import { getOrderStatisticsByPartner, filterPartner, getPartners } from '@/services/statistics';
 import AdminNotification from '../components/Notification';
+import { SPARTNER } from '../../config/seedingData';
 
 const notification = new AdminNotification();
 
@@ -10,8 +11,26 @@ const Model = {
     orderStatisticOfOnePartner: {},
     filteredPartnerList: [],
     isError: false,
+    partnerStatistics: {},
   },
   effects: {
+    *getPartnerStatistics({ payload }, { call, put }) {
+      // const response = yield call(getPartners, payload);
+
+      // if (response.type && response.type === 'HttpError') {
+      //   notification.fail('Something went wrong. Please try again.');
+      //   yield put({
+      //     type: 'handleError',
+      //     payload: 'true',
+      //   });
+      //   return;
+      // }
+      const response = SPARTNER;
+      yield put({
+        type: 'handleGetPartnerStatistics',
+        payload: response.data,
+      });
+    },
     *getOrderStatisticsByPartner({ payload }, { call, put }) {
       const response = yield call(getOrderStatisticsByPartner, payload);
 
@@ -121,6 +140,42 @@ const Model = {
         ...state,
         isError: false,
         filteredPartnerList: convertedList,
+      };
+    },
+    handleGetPartnerStatistics(state, action) {
+      const data = action.payload;
+      data.APPROVED = {
+        count: data.APPROVED.count,
+        details: [
+          {
+            id: 'Opening',
+            label: 'Opening',
+            value: data.APPROVED.opening.normal + data.APPROVED.opening.almostExpired,
+            // color: '#b3e2cd',
+            color: '#3dba6f',
+            details: {
+              normal: data.APPROVED.opening.normal,
+              almostExpired: data.APPROVED.opening.almostExpired,
+            },
+          },
+          {
+            id: 'Closing',
+            label: 'Closing',
+            value: data.APPROVED.closing.normal + data.APPROVED.closing.expired,
+            // color: '#dcd6d6',
+            // color: '#828282',
+            color: '#ff6363',
+            details: {
+              normal: data.APPROVED.closing.normal,
+              expired: data.APPROVED.closing.expired,
+            },
+          },
+        ],
+      };
+      return {
+        ...state,
+        isError: false,
+        partnerStatistics: data,
       };
     },
   },
