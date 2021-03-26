@@ -3,7 +3,15 @@ import moment from 'moment';
 import { router } from 'umi';
 import { connect } from 'dva';
 import { Space, Card, Statistic, Row, Col, List } from 'antd';
-import { ShopOutlined, CoffeeOutlined, FileOutlined, EllipsisOutlined } from '@ant-design/icons';
+import ScrollMenu from 'react-horizontal-scrolling-menu';
+import {
+  ShopOutlined,
+  CoffeeOutlined,
+  FileOutlined,
+  EllipsisOutlined,
+  RightOutlined,
+  LeftOutlined,
+} from '@ant-design/icons';
 import styles from './index.less';
 import { S_APPROVED_PARTNER, S_ORDER, S_ITEM } from '../../../../../config/seedingData';
 
@@ -126,6 +134,9 @@ class StatisticsBox extends React.Component {
             bordered={false}
             actions={[
               <Card.Grid
+                onClick={() => {
+                  this.props.onClick('CLOSING_NORMAL_PARTNER');
+                }}
                 style={{
                   width: '98%',
                   marginLeft: '1%',
@@ -140,6 +151,9 @@ class StatisticsBox extends React.Component {
                 />
               </Card.Grid>,
               <Card.Grid
+                onClick={() => {
+                  this.props.onClick('CLOSING_EXPIRED_PARTNER');
+                }}
                 style={{
                   width: '98%',
                   marginLeft: '1%',
@@ -165,20 +179,23 @@ class StatisticsBox extends React.Component {
       }
       case 'order': {
         const seedingData = S_ORDER;
-        return seedingData.data.details.map(i => {
+        return seedingData.data.details.map(order => {
           return (
             <Card.Grid
+              onClick={() => {
+                this.props.onClick(order.label);
+              }}
               bordered={false}
               style={{
                 width: '95%',
                 marginLeft: '2.5%',
                 textAlign: 'center',
-                backgroundColor: i.color,
+                backgroundColor: order.color,
               }}
             >
               <Statistic
-                title={i.label}
-                value={i.count}
+                title={order.label}
+                value={order.count}
                 valueStyle={{ color: 'black', fontSize: 30 }}
               />
             </Card.Grid>
@@ -187,41 +204,39 @@ class StatisticsBox extends React.Component {
       }
       case 'item': {
         const seedingData = S_ITEM;
-        const columns = [
-          {
-            title: 'No.',
-            render: (text, record, index) => {
-              return index + 1;
-            },
-            align: 'right',
-          },
-        ];
         return [
-          <List
-            scroll={{ x: 50 }}
-            // grid={{ gutter: 16, column: 2 }}
-            itemLayout="vertical"
-            style={{ width: '95%', marginLeft: '2.5%', height: 'auto' }}
-            dataSource={seedingData.data.details}
-            renderItem={i => (
+          <ScrollMenu
+            style={{ width: ' 100%', height: 'auto' }}
+            arrowLeft={<LeftOutlined style={{ color: '#FFF2CC' }} />}
+            arrowRight={<RightOutlined style={{ color: '#FFF2CC' }} />}
+            itemStyle={{ width: '50%' }}
+            menuStyle={{ width: '100%' }}
+            hideSingleArrow={true}
+            scrollBy={2}
+            itemClassActive=""
+            data={seedingData.data.details.map(item => (
               <Card.Grid
+                onClick={() => {
+                  this.props.onClick(item.label);
+                }}
                 bordered={false}
                 style={{
-                  width: '98%',
-                  marginLeft: '1%',
-                  // height: 100,
+                  width: '95%',
+                  marginLeft: '2.5%',
                   textAlign: 'center',
-                  backgroundColor: i.color,
+                  backgroundColor: item.color,
                 }}
               >
                 <Statistic
-                  title={<p style={{ textAlign: 'center', fontSize: 10, height: 20 }}>{i.label}</p>}
-                  value={i.count}
-                  valueStyle={{ color: 'black', fontSize: 20 }}
+                  title={
+                    <p style={{ textAlign: 'center', fontSize: 12, height: 20 }}>{item.label}</p>
+                  }
+                  value={item.count}
+                  valueStyle={{ color: 'black', fontSize: 30 }}
                 />
               </Card.Grid>
-            )}
-          ></List>,
+            ))}
+          ></ScrollMenu>,
         ];
       }
       default: {
@@ -256,7 +271,8 @@ class StatisticsBox extends React.Component {
     return (
       <Card
         style={{
-          backgroundColor: '#FFF2CC',
+          // backgroundColor: '#FFF2CC',
+          backgroundColor: '#FFE6CC',
           textAlign: 'center',
           width: '95%',
           marginLeft: '2.5%',
