@@ -54,7 +54,7 @@ class DataTable extends React.Component {
   };
 
   render() {
-    const { columnList, dataList, totalData } = this.props;
+    const { columnList, dataList, pageSize } = this.props;
     return (
       <div>
         <div>
@@ -75,7 +75,7 @@ class DataTable extends React.Component {
               }}
               pagination={{
                 current: this.state.page,
-                pageSize: this.state.pageSize,
+                pageSize: pageSize,
                 total: dataList.length,
                 // onChange: this.onChangePaging,
                 showSizeChanger: false,

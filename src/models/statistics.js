@@ -6,6 +6,7 @@ import {
 } from '@/services/statistics';
 import AdminNotification from '../components/Notification';
 import { SPARTNER } from '../../config/seedingData';
+import { ORDER_STATUS } from '../../config/constants';
 
 const notification = new AdminNotification();
 
@@ -158,7 +159,7 @@ const Model = {
     handleGetReportStatistics(state, action) {
       const data = action.payload;
       console.log('handle-report', data);
-
+      //================================================================PARTNER================================================================
       const partner = data.partner;
       const partnerStatistics = {
         total: partner.total,
@@ -198,7 +199,7 @@ const Model = {
       const closingExpiredPartnerList =
         partner.closing.expired.values.length > 0 ? partner.closing.expired.values : [];
       const closingPartnerList = [...closingExpiredPartnerList, ...closingNormalPartnerList];
-
+      //================================================================ORDER================================================================
       const order = data.order;
       const orderStatistics = {
         total: order.total,
@@ -220,6 +221,34 @@ const Model = {
           },
         ],
       };
+      const rejectionOrderDetailsList = [];
+      if (order.reject.values.length > 0) {
+        order.reject.values.forEach(o => {
+          const index = rejectionOrderDetailsList.findIndex(r => r.partnerId === o.partner.id);
+          if (index >= 0) {
+            rejectionOrderDetailsList[index].quantity += 1;
+          } else {
+            rejectionOrderDetailsList.push({
+              partnerId: o.partner.id,
+              partnerName: o.partner.name,
+              quantity: 1,
+            });
+          }
+        });
+      }
+      const cancellationOrderDetailsList =
+        order.cancel.values.length > 0
+          ? order.cancel.values.map(o => {
+              return {
+                customerPhone: o.customer.phone,
+                partnerName: o.partner.name,
+                requestBy: o.transaction.find(t => t.toStatus === ORDER_STATUS.CANCELLATION)
+                  .requestBy,
+                reason: o.transaction.find(t => t.toStatus === ORDER_STATUS.CANCELLATION)
+                  .description,
+              };
+            })
+          : [];
       return {
         ...state,
         isError: false,
@@ -232,8 +261,8 @@ const Model = {
         closingExpiredPartnerList: closingExpiredPartnerList,
 
         orderStatistics: orderStatistics,
-        rejectionOrderDetailsList: [],
-        cancellationOrderDetailsList: [],
+        rejectionOrderDetailsList: rejectionOrderDetailsList,
+        cancellationOrderDetailsList: cancellationOrderDetailsList,
       };
     },
   },

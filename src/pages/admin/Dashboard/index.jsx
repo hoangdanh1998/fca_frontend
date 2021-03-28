@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import { router } from 'umi';
 import { connect } from 'dva';
-import { Skeleton, DatePicker, Select, Divider, Result, Button, Space, Row, Col, Card } from 'antd';
+import { Skeleton, DatePicker, Button, Divider, Row, Col, Card } from 'antd';
 import StatisticsBox from './StatisticsBox/index';
 import DataTable from './DataTable/index';
 import ExceptionBody from '../../../components/ExceptionBody/index';
@@ -26,18 +26,20 @@ import {
     closingExpiredPartnerList: statistics.closingExpiredPartnerList,
 
     orderStatistics: statistics.orderStatistics,
-    rejectionOrderDetailsList: [],
-    cancellationOrderDetailsList: [],
+    rejectionOrderDetailsList: statistics.rejectionOrderDetailsList,
+    cancellationOrderDetailsList: statistics.cancellationOrderDetailsList,
   };
 })
 class Dashboard extends React.Component {
   state = {
     loading: false,
-    orderStartDate: moment(),
-    orderEndDate: moment(),
+    calendarStartDate: moment(),
+    calendarEndDate: moment(),
     orderColumnListName: '',
-    partnerTitle: '',
+    partnerTitle: 'Opening Partners',
     partnerDataList: this.props.openingPartnerList,
+    orderDataList: this.props.cancellationOrderDetailsList,
+    openCalendar: false,
   };
 
   async componentWillMount() {
@@ -46,34 +48,44 @@ class Dashboard extends React.Component {
     await dispatch({
       type: 'statistics/getReportStatistics',
       payload: {
-        // fromDate: moment().format(DATE_FORMAT_CALL_API),
-        // toDate: moment().format(DATE_FORMAT_CALL_API),
-        fromDate: '',
-        toDate: '',
+        fromDate: this.state.calendarStartDate.format(DATE_FORMAT_CALL_API),
+        toDate: this.state.calendarEndDate.add(1, 'day').format(DATE_FORMAT_CALL_API),
       },
     });
-    this.setState({ loading: false });
+    this.setState({ loading: false, partnerDataList: this.props.openingPartnerList });
   }
 
-  handleChangeOrderDate = (dates, dateStrings, info) => {
+  handleChangeDate = async (dates, dateStrings) => {
     if ((dates && !dates[0] && !dates[1]) || !dates) {
       this.setState({
-        orderStartDate: moment(),
-        orderEndDate: moment(),
-        selectedPointLine: {
-          startDate: moment(),
-          endDate: moment(),
-        },
+        calendarStartDate: moment(),
+        calendarEndDate: moment(),
       });
       return;
     }
+
     this.setState({
-      orderStartDate: dates ? dates[0] : null,
-      orderEndDate: dates ? dates[1] : null,
-      selectedPointLine: {
-        startDate: dates ? dates[0] : null,
-        endDate: dates ? dates[1] : null,
+      calendarStartDate: dates ? dates[0] : null,
+      calendarEndDate: dates ? dates[1] : null,
+    });
+    // console.log(`startDate: ${dates ? dates[0] : null} - endDate: ${dates ? dates[1] : null}`);
+  };
+  handleGetReportWhenChangeDate = async () => {
+    this.setState({ loading: true, openCalendar: false });
+    const { dispatch } = this.props;
+    await dispatch({
+      type: 'statistics/getReportStatistics',
+      payload: {
+        fromDate: this.state.calendarStartDate.format(DATE_FORMAT_CALL_API),
+        toDate: this.state.calendarEndDate.format(DATE_FORMAT_CALL_API),
       },
+    });
+    this.setState({
+      orderColumnListName: '',
+      partnerTitle: 'Opening Partners',
+      partnerDataList: this.props.openingPartnerList,
+      orderDataList: this.props.cancellationOrderDetailsList,
+      loading: false,
     });
   };
 
@@ -81,10 +93,16 @@ class Dashboard extends React.Component {
     // alert(action);
     switch (action) {
       case 'Rejection':
-        this.setState({ orderColumnListName: action });
+        this.setState({
+          orderColumnListName: action,
+          orderDataList: this.props.rejectionOrderDetailsList,
+        });
         break;
       case 'Cancellation':
-        this.setState({ orderColumnListName: action });
+        this.setState({
+          orderColumnListName: action,
+          orderDataList: this.props.cancellationOrderDetailsList,
+        });
         break;
       case 'Closure':
         this.setState({ orderColumnListName: '' });
@@ -163,14 +181,14 @@ class Dashboard extends React.Component {
     const rejectionColumnList = [
       {
         title: 'Partner Name',
-        dataIndex: 'name',
-        key: 'name',
+        dataIndex: 'partnerName',
+        key: 'partnerName',
         width: '70%',
       },
       {
         title: 'Quantity',
-        dataIndex: 'count',
-        key: 'count',
+        dataIndex: 'quantity',
+        key: 'quantity',
         width: '20%',
         align: 'right',
       },
@@ -212,7 +230,30 @@ class Dashboard extends React.Component {
         <Row>
           <Col span={12}></Col>
           <Col span={12}>
-            <DatePicker.RangePicker style={{ width: '100%' }} format={DATE_FORMAT} />
+            <DatePicker.RangePicker
+              open={this.state.openCalendar}
+              onFocus={() => {
+                this.setState({ openCalendar: true });
+              }}
+              value={[this.state.calendarStartDate, this.state.calendarEndDate]}
+              style={{ width: '100%' }}
+              format={DATE_FORMAT}
+              onChange={this.handleChangeDate}
+              renderExtraFooter={() => (
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                    marginBottom: '1%',
+                    marginTop: '1%',
+                  }}
+                >
+                  <Button onClick={this.handleGetReportWhenChangeDate} size="small" type="primary">
+                    OK
+                  </Button>
+                </div>
+              )}
+            />
           </Col>
         </Row>
         <br />
@@ -230,7 +271,11 @@ class Dashboard extends React.Component {
           <Col span={16}>
             {this.state.partnerTitle ? (
               <Card title={this.state.partnerTitle} style={{ height: '100%' }}>
-                <DataTable columnList={partnerColumnList} dataList={this.state.partnerDataList} />
+                <DataTable
+                  columnList={partnerColumnList}
+                  dataList={this.state.partnerDataList}
+                  pageSize={3}
+                />
               </Card>
             ) : null}
           </Col>
@@ -245,6 +290,7 @@ class Dashboard extends React.Component {
               }}
               subject="order"
               data={orderStatistics}
+              pageSize={3}
             />
           </Col>
           <Col span={16}>
@@ -259,6 +305,8 @@ class Dashboard extends React.Component {
                       ? rejectionColumnList
                       : cancellationColumnList
                   }
+                  dataList={this.state.orderDataList}
+                  pageSize={this.state.orderColumnListName === 'Rejection' ? 3 : 2}
                 />
               </Card>
             ) : null}
