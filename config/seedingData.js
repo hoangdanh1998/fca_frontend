@@ -914,6 +914,103 @@ export const LINE_CHART_DATA = [
   },
 ];
 
+export const SPARTNER = {
+  data: {
+    TOTAL: { count: 63 },
+    PROCESSING: { count: 13 },
+    APPROVED: {
+      count: 45,
+      opening: { normal: 39, almostExpired: 1 },
+      closing: { normal: 4, expired: 1 },
+    },
+    REJECTED: { count: 5 },
+  },
+};
+
+export const S_APPROVED_PARTNER = {
+  total: 60,
+  opening: {
+    color: '#82B366',
+    total: 50,
+    normal: {
+      total: 45,
+      values: [],
+    },
+    almostExpired: {
+      total: 5,
+      values: [],
+    },
+  },
+  closing: {
+    color: '#B85450',
+    total: 10,
+    normal: {
+      total: 9,
+      values: [],
+    },
+    expired: {
+      total: 1,
+      values: [],
+    },
+  },
+};
+export const S_ORDER = {
+  total: 60,
+  details: [
+    {
+      label: 'Closure',
+      total: 50,
+      color: '#82B366',
+    },
+    {
+      label: 'Rejection',
+      total: 4,
+      color: '#B85450',
+    },
+    {
+      label: 'Cancellation',
+      total: 6,
+      color: 'whitesmoke',
+    },
+  ],
+};
+
+export const S_ITEM = {
+  total: 60,
+  details: [
+    {
+      label: 'Iced Coffee',
+      total: 10,
+      color: '#FFF2CC',
+    },
+    {
+      label: 'Iced Coffee with Milk',
+      total: 10,
+      color: '#FFF2CC',
+    },
+    {
+      label: 'Chocolate',
+      total: 10,
+      color: '#FFF2CC',
+    },
+    {
+      label: 'Milkshake',
+      total: 10,
+      color: '#FFF2CC',
+    },
+    {
+      label: 'Soda',
+      total: 10,
+      color: '#FFF2CC',
+    },
+    {
+      label: 'Soft-drink',
+      total: 10,
+      color: '#FFF2CC',
+    },
+  ],
+};
+
 export const STATISTICS_PARTNER = {
   TOTAL: 1000,
   APPROVED: 800,

@@ -16,3 +16,15 @@ export async function filterPartner(params) {
     method: 'GET',
   });
 }
+
+export async function getPartners(params) {
+  return request(`/api/partner?status=${params.status}`, {
+    method: 'GET',
+  });
+}
+
+export async function getReportStatistics(params) {
+  return request(`/api/admin/report?fromDate=${params.fromDate}&toDate=${params.toDate}`, {
+    method: 'GET',
+  });
+}
