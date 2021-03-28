@@ -32,16 +32,14 @@ class StatisticsBox extends React.Component {
   };
 
   renderStatistics = () => {
-    // const data = this.props.data;
+    const data = this.props.data;
     const subject = this.props.subject;
-    let data = S_ORDER;
-    switch (this.props.subject) {
+    switch (subject) {
       case 'partner':
-        data = S_APPROVED_PARTNER;
         return (
           <Statistic
             title="Approved Partners"
-            value={data.data.total}
+            value={data.total}
             valueStyle={{ color: 'black', fontSize: 40 }}
           />
         );
@@ -49,7 +47,7 @@ class StatisticsBox extends React.Component {
         return (
           <Statistic
             title="Orders"
-            value={data.data.total}
+            value={data.total}
             valueStyle={{ color: 'black', fontSize: 40 }}
           />
         );
@@ -57,7 +55,7 @@ class StatisticsBox extends React.Component {
         return (
           <Statistic
             title="Items"
-            value={data.data.total}
+            value={data.total}
             valueStyle={{ color: 'black', fontSize: 40 }}
           />
         );
@@ -67,16 +65,17 @@ class StatisticsBox extends React.Component {
   };
 
   renderActions = () => {
-    switch (this.props.subject) {
+    const subject = this.props.subject;
+    const data = this.props.data;
+    switch (subject) {
       case 'partner': {
-        const seedingData = S_APPROVED_PARTNER;
         return [
           <Card
             style={{
               width: '95%',
               marginLeft: '2.5%',
               textAlign: 'center',
-              backgroundColor: seedingData.data.opening.color,
+              backgroundColor: data.opening.color,
             }}
             bordered={false}
             actions={[
@@ -93,7 +92,7 @@ class StatisticsBox extends React.Component {
               >
                 <Statistic
                   title={<p style={{ textAlign: 'center', fontSize: 12, height: 20 }}>Normal</p>}
-                  value={seedingData.data.opening.normal}
+                  value={data.opening.normal.total}
                   valueStyle={{ color: 'black', fontSize: 20 }}
                 />
               </Card.Grid>,
@@ -112,24 +111,30 @@ class StatisticsBox extends React.Component {
                   title={
                     <p style={{ textAlign: 'center', fontSize: 12, height: 20 }}>Almost Expired</p>
                   }
-                  value={seedingData.data.opening.almostExpired}
+                  value={data.opening.almostExpired.total}
                   valueStyle={{ color: 'black', fontSize: 20 }}
                 />
               </Card.Grid>,
             ]}
           >
-            <Statistic
-              title="Opening"
-              value={seedingData.data.opening.total}
-              valueStyle={{ color: 'black', fontSize: 30 }}
-            />
+            <div
+              onClick={() => {
+                this.props.onClick('OPENING');
+              }}
+            >
+              <Statistic
+                title="Opening"
+                value={data.opening.total}
+                valueStyle={{ color: 'black', fontSize: 30 }}
+              />
+            </div>
           </Card>,
           <Card
             style={{
               width: '95%',
               marginLeft: '2.5%',
               textAlign: 'center',
-              backgroundColor: seedingData.data.closing.color,
+              backgroundColor: data.closing.color,
             }}
             bordered={false}
             actions={[
@@ -146,7 +151,7 @@ class StatisticsBox extends React.Component {
               >
                 <Statistic
                   title={<p style={{ textAlign: 'center', fontSize: 12, height: 20 }}>Normal</p>}
-                  value={seedingData.data.closing.normal}
+                  value={data.closing.normal.total}
                   valueStyle={{ color: 'black', fontSize: 20 }}
                 />
               </Card.Grid>,
@@ -163,23 +168,28 @@ class StatisticsBox extends React.Component {
               >
                 <Statistic
                   title={<p style={{ textAlign: 'center', fontSize: 12, height: 20 }}>Expired</p>}
-                  value={seedingData.data.closing.expired}
+                  value={data.closing.expired.total}
                   valueStyle={{ color: 'black', fontSize: 20 }}
                 />
               </Card.Grid>,
             ]}
           >
-            <Statistic
-              title="Closing"
-              value={seedingData.data.closing.total}
-              valueStyle={{ color: 'black', fontSize: 30 }}
-            />
+            <div
+              onClick={() => {
+                this.props.onClick('CLOSING');
+              }}
+            >
+              <Statistic
+                title="Closing"
+                value={data.closing.total}
+                valueStyle={{ color: 'black', fontSize: 30 }}
+              />
+            </div>
           </Card>,
         ];
       }
       case 'order': {
-        const seedingData = S_ORDER;
-        return seedingData.data.details.map(order => {
+        return data.details.map(order => {
           return (
             <Card.Grid
               onClick={() => {
@@ -195,7 +205,7 @@ class StatisticsBox extends React.Component {
             >
               <Statistic
                 title={order.label}
-                value={order.count}
+                value={order.total}
                 valueStyle={{ color: 'black', fontSize: 30 }}
               />
             </Card.Grid>
@@ -203,7 +213,7 @@ class StatisticsBox extends React.Component {
         });
       }
       case 'item': {
-        const seedingData = S_ITEM;
+        const data = S_ITEM;
         return [
           <ScrollMenu
             style={{ width: ' 100%', height: 'auto' }}
@@ -214,7 +224,7 @@ class StatisticsBox extends React.Component {
             hideSingleArrow={true}
             scrollBy={2}
             itemClassActive=""
-            data={seedingData.data.details.map(item => (
+            data={data.details.map(item => (
               <Card.Grid
                 onClick={() => {
                   this.props.onClick(item.label);
@@ -231,7 +241,7 @@ class StatisticsBox extends React.Component {
                   title={
                     <p style={{ textAlign: 'center', fontSize: 12, height: 20 }}>{item.label}</p>
                   }
-                  value={item.count}
+                  value={item.total}
                   valueStyle={{ color: 'black', fontSize: 30 }}
                 />
               </Card.Grid>
@@ -240,8 +250,8 @@ class StatisticsBox extends React.Component {
         ];
       }
       default: {
-        const seedingData = S_ORDER;
-        return seedingData.data.details.map(i => {
+        const data = S_ORDER;
+        return data.details.map(i => {
           return (
             <Card
               bordered={false}
@@ -254,7 +264,7 @@ class StatisticsBox extends React.Component {
             >
               <Statistic
                 title={i.label}
-                value={i.count}
+                value={i.total}
                 valueStyle={{ color: 'black', fontSize: 30 }}
               />
             </Card>
@@ -266,8 +276,6 @@ class StatisticsBox extends React.Component {
 
   render() {
     const data = this.props.data;
-
-    // const data = STATISTICS_PARTNER;
     return (
       <Card
         style={{

@@ -16,10 +16,18 @@ import {
 
 @connect(({ statistics, loading }) => {
   return {
-    orderStatisticsOfOnePartner: statistics.orderStatisticOfOnePartner,
-    filteredPartnerList: statistics.filteredPartnerList,
-    partnerStatistics: statistics.partnerStatistics,
     isError: statistics.isError,
+    partnerStatistics: statistics.partnerStatistics,
+    openingPartnerList: statistics.openingPartnerList,
+    openingNormalPartnerList: statistics.openingNormalPartnerList,
+    openingAlmostExpiredPartnerList: statistics.openingAlmostExpiredPartnerList,
+    closingPartnerList: statistics.closingPartnerList,
+    closingNormalPartnerList: statistics.closingNormalPartnerList,
+    closingExpiredPartnerList: statistics.closingExpiredPartnerList,
+
+    orderStatistics: statistics.orderStatistics,
+    rejectionOrderDetailsList: [],
+    cancellationOrderDetailsList: [],
   };
 })
 class Dashboard extends React.Component {
@@ -29,32 +37,21 @@ class Dashboard extends React.Component {
     orderEndDate: moment(),
     orderColumnListName: '',
     partnerTitle: '',
+    partnerDataList: this.props.openingPartnerList,
   };
 
   async componentWillMount() {
     this.setState({ loading: true });
-    // const { dispatch } = this.props;
-    // await dispatch({
-    //   type: 'statistics/getOrderStatisticsByPartner',
-    //   payload: {
-    //     id: '9ceee651-7dea-4a0f-b517-b49166cb6cfb',
-    //     // fromDate: moment().format(DATE_FORMAT_CALL_API),
-    //     // toDate: moment().format(DATE_FORMAT_CALL_API),
-    //     fromDate: '2021-3-25',
-    //     toDate: '2021-3-26',
-    //   },
-    // });
-    // await dispatch({
-    //   type: 'statistics/getPartnerStatistics',
-    //   payload: {},
-    // });
-    // await dispatch({
-    //   type: 'statistics/filterPartner',
-    //   payload: {
-    //     search: '',
-    //   },
-    // });
-    // this.setState({ searchPartnerList: this.props.filteredPartnerList });
+    const { dispatch } = this.props;
+    await dispatch({
+      type: 'statistics/getReportStatistics',
+      payload: {
+        // fromDate: moment().format(DATE_FORMAT_CALL_API),
+        // toDate: moment().format(DATE_FORMAT_CALL_API),
+        fromDate: '',
+        toDate: '',
+      },
+    });
     this.setState({ loading: false });
   }
 
@@ -92,17 +89,41 @@ class Dashboard extends React.Component {
       case 'Closure':
         this.setState({ orderColumnListName: '' });
         break;
+      case 'OPENING':
+        this.setState({
+          partnerTitle: 'Opening Partners',
+          partnerDataList: this.props.openingPartnerList,
+        });
+        break;
       case 'OPENING_NORMAL_PARTNER':
-        this.setState({ partnerTitle: 'Normal Opening Partners' });
+        this.setState({
+          partnerTitle: 'Normal Opening Partners',
+          partnerDataList: this.props.openingNormalPartnerList,
+        });
         break;
       case 'OPENING_ALMOST_EXPIRED_PARTNER':
-        this.setState({ partnerTitle: 'Almost Expired Opening Partners' });
+        this.setState({
+          partnerTitle: 'Almost Expired Opening Partners',
+          partnerDataList: this.props.openingAlmostExpiredPartnerList,
+        });
+        break;
+      case 'CLOSING':
+        this.setState({
+          partnerTitle: 'Closing Partners',
+          partnerDataList: this.props.closingPartnerList,
+        });
         break;
       case 'CLOSING_NORMAL_PARTNER':
-        this.setState({ partnerTitle: 'Normal Closing Partners' });
+        this.setState({
+          partnerTitle: 'Normal Closing Partners',
+          partnerDataList: this.props.closingNormalPartnerList,
+        });
         break;
       case 'CLOSING_EXPIRED_PARTNER':
-        this.setState({ partnerTitle: 'Expired Partners' });
+        this.setState({
+          partnerTitle: 'Expired Partners',
+          partnerDataList: this.props.closingExpiredPartnerList,
+        });
         break;
       default:
         break;
@@ -110,6 +131,7 @@ class Dashboard extends React.Component {
   };
 
   render() {
+    const { partnerStatistics, orderStatistics } = this.props;
     const partnerColumnList = [
       {
         title: 'Name',
@@ -125,8 +147,8 @@ class Dashboard extends React.Component {
       },
       {
         title: 'Expiration Date',
-        dataIndex: 'createdAt',
-        key: 'createdAt',
+        dataIndex: 'expirationDate',
+        key: 'expirationDate',
         align: 'right',
         sorter: (a, b) =>
           moment(a.expirationDate, DATE_FORMAT_CALL_API) -
@@ -188,10 +210,9 @@ class Dashboard extends React.Component {
       <div className={styles.applicationManagementContainer}>
         {/* DATE */}
         <Row>
-          <Col span={8}></Col>
-          <Col span={8}></Col>
-          <Col span={8}>
-            <DatePicker.RangePicker style={{ width: '100%' }} />
+          <Col span={12}></Col>
+          <Col span={12}>
+            <DatePicker.RangePicker style={{ width: '100%' }} format={DATE_FORMAT} />
           </Col>
         </Row>
         <br />
@@ -203,12 +224,13 @@ class Dashboard extends React.Component {
                 this.handleClickBox(action);
               }}
               subject="partner"
+              data={partnerStatistics}
             />
           </Col>
           <Col span={16}>
             {this.state.partnerTitle ? (
               <Card title={this.state.partnerTitle} style={{ height: '100%' }}>
-                <DataTable columnList={partnerColumnList} />
+                <DataTable columnList={partnerColumnList} dataList={this.state.partnerDataList} />
               </Card>
             ) : null}
           </Col>
@@ -222,6 +244,7 @@ class Dashboard extends React.Component {
                 this.handleClickBox(action);
               }}
               subject="order"
+              data={orderStatistics}
             />
           </Col>
           <Col span={16}>
@@ -243,7 +266,7 @@ class Dashboard extends React.Component {
         </Row>
         <Divider />
         {/* ITEM */}
-        <Row>
+        {/* <Row>
           <Col span={8}>
             <StatisticsBox
               onClick={action => {
@@ -252,7 +275,7 @@ class Dashboard extends React.Component {
               subject="item"
             />
           </Col>
-        </Row>
+        </Row> */}
       </div>
     );
   }

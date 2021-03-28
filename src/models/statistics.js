@@ -1,5 +1,9 @@
 import { router } from 'umi';
-import { getOrderStatisticsByPartner, filterPartner, getPartners } from '@/services/statistics';
+import {
+  getOrderStatisticsByPartner,
+  filterPartner,
+  getReportStatistics,
+} from '@/services/statistics';
 import AdminNotification from '../components/Notification';
 import { SPARTNER } from '../../config/seedingData';
 
@@ -8,26 +12,35 @@ const notification = new AdminNotification();
 const Model = {
   namespace: 'statistics',
   state: {
-    orderStatisticOfOnePartner: {},
     filteredPartnerList: [],
     isError: false,
+
     partnerStatistics: {},
+    openingPartnerList: [],
+    openingNormalPartnerList: [],
+    openingAlmostExpiredPartnerList: [],
+    closingPartnerList: [],
+    closingNormalPartnerList: [],
+    closingExpiredPartnerList: [],
+
+    orderStatistics: {},
+    rejectionOrderDetailsList: [],
+    cancellationOrderDetailsList: [],
   },
   effects: {
-    *getPartnerStatistics({ payload }, { call, put }) {
-      // const response = yield call(getPartners, payload);
+    *getReportStatistics({ payload }, { call, put }) {
+      const response = yield call(getReportStatistics, payload);
 
-      // if (response.type && response.type === 'HttpError') {
-      //   notification.fail('Something went wrong. Please try again.');
-      //   yield put({
-      //     type: 'handleError',
-      //     payload: 'true',
-      //   });
-      //   return;
-      // }
-      const response = SPARTNER;
+      if (response.type && response.type === 'HttpError') {
+        notification.fail('Something went wrong. Please try again.');
+        yield put({
+          type: 'handleError',
+          payload: 'true',
+        });
+        return;
+      }
       yield put({
-        type: 'handleGetPartnerStatistics',
+        type: 'handleGetReportStatistics',
         payload: response.data,
       });
     },
@@ -142,40 +155,85 @@ const Model = {
         filteredPartnerList: convertedList,
       };
     },
-    handleGetPartnerStatistics(state, action) {
+    handleGetReportStatistics(state, action) {
       const data = action.payload;
-      data.APPROVED = {
-        count: data.APPROVED.count,
+      console.log('handle-report', data);
+
+      const partner = data.partner;
+      const partnerStatistics = {
+        total: partner.total,
+        opening: {
+          color: '#82B366',
+          total: partner.opening.total,
+          normal: {
+            total: partner.opening.normal.total,
+            values: partner.opening.normal.values,
+          },
+          almostExpired: {
+            total: partner.opening.almostExpired.total,
+            values: partner.opening.almostExpired.values,
+          },
+        },
+        closing: {
+          color: '#B85450',
+          total: partner.closing.total,
+          normal: {
+            total: partner.closing.normal.total,
+            values: partner.closing.normal.values,
+          },
+          expired: {
+            total: partner.closing.expired.total,
+            values: partner.closing.expired.values,
+          },
+        },
+      };
+      const openingNormalPartnerList =
+        partner.opening.normal.values.length > 0 ? partner.opening.normal.values : [];
+      const openingAlmostExpiredPartnerList =
+        partner.opening.almostExpired.values.length > 0 ? partner.opening.almostExpired.values : [];
+      const openingPartnerList = [...openingAlmostExpiredPartnerList, ...openingNormalPartnerList];
+
+      const closingNormalPartnerList =
+        partner.closing.normal.values.length > 0 ? partner.closing.normal.values : [];
+      const closingExpiredPartnerList =
+        partner.closing.expired.values.length > 0 ? partner.closing.expired.values : [];
+      const closingPartnerList = [...closingExpiredPartnerList, ...closingNormalPartnerList];
+
+      const order = data.order;
+      const orderStatistics = {
+        total: order.total,
         details: [
           {
-            id: 'Opening',
-            label: 'Opening',
-            value: data.APPROVED.opening.normal + data.APPROVED.opening.almostExpired,
-            // color: '#b3e2cd',
-            color: '#3dba6f',
-            details: {
-              normal: data.APPROVED.opening.normal,
-              almostExpired: data.APPROVED.opening.almostExpired,
-            },
+            label: 'Closure',
+            total: order.closure.total,
+            color: '#82B366',
           },
           {
-            id: 'Closing',
-            label: 'Closing',
-            value: data.APPROVED.closing.normal + data.APPROVED.closing.expired,
-            // color: '#dcd6d6',
-            // color: '#828282',
-            color: '#ff6363',
-            details: {
-              normal: data.APPROVED.closing.normal,
-              expired: data.APPROVED.closing.expired,
-            },
+            label: 'Rejection',
+            total: order.reject.total,
+            color: '#B85450',
+          },
+          {
+            label: 'Cancellation',
+            total: order.cancel.total,
+            color: 'whitesmoke',
           },
         ],
       };
       return {
         ...state,
         isError: false,
-        partnerStatistics: data,
+        partnerStatistics: partnerStatistics,
+        openingPartnerList: openingPartnerList,
+        openingNormalPartnerList: openingNormalPartnerList,
+        openingAlmostExpiredPartnerList: openingAlmostExpiredPartnerList,
+        closingPartnerList: closingPartnerList,
+        closingNormalPartnerList: closingNormalPartnerList,
+        closingExpiredPartnerList: closingExpiredPartnerList,
+
+        orderStatistics: orderStatistics,
+        rejectionOrderDetailsList: [],
+        cancellationOrderDetailsList: [],
       };
     },
   },

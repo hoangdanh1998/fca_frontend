@@ -22,3 +22,9 @@ export async function getPartners(params) {
     method: 'GET',
   });
 }
+
+export async function getReportStatistics(params) {
+  return request(`/api/admin/report?fromDate=${params.fromDate}&toDate=${params.toDate}`, {
+    method: 'GET',
+  });
+}

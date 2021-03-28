@@ -12,7 +12,8 @@ class DataTable extends React.Component {
     this.state = {
       pageIndex: 1,
       skip: 0,
-      pageSize: PAGE_SIZE,
+      // pageSize: PAGE_SIZE,
+      pageSize: 3,
     };
   }
 
@@ -75,7 +76,7 @@ class DataTable extends React.Component {
               pagination={{
                 current: this.state.page,
                 pageSize: this.state.pageSize,
-                total: totalData,
+                total: dataList.length,
                 // onChange: this.onChangePaging,
                 showSizeChanger: false,
               }}

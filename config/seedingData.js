@@ -928,81 +928,87 @@ export const SPARTNER = {
 };
 
 export const S_APPROVED_PARTNER = {
-  data: {
-    total: 60,
-    opening: {
-      color: '#82B366',
-      total: 50,
-      normal: 45,
-      almostExpired: 5,
+  total: 60,
+  opening: {
+    color: '#82B366',
+    total: 50,
+    normal: {
+      total: 45,
+      values: [],
     },
-    closing: {
-      color: '#B85450',
-      total: 10,
-      normal: 9,
-      expired: 1,
+    almostExpired: {
+      total: 5,
+      values: [],
+    },
+  },
+  closing: {
+    color: '#B85450',
+    total: 10,
+    normal: {
+      total: 9,
+      values: [],
+    },
+    expired: {
+      total: 1,
+      values: [],
     },
   },
 };
 export const S_ORDER = {
-  data: {
-    total: 60,
-    details: [
-      {
-        label: 'Closure',
-        count: 50,
-        color: '#82B366',
-      },
-      {
-        label: 'Rejection',
-        count: 4,
-        color: '#B85450',
-      },
-      {
-        label: 'Cancellation',
-        count: 6,
-        color: 'whitesmoke',
-      },
-    ],
-  },
+  total: 60,
+  details: [
+    {
+      label: 'Closure',
+      total: 50,
+      color: '#82B366',
+    },
+    {
+      label: 'Rejection',
+      total: 4,
+      color: '#B85450',
+    },
+    {
+      label: 'Cancellation',
+      total: 6,
+      color: 'whitesmoke',
+    },
+  ],
 };
 
 export const S_ITEM = {
-  data: {
-    total: 60,
-    details: [
-      {
-        label: 'Iced Coffee',
-        count: 10,
-        color: '#FFF2CC',
-      },
-      {
-        label: 'Iced Coffee with Milk',
-        count: 10,
-        color: '#FFF2CC',
-      },
-      {
-        label: 'Chocolate',
-        count: 10,
-        color: '#FFF2CC',
-      },
-      {
-        label: 'Milkshake',
-        count: 10,
-        color: '#FFF2CC',
-      },
-      {
-        label: 'Soda',
-        count: 10,
-        color: '#FFF2CC',
-      },
-      {
-        label: 'Soft-drink',
-        count: 10,
-        color: '#FFF2CC',
-      },
-    ],
-  },
+  total: 60,
+  details: [
+    {
+      label: 'Iced Coffee',
+      total: 10,
+      color: '#FFF2CC',
+    },
+    {
+      label: 'Iced Coffee with Milk',
+      total: 10,
+      color: '#FFF2CC',
+    },
+    {
+      label: 'Chocolate',
+      total: 10,
+      color: '#FFF2CC',
+    },
+    {
+      label: 'Milkshake',
+      total: 10,
+      color: '#FFF2CC',
+    },
+    {
+      label: 'Soda',
+      total: 10,
+      color: '#FFF2CC',
+    },
+    {
+      label: 'Soft-drink',
+      total: 10,
+      color: '#FFF2CC',
+    },
+  ],
 };
 
 export const STATISTICS_PARTNER = {
