@@ -15,14 +15,6 @@ class ExpandLicenseModal extends React.Component {
     super(props);
   }
   state = {
-    // startDate: this.props.lastLicense
-    //   ? moment(this.props.storeLicense.licenseTo, DATE_FORMAT)
-    //   : moment(),
-    // endDate: this.props.lastLicense
-    //   ? moment(this.props.storeLicense.licenseTo, DATE_FORMAT).add(1, 'months')
-    //   : moment().add(1, 'months'),
-    // package: 1,
-    // price: LICENSE_PACKAGE.find(license => license.value === 1).price,
     startDate: this.props.lastLicense
       ? moment(this.props.lastLicense.endDate).add(1, 'day')
       : moment(),

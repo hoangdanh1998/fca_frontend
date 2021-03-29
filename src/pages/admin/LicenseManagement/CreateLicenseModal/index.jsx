@@ -10,10 +10,6 @@ class CreateLicenseModal extends React.Component {
 
   formRef = React.createRef();
 
-  handleUpdateLicense = values => {
-    alert(JSON.stringify(values));
-  };
-
   render() {
     const { onSubmit, visible, hideModal } = this.props;
 
@@ -62,10 +58,10 @@ class CreateLicenseModal extends React.Component {
               parser={value => value.replace(/\$\s?|(,*)/g, '')}
             />
           </Form.Item>
-          <Form.Item rules={[{ required: true }]} name="startDate" label="Start Date">
+          <Form.Item rules={[{ required: true }]} name="startDate" label="Available from">
             <DatePicker
               showToday
-              placeholder="Start Date"
+              placeholder="Available from"
               allowClear={false}
               format={DATE_FORMAT}
               style={{ width: '100%' }}
