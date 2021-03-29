@@ -28,7 +28,10 @@ class ConfirmationPopup extends React.Component {
               Close <b> {storeName} </b> store
             </p>
             <p>
-              <b>{storeName}</b> has <b>{undoneOrder} incomplete orders</b>
+              <b>{storeName}</b> has{' '}
+              <b style={{ color: undoneOrder > 0 ? 'red' : 'green' }}>
+                {undoneOrder} incomplete orders
+              </b>
             </p>
             <p>If closing, the system will cancel all incomplete orders</p>
           </div>

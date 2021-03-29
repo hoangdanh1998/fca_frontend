@@ -16,7 +16,7 @@ export async function getPartner(params) {
 }
 
 export async function getOrderList(params) {
-  return request(`/api/order?partner=${params.id}`, {
+  return request(`/api/order?partnerId=${params.id}&skip=0&limit=50`, {
     method: 'GET',
   });
 }

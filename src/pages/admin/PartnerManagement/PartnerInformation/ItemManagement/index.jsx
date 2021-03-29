@@ -191,9 +191,6 @@ class ItemManagement extends React.Component {
         dataIndex: 'price',
         key: 'price',
         width: '10%',
-        // render: (text, record, index) => (
-        //   <NumberFormat value={record.price} displayType={'text'} thousandSeparator={true} />
-        // ),
         render: (text, record, index) => (
           <Dropdown overlay={menu} placement="bottomLeft" trigger={['click']}>
             <NumberFormat value={record.price} displayType={'text'} thousandSeparator={true} />
@@ -204,9 +201,6 @@ class ItemManagement extends React.Component {
       {
         title: 'FCA Group',
         width: '10%',
-        // render: (text, record, index) => {
-        //   return Object.assign({}, record.fcaItem).name;
-        // },
         render: (text, record, index) => (
           <Dropdown overlay={menu} placement="bottomLeft" trigger={['click']}>
             <div style={{ display: 'flex', flex: 1 }}>{Object.assign({}, record.fcaItem).name}</div>
@@ -244,28 +238,6 @@ class ItemManagement extends React.Component {
         ),
         align: 'right',
       },
-      // {
-      //   title: 'Action',
-      //   dataIndex: 'action',
-      //   key: 'action',
-      //   width: '5%',
-      //   render: (text, record, index) => (
-      //     <Space
-      //       onClick={() => {
-      //         this.handleViewItemInformation(record);
-      //       }}
-      //       direction="horizontal"
-      //       style={{ display: 'flex' }}
-      //     >
-      //       <a
-      //         // href={`/fca-management/partner-management/partner-information/item-information?id=${record.id}`}
-      //         href="#"
-      //       >
-      //         View
-      //       </a>
-      //     </Space>
-      //   ),
-      // },
     ];
 
     return (

@@ -146,9 +146,14 @@ const Model = {
     },
 
     handleGetOrderList(state, action) {
-      const undoneOrders = action.payload.orders.reduce((sum, { status }) => {
-        ORDER_DONE_STATUS.includes(status) ? (sum += 0) : (sum += 1);
-      }, 0);
+      action.payload.orders.forEach(o => {
+        console.log(`include_done_${o.id}`, ORDER_DONE_STATUS.includes(o.status));
+      });
+      const undoneOrders = action.payload.orders.reduce(
+        (sum, { status }) => (ORDER_DONE_STATUS.includes(status) ? sum + 0 : sum + 1),
+        0,
+      );
+      console.log('undoneOrders', undoneOrders);
       return {
         ...state,
         totalUndoneOrder: undoneOrders,

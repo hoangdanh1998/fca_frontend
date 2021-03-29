@@ -4,12 +4,6 @@ import { connect } from 'dva';
 import styles from './index.less';
 import { PAGE_SIZE } from '../../../../../../../config/constants';
 
-// @connect(({ partner, loading }) => {
-//   return {
-//     dataList: partner.allPartnerList,
-//     totalPartner: partner.totalPartner,
-//   };
-// })
 class DataTable extends React.Component {
   constructor(props) {
     super(props);
@@ -18,36 +12,6 @@ class DataTable extends React.Component {
       PAGE_SIZE: PAGE_SIZE,
     };
   }
-
-  // componentWillMount() {
-  //   const { dispatch } = this.props;
-  //   console.log('componentWillMount');
-  //   dispatch({
-  //     type: 'partner/getPartnerList',
-  //     payload: {
-  //       name: '',
-  //       status: '',
-  //       skip: this.state.skip,
-  //       limit: this.state.PAGE_SIZE,
-  //     },
-  //   });
-  // }
-
-  onChangePaging = page => {
-    // const { dispatch } = this.props;
-    // this.setState({
-    //   skip: page,
-    // });
-    // dispatch({
-    //   type: 'partner/getPartnerList',
-    //   payload: {
-    //     name: '',
-    //     status: '',
-    //     skip: this.state.skip,
-    //     limit: this.state.PAGE_SIZE,
-    //   },
-    // });
-  };
 
   render() {
     const { columnList, totalPartner, dataList } = this.props;
@@ -60,10 +24,10 @@ class DataTable extends React.Component {
               dataSource={dataList}
               columns={columnList}
               pagination={{
-                current: this.state.skip,
+                current: this.state.page,
                 pageSize: this.state.PAGE_SIZE,
-                total: totalPartner,
-                onChange: this.onChangePaging,
+                total: dataList.length,
+                // onChange: this.onChangePaging,
               }}
               bordered
             ></Table>
