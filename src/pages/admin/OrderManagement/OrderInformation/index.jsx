@@ -128,10 +128,10 @@ class OrderInformation extends React.Component {
       visibleCloseOrder: false,
     });
   };
-  handleCloseOrder = () => {
+  handleCloseOrder = async () => {
     this.hideModalCloseOrder();
     const { dispatch } = this.props;
-    dispatch({
+    await dispatch({
       type: 'order/closeOrder',
       payload: {
         status: ORDER_STATUS.RECEPTION,
@@ -158,8 +158,7 @@ class OrderInformation extends React.Component {
       visibleCancelOrder: false,
     });
   };
-  handleCancelOrder = values => {
-    this.hideModalCancelOrder();
+  handleCancelOrder = async values => {
     const convertedReason = Array.from(values.reason, r => {
       return `${CANCEL_ORDER_REASON.find(tmp => tmp.value === r).label}${
         values.note && values.note != '' ? ' - ' + values.note : ''
@@ -169,7 +168,7 @@ class OrderInformation extends React.Component {
       values.requestBy.includes('PARTNER') ? 'Cửa hàng' : 'Khách'
     } huỷ] ${convertedReason.toString()}`;
     const { dispatch } = this.props;
-    dispatch({
+    await dispatch({
       type: 'order/cancelOrder',
       payload: {
         status: ORDER_STATUS.CANCELLATION,
@@ -177,6 +176,7 @@ class OrderInformation extends React.Component {
         description: reason,
       },
     });
+    this.hideModalCancelOrder();
   };
 
   render() {

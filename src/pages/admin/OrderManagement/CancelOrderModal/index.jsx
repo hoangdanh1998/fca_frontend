@@ -10,11 +10,11 @@ class CancelOrderModal extends React.Component {
     super(props);
     this.state = {
       reasons: CANCEL_ORDER_REASON,
+      isSubmitted: false,
     };
   }
 
   handleChangeActor = value => {
-    console.log('handleChangeActor', value);
     if (value.startsWith('CUSTOMER')) {
       const customerReason = CANCEL_ORDER_REASON.filter(reason => {
         return reason.value.startsWith('CUSTOMER');
@@ -31,27 +31,15 @@ class CancelOrderModal extends React.Component {
     }
   };
 
-  // onSubmit = values => {
-  //   console.log('values', values);
-  //   const { dispatch } = this.props;
-  //   dispatch({
-  //     type: 'order/cancelOrder',
-  //     payload: {
-  //       status: ORDER_STATUS.CANCELLATION,
-  //       id: this.props.order.id,
-  //     },
-  //   });
-  // };
-
   render() {
     const { visible, hideModal, order, submitModal } = this.props;
     const requestByList = [
       {
-        label: `Partner - ${order.partnerName}`,
+        label: `Cửa hàng - ${order.partnerName}`,
         value: `PARTNER_${order.partnerId}`,
       },
       {
-        label: `Customer - ${order.customerPhone}`,
+        label: `Khách hàng - ${order.customerPhone}`,
         value: `CUSTOMER_${order.customerId}`,
       },
     ];
@@ -63,7 +51,15 @@ class CancelOrderModal extends React.Component {
         footer={null}
         onCancel={hideModal}
       >
-        <Form onFinish={submitModal} labelCol={{ span: 6 }} wrapperCol={{ span: 16 }}>
+        <Form
+          onFinish={async values => {
+            this.setState({ isSubmitted: true });
+            await submitModal(values);
+            this.setState({ isSubmitted: false });
+          }}
+          labelCol={{ span: 6 }}
+          wrapperCol={{ span: 16 }}
+        >
           <Form.Item name="requestBy" label="Request by" rules={[{ required: true }]}>
             <Select
               placeholder=""
@@ -90,7 +86,12 @@ class CancelOrderModal extends React.Component {
               </Button>
             </Form.Item>
             <Form.Item>
-              <Button type="primary" htmlType="submit" onClick={hideModal}>
+              <Button
+                type="primary"
+                loading={this.state.isSubmitted}
+                htmlType="submit"
+                onClick={hideModal}
+              >
                 OK
               </Button>
             </Form.Item>
