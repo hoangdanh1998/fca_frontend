@@ -21,14 +21,18 @@ const Model = {
     allFcaLicenseList: [],
     totalFcaLicense: 0,
     createdLicense: {},
+    isError: false,
   },
   effects: {
     *getPartnerList({ payload }, { call, put }) {
       const response = yield call(getPartnerList, payload);
 
       if (response.type && response.type === 'HttpError') {
-        // notification.fail('Something went wrong. Please try again.');
         message.error('Something went wrong. Please try again.');
+        yield put({
+          type: 'handleError',
+          payload: 'true',
+        });
         return;
       }
       yield put({
@@ -41,8 +45,11 @@ const Model = {
       const response = yield call(getPartner, payload);
 
       if (response.type && response.type === 'HttpError') {
-        // notification.fail('Something went wrong. Please try again.');
         message.error('Something went wrong. Please try again.');
+        yield put({
+          type: 'handleError',
+          payload: 'true',
+        });
         return;
       }
       yield put({
@@ -55,11 +62,9 @@ const Model = {
       const response = yield call(updatePartnerStatus, payload);
 
       if (response.type && response.type === 'HttpError') {
-        // notification.fail('Something went wrong. Please try again.');
         message.error('Something went wrong. Please try again.');
         return;
       }
-      // notification.success('Success');
       message.success('Success!');
       yield put({
         type: 'handleUpdatePartnerStatus',
@@ -71,11 +76,9 @@ const Model = {
       const response = yield call(createPartnerLicense, payload);
 
       if (response.type && response.type === 'HttpError') {
-        // notification.fail('Something went wrong. Please try again.');
         message.error('Something went wrong. Please try again.');
         return;
       }
-      // notification.success('Success');
       message.success('Success!');
       yield put({
         type: 'handleCreatePartnerLicense',
@@ -87,8 +90,11 @@ const Model = {
       const response = yield call(getFcaLicenseList, payload);
 
       if (response.type && response.type === 'HttpError') {
-        // notification.fail('Something went wrong. Please try again.');
         message.error('Something went wrong. Please try again.');
+        yield put({
+          type: 'handleError',
+          payload: 'true',
+        });
         return;
       }
       yield put({
@@ -99,6 +105,13 @@ const Model = {
   },
 
   reducers: {
+    handleError(state, action) {
+      return {
+        ...state,
+        isError: true,
+      };
+    },
+
     handleGetPartnerList(state, action) {
       return {
         ...state,

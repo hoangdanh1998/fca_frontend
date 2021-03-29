@@ -6,12 +6,14 @@ import { Tabs, Skeleton } from 'antd';
 import GeneralInformation from '../PartnerInformation/GeneralInformation/index.jsx';
 import LicenseManagement from '../PartnerInformation/LicenseManagment/index.jsx';
 import ItemManagement from '../PartnerInformation/ItemManagement/index.jsx';
+import ExceptionBody from '../../../../components/ExceptionBody/index';
 import styles from './index.less';
 import { PAGE_SIZE } from '../../../../../config/constants';
 
 @connect(({ partner, loading }) => ({
   partner: partner.partner,
   allFcaLicenseList: partner.allFcaLicenseList,
+  isError: partner.isError,
 }))
 class PartnerInformation extends React.Component {
   state = { loading: false };
@@ -43,6 +45,8 @@ class PartnerInformation extends React.Component {
       <div className={styles.applicationManagementContainer}>
         {this.state.loading ? (
           <Skeleton loading={this.state.loading} />
+        ) : this.props.isError ? (
+          <ExceptionBody />
         ) : (
           <Tabs
             defaultActiveKey="1"

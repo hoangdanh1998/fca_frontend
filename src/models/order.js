@@ -12,14 +12,18 @@ const Model = {
     allOrderList: [],
     totalOrder: 0,
     order: {},
+    isError: false,
   },
   effects: {
     *getOrderList({ payload }, { call, put }) {
       const response = yield call(getOrderList, payload);
 
       if (response.type && response.type === 'HttpError') {
-        // notification.fail('Something went wrong. Please try again.');
         message.error('Something went wrong. Please try again.');
+        yield put({
+          type: 'handleError',
+          payload: 'true',
+        });
         return;
       }
       yield put({
@@ -32,8 +36,11 @@ const Model = {
       const response = yield call(getOrder, payload);
 
       if (response.type && response.type === 'HttpError') {
-        // notification.fail('Something went wrong. Please try again.');
         message.error('Something went wrong. Please try again.');
+        yield put({
+          type: 'handleError',
+          payload: 'true',
+        });
         return;
       }
       yield put({
@@ -46,11 +53,9 @@ const Model = {
       const response = yield call(cancelOrder, payload);
 
       if (response.type && response.type === 'HttpError') {
-        // notification.fail('Something went wrong. Please try again.');
         message.error('Something went wrong. Please try again.');
         return 'fail';
       }
-      // notification.success('Success');
       message.success('Success!');
       yield put({
         type: 'handleChangeOrderStatus',
@@ -62,11 +67,9 @@ const Model = {
       const response = yield call(closeOrder, payload);
 
       if (response.type && response.type === 'HttpError') {
-        notification.fail('Something went wrong. Please try again.');
         message.error('Something went wrong. Please try again.');
         return 'fail';
       }
-      // notification.success('Success');
       message.success('Success!');
       yield put({
         type: 'handleChangeOrderStatus',
@@ -76,6 +79,12 @@ const Model = {
   },
 
   reducers: {
+    handleError(state, action) {
+      return {
+        ...state,
+        isError: true,
+      };
+    },
     handleGetOrderList(state, action) {
       return {
         ...state,

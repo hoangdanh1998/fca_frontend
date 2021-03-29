@@ -1,3 +1,6 @@
+import React from 'react';
+import { connect } from 'dva';
+import moment from 'moment';
 import {
   CheckCircleOutlined,
   CloseCircleOutlined,
@@ -6,24 +9,26 @@ import {
   EyeOutlined,
 } from '@ant-design/icons';
 import { Space, Tag, Dropdown, Menu, Table } from 'antd';
-import { connect } from 'dva';
-import moment from 'moment';
-import React from 'react';
 import NumberFormat from 'react-number-format';
+import ConfirmationPopup from '../../../components/atom/ConfirmationPopup/index';
+import InsertButton from '../../../components/atom/InsertButton/index';
+import CreateLicenseModal from './CreateLicenseModal/index';
+import DataTable from './DataTable/index';
+import LicenseDetailsModal from './LicenseDetailsModal/index';
+import ExceptionBody from '../../../components/ExceptionBody/index';
+import styles from './index.less';
+import { convertStringToCamel } from '../../../utils/utils';
 import {
   DATE_FORMAT,
   DATE_TIME_FORMAT_CALL_API,
   LICENSE_STATUS,
 } from '../../../../config/constants';
-import ConfirmationPopup from '../../../components/atom/ConfirmationPopup/index';
-import InsertButton from '../../../components/atom/InsertButton/index';
-import { convertStringToCamel } from '../../../utils/utils';
-import CreateLicenseModal from './CreateLicenseModal/index';
-import DataTable from './DataTable/index';
-import styles from './index.less';
-import LicenseDetailsModal from './LicenseDetailsModal/index';
 
-@connect(({ license, loading }) => ({}))
+@connect(({ license, loading }) => {
+  return {
+    isError: license.isError,
+  };
+})
 class LicenseManagement extends React.Component {
   state = {
     visibleDetailsModal: false,
@@ -260,51 +265,50 @@ class LicenseManagement extends React.Component {
         align: 'right',
       },
     ];
-    console.log('license-management');
-    return (
-      <>
-        <div direction="horizontal" className={styles.applicationManagementContainer}>
-          <div className={styles.applicationHeader}>
-            <InsertButton
-              onClick={() => {
-                this.handleVisibleCreateModal();
-              }}
-            />
-          </div>
-          <DataTable
-            columnList={columnList}
-            onClickRow={record => {
-              // this.handleVisibleDetailsModal(record, 'view');
-              this.setState({ record: record });
+    return this.props.isError ? (
+      <ExceptionBody />
+    ) : (
+      <div direction="horizontal" className={styles.applicationManagementContainer}>
+        <div className={styles.applicationHeader}>
+          <InsertButton
+            onClick={() => {
+              this.handleVisibleCreateModal();
             }}
-          />
-          <LicenseDetailsModal
-            visible={this.state.visibleDetailsModal}
-            license={this.state.license}
-            hideModal={this.hideModal}
-            mode={this.state.mode}
-            submitModal={values => {
-              this.handleCloneLicense(values);
-            }}
-          />
-          {this.state.visibleCreateModal ? (
-            <CreateLicenseModal
-              visible={this.state.visibleCreateModal}
-              onSubmit={values => {
-                this.handleCreateLicense(values);
-              }}
-              hideModal={this.hideModal}
-            />
-          ) : null}
-
-          <ConfirmationPopup
-            visible={this.state.visibleConfirmationModal}
-            hideModal={this.hideModal}
-            onClickOK={this.handleChangeLicenseStatus}
-            message={this.state.confirmationMessage}
           />
         </div>
-      </>
+        <DataTable
+          columnList={columnList}
+          onClickRow={record => {
+            // this.handleVisibleDetailsModal(record, 'view');
+            this.setState({ record: record });
+          }}
+        />
+        <LicenseDetailsModal
+          visible={this.state.visibleDetailsModal}
+          license={this.state.license}
+          hideModal={this.hideModal}
+          mode={this.state.mode}
+          submitModal={values => {
+            this.handleCloneLicense(values);
+          }}
+        />
+        {this.state.visibleCreateModal ? (
+          <CreateLicenseModal
+            visible={this.state.visibleCreateModal}
+            onSubmit={values => {
+              this.handleCreateLicense(values);
+            }}
+            hideModal={this.hideModal}
+          />
+        ) : null}
+
+        <ConfirmationPopup
+          visible={this.state.visibleConfirmationModal}
+          hideModal={this.hideModal}
+          onClickOK={this.handleChangeLicenseStatus}
+          message={this.state.confirmationMessage}
+        />
+      </div>
     );
   }
 }

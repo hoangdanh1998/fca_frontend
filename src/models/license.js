@@ -16,14 +16,18 @@ const Model = {
     allFcaLicenseList: [],
     totalFcaLicense: 0,
     createdLicense: {},
+    isError: false,
   },
   effects: {
     *getFcaLicenseList({ payload }, { call, put }) {
       const response = yield call(getFcaLicenseList, payload);
 
       if (response.type && response.type === 'HttpError') {
-        // notification.fail('Something went wrong. Please try again.');
         message.error('Something went wrong. Please try again.');
+        yield put({
+          type: 'handleError',
+          payload: 'true',
+        });
         return;
       }
       yield put({
@@ -35,11 +39,9 @@ const Model = {
       const response = yield call(createFcaLicense, payload);
 
       if (response.type && response.type === 'HttpError') {
-        // notification.fail('Something went wrong. Please try again.');
         message.error('Something went wrong. Please try again.');
         return;
       }
-      // notification.success('Success');
       message.success('Success!');
       yield put({
         type: 'handleCreateFcaLicense',
@@ -50,11 +52,9 @@ const Model = {
       const response = yield call(cloneFcaLicense, payload);
 
       if (response.type && response.type === 'HttpError') {
-        // notification.fail('Something went wrong. Please try again.');
         message.error('Something went wrong. Please try again.');
         return;
       }
-      // notification.success('Success');
       message.success('Success!');
       yield put({
         type: 'handleCreateFcaLicense',
@@ -65,11 +65,9 @@ const Model = {
       const response = yield call(updateFcaLicenseStatus, payload);
 
       if (response.type && response.type === 'HttpError') {
-        // notification.fail('Something went wrong. Please try again.');
         message.error('Something went wrong. Please try again.');
         return;
       }
-      // notification.success('Success');
       message.success('Success!');
       yield put({
         type: 'handleUpdateFcaLicenseStatus',
@@ -79,6 +77,12 @@ const Model = {
   },
 
   reducers: {
+    handleError(state, action) {
+      return {
+        ...state,
+        isError: true,
+      };
+    },
     handleGetFcaLicenseList(state, action) {
       return {
         ...state,

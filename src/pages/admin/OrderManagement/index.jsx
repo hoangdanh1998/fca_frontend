@@ -12,6 +12,7 @@ import {
 import DataTable from './DataTable/index';
 import CancelOrderModal from '../OrderManagement/CancelOrderModal/index.jsx';
 import ConfirmationPopup from '../../../components/atom/ConfirmationPopup/index.jsx';
+import ExceptionBody from '../../../components/ExceptionBody/index';
 import styles from './index.less';
 import { convertStringToCamel } from '../../../utils/utils';
 import {
@@ -21,7 +22,11 @@ import {
   DATE_TIME_FORMAT_CALL_API,
 } from '../../../../config/constants';
 
-@connect(({ order, loading }) => ({}))
+@connect(({ order, loading }) => {
+  return {
+    isError: order.isError,
+  };
+})
 class OrderManagement extends React.Component {
   state = { visibleCancelOrder: false, visibleChangeStatus: false, order: {}, page: 1 };
 
@@ -157,40 +162,24 @@ class OrderManagement extends React.Component {
         },
         align: 'right',
       },
-      // {
-      //   title: 'Action',
-      //   dataIndex: 'action',
-      //   key: 'action',
-      //   render: (text, record, index) => (
-      //     <Space direction="horizontal" style={{ display: 'flex' }}>
-      //       <a href={`/fca-management/order-management/order-information?id=${record.id}`}>View</a>
-      //     </Space>
-      //     //   <EyeOutlined
-      //     //   style={{ color: 'black' }}
-      //     //   onClick={() => {
-      //     //     this.handleViewPartner(record);
-      //     //   }}
-      //     // />
-      //   ),
-      // },
     ];
-    return (
-      <>
-        <div direction="horizontal" className={styles.applicationManagementContainer}>
-          <CancelOrderModal
-            visible={this.state.visibleCancelOrder}
-            order={this.state.order}
-            hideModal={this.hideModal}
-          />
-          <ConfirmationPopup
-            visible={this.state.visibleChangeStatus}
-            message={this.state.order}
-            hideModal={this.hideModalCloseOrder}
-            onClickOK={this.handleCloseOrder}
-          />
-          <DataTable columnList={columnList} />
-        </div>
-      </>
+    return this.props.isError ? (
+      <ExceptionBody />
+    ) : (
+      <div direction="horizontal" className={styles.applicationManagementContainer}>
+        <CancelOrderModal
+          visible={this.state.visibleCancelOrder}
+          order={this.state.order}
+          hideModal={this.hideModal}
+        />
+        <ConfirmationPopup
+          visible={this.state.visibleChangeStatus}
+          message={this.state.order}
+          hideModal={this.hideModalCloseOrder}
+          onClickOK={this.handleCloseOrder}
+        />
+        <DataTable columnList={columnList} />
+      </div>
     );
   }
 }

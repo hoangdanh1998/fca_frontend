@@ -17,8 +17,11 @@ const Model = {
       const response = yield call(createTransaction, payload);
 
       if (response.type && response.type === 'HttpError') {
-        // notification.fail('Something went wrong. Please try again.');
         message.error('Something went wrong. Please try again');
+        yield put({
+          type: 'handleError',
+          payload: 'true',
+        });
         return;
       } else {
         message.success('Success!');
@@ -30,7 +33,6 @@ const Model = {
     },
     *getAccount({ payload }, { call, put }) {
       const response = yield call(getAccount, payload);
-      console.log('response', response);
 
       if (response.type && response.type === 'HttpError') {
         message.error('This phone does not exist');
@@ -44,6 +46,13 @@ const Model = {
   },
 
   reducers: {
+    handleError(state, action) {
+      return {
+        ...state,
+        isError: true,
+      };
+    },
+
     handleCreateTransaction(state, action) {
       return {
         ...state,
