@@ -202,13 +202,16 @@ class GeneralInformation extends React.Component {
             </Space>
           }
         >
-          <Descriptions.Item label="Telephone">
+          <Descriptions.Item label="Phone">
             {partner.account ? partner.account.phone : '-'}
           </Descriptions.Item>
           <Descriptions.Item label="Status">
             <Tag color={this.getTagStatusColors()} icon={this.getTagStatusIcons()}>
               {partner.status}
             </Tag>
+          </Descriptions.Item>
+          <Descriptions.Item label="Balance">
+            {partner.account ? partner.account.balance : '-'}
           </Descriptions.Item>
           <Descriptions.Item label="Address">
             {Object.assign({}, partner.address).description}

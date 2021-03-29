@@ -12,6 +12,7 @@ const Model = {
   effects: {
     *signIn({ payload }, { call, put }) {
       const response = yield call(adminSignIn, payload);
+      console.log('login', response.admin);
       if (response.message === `http error`) {
         notification.fail('Something went wrong. Please try to sign in again.');
       } else {
@@ -22,6 +23,7 @@ const Model = {
         yield setToken(response.token.accessToken);
         yield setAuthority('admin');
         yield reloadAuthorized();
+        localStorage.setItem('account', JSON.stringify(response.admin));
         router.push('/fca-management/dashboard');
       }
     },
