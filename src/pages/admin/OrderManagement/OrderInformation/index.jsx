@@ -3,19 +3,7 @@ import moment from 'moment';
 import { router } from 'umi';
 import { connect } from 'dva';
 import NumberFormat from 'react-number-format';
-import {
-  Descriptions,
-  Space,
-  Table,
-  Row,
-  Col,
-  Steps,
-  Skeleton,
-  List,
-  Tag,
-  Timeline,
-  Divider,
-} from 'antd';
+import { Descriptions, Space, Table, Row, Col, Skeleton, Tag, Timeline } from 'antd';
 import Button from 'antd-button-color';
 import 'antd-button-color/dist/css/style.less';
 import {
@@ -27,6 +15,7 @@ import {
 } from '@ant-design/icons';
 import CancelOrderModal from '../CancelOrderModal/index';
 import ConfirmationPopup from '../../../../components/atom/ConfirmationPopup/index';
+import ExceptionBody from '../../../../components/ExceptionBody/index';
 import {
   ORDER_STATUS,
   DATE_TIME_FORMAT,
@@ -38,6 +27,7 @@ import styles from './index.less';
 
 @connect(({ order, loading }) => ({
   order: order.order,
+  isError: order.isError,
 }))
 class OrderInformation extends React.Component {
   state = {
@@ -47,6 +37,7 @@ class OrderInformation extends React.Component {
     cancelOrder: {},
     loading: false,
   };
+
   async componentWillMount() {
     this.setState({ loading: true });
     const { dispatch } = this.props;
@@ -84,27 +75,6 @@ class OrderInformation extends React.Component {
         t => t.toStatus === ORDER_STATUS.CANCELLATION,
       );
       if (cancelledTransaction) {
-        // const viewedReason = [];
-        // const reason = JSON.parse(cancelledTransaction.description).reason;
-        // const note = JSON.parse(cancelledTransaction.description).note
-        //   ? JSON.parse(cancelledTransaction.description).note
-        //   : '';
-        // const requestBy = JSON.parse(cancelledTransaction.description).requestBy.split('_')[0];
-        // reason.forEach(r => {
-        //   viewedReason.push(CANCEL_ORDER_REASON.find(e => e.value === r));
-        // });
-        // return (
-        //   <List
-        //     dataSource={viewedReason}
-        //     renderItem={item => {
-        //       return item.value !== 'OTHER'
-        //         ? `[${requestBy}] ${item.label}`
-        //         : JSON.parse(cancelledTransaction.description).note
-        //         ? `[${requestBy}] ${note}`
-        //         : `[${requestBy}] Reason`;
-        //     }}
-        //   />
-        // );
         return cancelledTransaction.description;
       } else {
         return '-';
@@ -158,10 +128,10 @@ class OrderInformation extends React.Component {
       visibleCloseOrder: false,
     });
   };
-  handleCloseOrder = () => {
+  handleCloseOrder = async () => {
     this.hideModalCloseOrder();
     const { dispatch } = this.props;
-    dispatch({
+    await dispatch({
       type: 'order/closeOrder',
       payload: {
         status: ORDER_STATUS.RECEPTION,
@@ -188,8 +158,7 @@ class OrderInformation extends React.Component {
       visibleCancelOrder: false,
     });
   };
-  handleCancelOrder = values => {
-    this.hideModalCancelOrder();
+  handleCancelOrder = async values => {
     const convertedReason = Array.from(values.reason, r => {
       return `${CANCEL_ORDER_REASON.find(tmp => tmp.value === r).label}${
         values.note && values.note != '' ? ' - ' + values.note : ''
@@ -199,7 +168,7 @@ class OrderInformation extends React.Component {
       values.requestBy.includes('PARTNER') ? 'Cửa hàng' : 'Khách'
     } huỷ] ${convertedReason.toString()}`;
     const { dispatch } = this.props;
-    dispatch({
+    await dispatch({
       type: 'order/cancelOrder',
       payload: {
         status: ORDER_STATUS.CANCELLATION,
@@ -207,6 +176,7 @@ class OrderInformation extends React.Component {
         description: reason,
       },
     });
+    this.hideModalCancelOrder();
   };
 
   render() {
@@ -256,7 +226,9 @@ class OrderInformation extends React.Component {
         align: 'right',
       },
     ];
-    return (
+    return this.props.isError ? (
+      <ExceptionBody />
+    ) : (
       <div className={styles.applicationManagementContainer}>
         {this.state.loading ? (
           <Skeleton loading={this.state.loading} />

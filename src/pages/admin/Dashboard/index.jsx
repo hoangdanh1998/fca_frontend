@@ -35,7 +35,7 @@ class Dashboard extends React.Component {
     loading: false,
     calendarStartDate: moment(),
     calendarEndDate: moment(),
-    orderColumnListName: '',
+    orderColumnListName: 'Cancellation',
     partnerTitle: 'Opening Partners',
     partnerDataList: this.props.openingPartnerList,
     orderDataList: this.props.cancellationOrderDetailsList,
@@ -52,7 +52,12 @@ class Dashboard extends React.Component {
         toDate: this.state.calendarEndDate.add(1, 'day').format(DATE_FORMAT_CALL_API),
       },
     });
-    this.setState({ loading: false, partnerDataList: this.props.openingPartnerList });
+    this.setState({
+      loading: false,
+      partnerDataList: this.props.openingPartnerList,
+      orderColumnListName: 'Cancellation',
+      orderDataList: this.props.cancellationOrderDetailsList,
+    });
   }
 
   handleChangeDate = async (dates, dateStrings) => {

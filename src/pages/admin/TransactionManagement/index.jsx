@@ -16,14 +16,16 @@ import {
   LICENSE_STATUS,
 } from '../../../../config/constants';
 import InsertButton from '../../../components/atom/InsertButton/index';
-import { convertStringToCamel } from '../../../utils/utils';
 import CreateTransactionModal from './CreateTransactionModal/index';
 import DataTable from './DataTable/index';
+import ExceptionBody from '../../../components/ExceptionBody/index';
+import { convertStringToCamel } from '../../../utils/utils';
 import styles from './index.less';
 
 @connect(({ transaction, loading }) => {
   return {
     account: transaction.account,
+    isError: transaction.isError,
   };
 })
 class TransactionManagement extends React.Component {

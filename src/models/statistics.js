@@ -5,6 +5,7 @@ import {
   getReportStatistics,
 } from '@/services/statistics';
 import AdminNotification from '../components/Notification';
+import { message } from 'antd';
 import { SPARTNER } from '../../config/seedingData';
 import { ORDER_STATUS } from '../../config/constants';
 
@@ -33,7 +34,8 @@ const Model = {
       const response = yield call(getReportStatistics, payload);
 
       if (response.type && response.type === 'HttpError') {
-        notification.fail('Something went wrong. Please try again.');
+        // notification.fail('Something went wrong. Please try again.');
+        message.error('Something went wrong. Please try again.');
         yield put({
           type: 'handleError',
           payload: 'true',
@@ -49,7 +51,8 @@ const Model = {
       const response = yield call(getOrderStatisticsByPartner, payload);
 
       if (response.type && response.type === 'HttpError') {
-        notification.fail('Something went wrong. Please try again.');
+        // notification.fail('Something went wrong. Please try again.');
+        message.error('Something went wrong. Please try again.');
         yield put({
           type: 'handleError',
           payload: 'true',

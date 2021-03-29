@@ -5,6 +5,7 @@ import { connect } from 'dva';
 import { Space, Tag } from 'antd';
 import DataTable from '../PartnerManagement/DataTable/index.jsx';
 import ConfirmationPopup from '../../../components/atom/ConfirmationPopup/index.jsx';
+import ExceptionBody from '../../../components/ExceptionBody/index';
 import {
   DATE_FORMAT,
   DATE_FORMAT_CALL_API,
@@ -12,15 +13,14 @@ import {
   PAGE_SIZE,
 } from '../../../../config/constants';
 import { convertStringToCamel } from '../../../utils/utils';
-import {
-  CheckCircleOutlined,
-  CloseCircleOutlined,
-  ClockCircleOutlined,
-  EyeOutlined,
-} from '@ant-design/icons';
+import { CheckCircleOutlined, CloseCircleOutlined, ClockCircleOutlined } from '@ant-design/icons';
 import styles from './index.less';
 
-@connect(({ partner, loading }) => ({}))
+@connect(({ partner, loading }) => {
+  return {
+    isError: partner.isError,
+  };
+})
 class PartnerManagement extends React.Component {
   state = {
     visibleChangeStatus: false,
@@ -163,34 +163,19 @@ class PartnerManagement extends React.Component {
         },
         width: '20%',
       },
-      // {
-      //   title: 'Action',
-      //   dataIndex: 'action',
-      //   key: 'action',
-      //   render: (text, record, index) => (
-      //     <Space direction="horizontal" style={{ display: 'flex' }}>
-      //       <EyeOutlined
-      //         style={{ color: 'black' }}
-      //         onClick={() => {
-      //           this.handleViewPartner(record);
-      //         }}
-      //       />
-      //     </Space>
-      //   ),
-      // },
     ];
-    return (
-      <>
-        <div className={styles.applicationManagementContainer}>
-          <ConfirmationPopup
-            visible={this.state.visibleChangeStatus}
-            message={this.state.partner}
-            hideModal={this.hideModalStatus}
-            onClickOK={this.handleChangeStatus}
-          />
-          <DataTable columnList={columnList} />
-        </div>
-      </>
+    return this.props.isError ? (
+      <ExceptionBody />
+    ) : (
+      <div className={styles.applicationManagementContainer}>
+        <ConfirmationPopup
+          visible={this.state.visibleChangeStatus}
+          message={this.state.partner}
+          hideModal={this.hideModalStatus}
+          onClickOK={this.handleChangeStatus}
+        />
+        <DataTable columnList={columnList} />
+      </div>
     );
   }
 }

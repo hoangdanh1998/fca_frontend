@@ -5,6 +5,7 @@ import { Modal, Space, Button } from 'antd';
 class ConfirmationPopup extends React.Component {
   constructor(props) {
     super(props);
+    this.state = { isSubmitted: false };
   }
 
   render() {
@@ -26,7 +27,15 @@ class ConfirmationPopup extends React.Component {
         </p>
         <Space direction="horizontal">
           <Button onClick={this.props.hideModal}>No</Button>
-          <Button onClick={this.props.onClickOK} type="primary">
+          <Button
+            loading={this.state.isSubmitted}
+            onClick={async () => {
+              this.setState({ isSubmitted: true });
+              await this.props.onClickOK();
+              this.setState({ isSubmitted: false });
+            }}
+            type="primary"
+          >
             Yes
           </Button>
         </Space>
