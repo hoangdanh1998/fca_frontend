@@ -1,6 +1,7 @@
 import { router } from 'umi';
 import { getOrderList, getOrder, cancelOrder, closeOrder } from '@/services/order';
 import AdminNotification from '../components/Notification';
+import { message } from 'antd';
 import { ORDER_STATUS } from '../../config/constants';
 
 const notification = new AdminNotification();
@@ -17,7 +18,8 @@ const Model = {
       const response = yield call(getOrderList, payload);
 
       if (response.type && response.type === 'HttpError') {
-        notification.fail('Something went wrong. Please try again.');
+        // notification.fail('Something went wrong. Please try again.');
+        message.error('Something went wrong. Please try again.');
         return;
       }
       yield put({
@@ -30,7 +32,8 @@ const Model = {
       const response = yield call(getOrder, payload);
 
       if (response.type && response.type === 'HttpError') {
-        notification.fail('Something went wrong. Please try again.');
+        // notification.fail('Something went wrong. Please try again.');
+        message.error('Something went wrong. Please try again.');
         return;
       }
       yield put({
@@ -43,13 +46,14 @@ const Model = {
       const response = yield call(cancelOrder, payload);
 
       if (response.type && response.type === 'HttpError') {
-        notification.fail('Something went wrong. Please try again.');
+        // notification.fail('Something went wrong. Please try again.');
+        message.error('Something went wrong. Please try again.');
         return 'fail';
       }
-      notification.success('Success');
+      // notification.success('Success');
+      message.success('Success!');
       yield put({
         type: 'handleChangeOrderStatus',
-        // payload: payload,
         payload: response.data,
       });
     },
@@ -59,12 +63,13 @@ const Model = {
 
       if (response.type && response.type === 'HttpError') {
         notification.fail('Something went wrong. Please try again.');
+        message.error('Something went wrong. Please try again.');
         return 'fail';
       }
-      notification.success('Success');
+      // notification.success('Success');
+      message.success('Success!');
       yield put({
         type: 'handleChangeOrderStatus',
-        // payload: payload,
         payload: response.data,
       });
     },
@@ -79,20 +84,12 @@ const Model = {
       };
     },
     handleGetOrder(state, action) {
-      // action.payload.order.transaction.unshift({
-      //   toStatus: ORDER_STATUS.INITIALIZATION,
-      //   createdAt: action.payload.order.createdAt,
-      // });
       return {
         ...state,
         order: action.payload.order,
       };
     },
     handleChangeOrderStatus(state, action) {
-      // action.payload.order.transaction.unshift({
-      //   toStatus: ORDER_STATUS.INITIALIZATION,
-      //   createdAt: action.payload.order.createdAt,
-      // });
       return { ...state, order: action.payload.order };
     },
   },

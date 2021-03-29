@@ -5,6 +5,7 @@ import {
   cloneFcaLicense,
   updateFcaLicenseStatus,
 } from '@/services/license';
+import { message } from 'antd';
 import AdminNotification from '../components/Notification';
 
 const notification = new AdminNotification();
@@ -21,7 +22,8 @@ const Model = {
       const response = yield call(getFcaLicenseList, payload);
 
       if (response.type && response.type === 'HttpError') {
-        notification.fail('Something went wrong. Please try again.');
+        // notification.fail('Something went wrong. Please try again.');
+        message.error('Something went wrong. Please try again.');
         return;
       }
       yield put({
@@ -33,10 +35,12 @@ const Model = {
       const response = yield call(createFcaLicense, payload);
 
       if (response.type && response.type === 'HttpError') {
-        notification.fail('Something went wrong. Please try again.');
+        // notification.fail('Something went wrong. Please try again.');
+        message.error('Something went wrong. Please try again.');
         return;
       }
-      notification.success('Success');
+      // notification.success('Success');
+      message.success('Success!');
       yield put({
         type: 'handleCreateFcaLicense',
         payload: response.data,
@@ -46,10 +50,12 @@ const Model = {
       const response = yield call(cloneFcaLicense, payload);
 
       if (response.type && response.type === 'HttpError') {
-        notification.fail('Something went wrong. Please try again.');
+        // notification.fail('Something went wrong. Please try again.');
+        message.error('Something went wrong. Please try again.');
         return;
       }
-      notification.success('Success');
+      // notification.success('Success');
+      message.success('Success!');
       yield put({
         type: 'handleCreateFcaLicense',
         payload: response.data,
@@ -59,10 +65,12 @@ const Model = {
       const response = yield call(updateFcaLicenseStatus, payload);
 
       if (response.type && response.type === 'HttpError') {
-        notification.fail('Something went wrong. Please try again.');
+        // notification.fail('Something went wrong. Please try again.');
+        message.error('Something went wrong. Please try again.');
         return;
       }
-      notification.success('Success');
+      // notification.success('Success');
+      message.success('Success!');
       yield put({
         type: 'handleUpdateFcaLicenseStatus',
         payload: response.data,
@@ -82,7 +90,6 @@ const Model = {
       const newLicenses = state.allFcaLicenseList;
       newLicenses.push({ ...action.payload.license, status: 'ACTIVE' });
 
-      console.log('new-licenses', newLicenses);
       return {
         ...state,
         allFcaLicenseList: [...newLicenses],
@@ -98,7 +105,6 @@ const Model = {
         return license;
       });
 
-      console.log('new-licenses', newLicenses);
       return {
         ...state,
         allFcaLicenseList: newLicenses,
