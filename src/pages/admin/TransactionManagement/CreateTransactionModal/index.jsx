@@ -1,17 +1,34 @@
-import { Button, DatePicker, Form, Input, InputNumber, Modal, Space } from 'antd';
-import moment from 'moment';
 import React from 'react';
+import { connect } from 'dva';
+import moment from 'moment';
+import { Button, DatePicker, Form, Input, InputNumber, Modal, Space, Spin } from 'antd';
 import { DATE_FORMAT } from '../../../../../config/constants';
 
+@connect(({ transaction, loading }) => {
+  return {
+    account: transaction.account,
+  };
+})
 class CreateTransactionModal extends React.Component {
   state = {
     isSubmitted: false,
+    actionOnAccount: {},
+    loadingAccount: false,
   };
 
   formRef = React.createRef();
 
-  handleUpdateLicense = values => {
-    alert(JSON.stringify(values));
+  handleGetAccount = async phone => {
+    this.setState({ loadingAccount: true });
+    const { dispatch } = this.props;
+    await dispatch({
+      type: 'transaction/getAccount',
+      payload: {
+        phone: phone,
+      },
+    });
+    this.setState({ actionOnAccount: this.props.account });
+    this.setState({ loadingAccount: false });
   };
 
   render() {
@@ -31,19 +48,36 @@ class CreateTransactionModal extends React.Component {
         <Form
           onFinish={async values => {
             this.setState({ isSubmitted: true });
-            await onSubmit(values);
+            await onSubmit({ ...values, accountId: this.state.actionOnAccount.id });
+            this.setState({ actionOnAccount: {} });
           }}
           ref={this.formRef}
           labelCol={{ span: 5 }}
           wrapperCol={{ span: 19 }}
         >
           <Form.Item rules={[{ required: true }]} name="phone" label="Phone">
-            <Input placeholder="Enter phone" allowClear />
+            <Input
+              onBlur={event => {
+                if (event.target.value) {
+                  this.handleGetAccount(event.target.value);
+                }
+              }}
+              placeholder="Enter phone"
+              allowClear
+            />
           </Form.Item>
-          <Form.Item rules={[{ required: true }]} name="name" label="Name">
-            <Input placeholder="Account name" disabled />
+          <Form.Item
+            name="accountId"
+            label="accountId"
+            hidden
+            value={this.state.actionOnAccount.id}
+          ></Form.Item>
+          <Form.Item name="name" label="Name">
+            <Spin spinning={this.state.loadingAccount}>
+              <Input placeholder="Account name" value={this.state.actionOnAccount.id} disabled />
+            </Spin>
           </Form.Item>
-          <Form.Item rules={[{ required: true }]} name="price" label="Price">
+          <Form.Item rules={[{ required: true }]} name="amount" label="Amount">
             <InputNumber
               allowClear
               placeholder="Enter amount"

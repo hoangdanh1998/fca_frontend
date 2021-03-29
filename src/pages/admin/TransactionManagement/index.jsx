@@ -21,18 +21,32 @@ import CreateTransactionModal from './CreateTransactionModal/index';
 import DataTable from './DataTable/index';
 import styles from './index.less';
 
-// @connect(({ license, loading }) => ({}))
+@connect(({ transaction, loading }) => {
+  return {
+    account: transaction.account,
+  };
+})
 class TransactionManagement extends React.Component {
   state = {
     visibleCreateModal: false,
     record: {},
+    actionOnAccount: {},
   };
 
-  setPage = page => {
-    this.setState({ page: page });
-  };
   handleVisibleCreateModal = () => {
     this.setState({ visibleCreateModal: true });
+  };
+  handleCreateTransaction = async values => {
+    const { dispatch } = this.props;
+    await dispatch({
+      type: 'transaction/createTransaction',
+      payload: {
+        accountId: values.accountId,
+        amount: values.amount,
+        description: values.description,
+      },
+    });
+    this.hideModal();
   };
   hideModal = () => {
     this.setState({ visibleCreateModal: false });
@@ -172,10 +186,19 @@ class TransactionManagement extends React.Component {
             }}
           />
         </div>
-        <CreateTransactionModal
-          visible={this.state.visibleCreateModal}
-          hideModal={this.hideModal}
-        />
+        {this.state.visibleCreateModal ? (
+          <CreateTransactionModal
+            visible={this.state.visibleCreateModal}
+            hideModal={this.hideModal}
+            onSubmit={values => {
+              this.handleCreateTransaction(values);
+            }}
+            onBlurPhone={phone => {
+              this.handleGetAccount(phone);
+            }}
+            account={this.state.actionOnAccount}
+          />
+        ) : null}
       </>
     );
   }

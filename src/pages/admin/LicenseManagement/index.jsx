@@ -259,35 +259,6 @@ class LicenseManagement extends React.Component {
         ),
         align: 'right',
       },
-      // {
-      //   title: 'Action',
-      //   dataIndex: 'action',
-      //   key: 'action',
-      //   render: (text, record, index) => (
-      //     <Space direction="horizontal" style={{ display: 'flex' }}>
-      //       <EyeOutlined
-      //         style={{ color: 'black' }}
-      //         onClick={() => {
-      //           this.handleVisibleDetailsModal(record, 'view');
-      //         }}
-      //       />
-      //       <CopyOutlined
-      //         style={{ color: 'blue' }}
-      //         onClick={() => {
-      //           this.handleVisibleDetailsModal(record, 'clone');
-      //         }}
-      //       />
-      //       <CloseOutlined
-      //         style={{ color: record.status === LICENSE_STATUS.ARCHIVE ? 'grey' : 'red' }}
-      //         onClick={() => {
-      //           if (record.status === LICENSE_STATUS.ACTIVE) {
-      //             this.handleVisibleConfirmationModal(record);
-      //           }
-      //         }}
-      //       />
-      //     </Space>
-      //   ),
-      // },
     ];
     console.log('license-management');
     return (

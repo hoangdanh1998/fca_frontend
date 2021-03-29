@@ -27,6 +27,7 @@ app.model({ namespace: 'order', ...(require('/Users/pkimanh03/Documents/capstone
 app.model({ namespace: 'partner', ...(require('/Users/pkimanh03/Documents/capstone/fca_frontend/src/models/partner.js').default) });
 app.model({ namespace: 'setting', ...(require('/Users/pkimanh03/Documents/capstone/fca_frontend/src/models/setting.js').default) });
 app.model({ namespace: 'statistics', ...(require('/Users/pkimanh03/Documents/capstone/fca_frontend/src/models/statistics.js').default) });
+app.model({ namespace: 'transaction', ...(require('/Users/pkimanh03/Documents/capstone/fca_frontend/src/models/transaction.js').default) });
   return app;
 }
 
