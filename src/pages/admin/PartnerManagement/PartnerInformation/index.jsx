@@ -13,6 +13,7 @@ import { PAGE_SIZE } from '../../../../../config/constants';
 @connect(({ partner, loading }) => ({
   partner: partner.partner,
   allFcaLicenseList: partner.allFcaLicenseList,
+  totalUndoneOrder: partner.totalUndoneOrder,
   isError: partner.isError,
 }))
 class PartnerInformation extends React.Component {
@@ -39,8 +40,7 @@ class PartnerInformation extends React.Component {
   }
 
   render() {
-    console.log('partner-information', this.props.partner);
-    const { partner, allFcaLicenseList } = this.props;
+    const { partner, allFcaLicenseList, totalUndoneOrder } = this.props;
     return (
       <div className={styles.applicationManagementContainer}>
         {this.state.loading ? (
@@ -60,7 +60,7 @@ class PartnerInformation extends React.Component {
             }}
           >
             <Tabs.TabPane tab="General Information" key="1">
-              <GeneralInformation partner={partner} />
+              <GeneralInformation partner={partner} totalUndoneOrder={totalUndoneOrder} />
             </Tabs.TabPane>
             <Tabs.TabPane tab="Item Management" key="2">
               <ItemManagement partner={partner} />

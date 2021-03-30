@@ -9,7 +9,7 @@ class CancelOrderModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      reasons: CANCEL_ORDER_REASON,
+      reasons: [],
       isSubmitted: false,
     };
   }
@@ -17,16 +17,16 @@ class CancelOrderModal extends React.Component {
   handleChangeActor = value => {
     if (value.startsWith('CUSTOMER')) {
       const customerReason = CANCEL_ORDER_REASON.filter(reason => {
-        return reason.value.startsWith('CUSTOMER');
+        return reason.actionBy === 'CUSTOMER';
       });
-      customerReason.push({ label: 'Khác', value: 'OTHER' });
+      customerReason.push({ label: 'Khác', value: 'Khác', actionBy: 'CUSTOMER' });
       this.setState({ reasons: customerReason });
     }
     if (value.startsWith('PARTNER')) {
       const partnerReason = CANCEL_ORDER_REASON.filter(reason => {
-        return reason.value.startsWith('PARTNER');
+        return reason.actionBy === 'PARTNER';
       });
-      partnerReason.push({ label: 'Khác', value: 'OTHER' });
+      partnerReason.push({ label: 'Khác', value: 'Khác', actionBy: 'PARTNER' });
       this.setState({ reasons: partnerReason });
     }
   };
@@ -52,6 +52,7 @@ class CancelOrderModal extends React.Component {
         onCancel={hideModal}
       >
         <Form
+          style={{ textAlign: 'left' }}
           onFinish={async values => {
             this.setState({ isSubmitted: true });
             await submitModal(values);
@@ -69,17 +70,12 @@ class CancelOrderModal extends React.Component {
             ></Select>
           </Form.Item>
           <Form.Item name="reason" label="Reason" rules={[{ required: true }]}>
-            <Select
-              mode="multiple"
-              placeholder="Select one or more"
-              allowClear
-              options={this.state.reasons}
-            ></Select>
+            <Select placeholder="Select reason" allowClear options={this.state.reasons}></Select>
           </Form.Item>
           <Form.Item name="note" label="Note">
             <Input.TextArea />
           </Form.Item>
-          <Space direction="horizontal">
+          <Space direction="horizontal" style={{ display: 'flex', justifyContent: 'center' }}>
             <Form.Item>
               <Button htmlType="button" onClick={hideModal}>
                 Cancel

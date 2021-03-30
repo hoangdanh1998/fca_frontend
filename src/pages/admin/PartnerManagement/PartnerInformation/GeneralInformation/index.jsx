@@ -65,12 +65,23 @@ class GeneralInformation extends React.Component {
         storeName: this.props.partner.name,
         storeId: this.props.partner.id,
         isOpen: checked,
-        undoneOrder: 5,
+        undoneOrder: this.props.totalUndoneOrder,
       },
     });
   };
   handleHideOpenCloseStore = () => {
     this.setState({ visibleOpenCloseStore: false });
+  };
+  handleOpenCloseStore = status => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'partner/handleOpenCloseStore',
+      payload: {
+        isOpen: status,
+        id: this.props.partner.id,
+      },
+    });
+    this.handleHideOpenCloseStore();
   };
 
   handleVisibleUpdateStatus = status => {
@@ -89,7 +100,6 @@ class GeneralInformation extends React.Component {
     this.setState({ visibleUpdateStatus: false });
   };
   handleUpdateStatus = () => {
-    this.handleHideUpdateStatus();
     const { dispatch } = this.props;
     dispatch({
       type: 'partner/updatePartnerStatus',
@@ -98,6 +108,7 @@ class GeneralInformation extends React.Component {
         id: this.props.partner.id,
       },
     });
+    this.handleHideUpdateStatus();
   };
 
   handleImageSlide = () => {
@@ -191,13 +202,16 @@ class GeneralInformation extends React.Component {
             </Space>
           }
         >
-          <Descriptions.Item label="Telephone">
+          <Descriptions.Item label="Phone">
             {partner.account ? partner.account.phone : '-'}
           </Descriptions.Item>
           <Descriptions.Item label="Status">
             <Tag color={this.getTagStatusColors()} icon={this.getTagStatusIcons()}>
               {partner.status}
             </Tag>
+          </Descriptions.Item>
+          <Descriptions.Item label="Balance">
+            {partner.account ? partner.account.balance : '-'}
           </Descriptions.Item>
           <Descriptions.Item label="Address">
             {Object.assign({}, partner.address).description}
@@ -221,6 +235,7 @@ class GeneralInformation extends React.Component {
           isOpen={this.state.openedStore.isOpen}
           visible={this.state.visibleOpenCloseStore}
           hideModal={this.handleHideOpenCloseStore}
+          onClickOK={status => this.handleOpenCloseStore(status)}
         />
       </div>
     );

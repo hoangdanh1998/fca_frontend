@@ -15,6 +15,12 @@ export async function getPartner(params) {
   });
 }
 
+export async function getOrderList(params) {
+  return request(`/api/order?partnerId=${params.id}&skip=0&limit=50`, {
+    method: 'GET',
+  });
+}
+
 export async function updatePartnerStatus(params) {
   return request(`/api/partner/${params.id}/status`, {
     method: 'PUT',
@@ -26,5 +32,14 @@ export async function createPartnerLicense(params) {
   return request(`/api/partner/${params.partnerId}/partner-license`, {
     method: 'POST',
     data: params,
+  }).catch(error => error);
+}
+
+export async function handleOpenCloseStore(params) {
+  return request(`/api/partner/${params.id}/opening`, {
+    method: 'PUT',
+    data: {
+      isOpen: params.isOpen,
+    },
   }).catch(error => error);
 }

@@ -44,6 +44,11 @@ export const ORDER_STATUS = {
   CANCELLATION: 'CANCELLATION',
   CLOSURE: 'CLOSURE',
 };
+export const ORDER_DONE_STATUS = [
+  ORDER_STATUS.REJECTION,
+  ORDER_STATUS.CANCELLATION,
+  ORDER_STATUS.CLOSURE,
+];
 export const REQUESTED_ITEM_STATUS = {
   PROCESS: 'PROCESS',
   APPROVED: 'APPROVED',
@@ -133,36 +138,28 @@ export const PARTNER_STATUS_ITEM_OPTIONS = [
 ];
 export const CANCEL_ORDER_REASON = [
   {
-    label: 'Cửa hàng giao hàng chậm',
-    value: 'CUSTOMER_PARTNER-DELIVERY-LATE',
+    label: 'Cửa hàng giao hàng trễ',
+    value: 'Cửa hàng giao hàng trễ',
+    actionBy: 'CUSTOMER',
   },
   {
-    label: 'Món nước có vấn đề',
-    value: 'CUSTOMER_DRINK-HAS-PROBLEM',
+    label: 'Lí do cá nhân',
+    value: 'Lí do cá nhân',
+    actionBy: 'CUSTOMER',
   },
   {
-    label: 'Lí do cá nhận',
-    value: 'CUSTOMER_PERSONAL-REASON',
-  },
-  {
-    label: 'Không tìm thấy cửa hàng / Cửa hàng không mở cửa',
-    value: 'CUSTOMER_STORE-NOT-FOUND',
-  },
-  {
-    label: 'Khách không nhận nước',
-    value: 'PARTNER_CUSTOMER-PROBLEM',
-  },
-  {
-    label: 'Cần đóng cửa cửa hàng',
-    value: 'PARTNER_CLOSE-STORE',
+    label: 'Cửa hàng không mở cửa',
+    value: 'Cửa hàng không mở cửa',
+    actionBy: 'CUSTOMER',
   },
   {
     label: 'Không đủ nguyên liệu',
-    value: 'PARTNER_ORDER-OUT-OF-STOCK',
+    value: 'Không đủ nguyên liệu',
+    actionBy: 'PARTNER',
   },
   {
     label: 'Khác',
-    value: 'OTHER',
+    value: 'Khác',
   },
 ];
 // LICENSE TYPE

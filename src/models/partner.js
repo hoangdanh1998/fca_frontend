@@ -3,12 +3,14 @@ import {
   getPartnerList,
   updatePartnerStatus,
   getPartner,
+  getOrderList,
   createPartnerLicense,
+  handleOpenCloseStore,
 } from '@/services/partner';
 import { getFcaLicenseList } from '@/services/license';
 import { message } from 'antd';
 import AdminNotification from '../components/Notification';
-import { LICENSE_STATUS } from '../../config/constants';
+import { LICENSE_STATUS, ORDER_DONE_STATUS } from '../../config/constants';
 
 const notification = new AdminNotification();
 
@@ -22,6 +24,7 @@ const Model = {
     totalFcaLicense: 0,
     createdLicense: {},
     isError: false,
+    totalUndoneOrder: 0,
   },
   effects: {
     *getPartnerList({ payload }, { call, put }) {
@@ -42,9 +45,13 @@ const Model = {
     },
 
     *getPartner({ payload }, { call, put }) {
-      const response = yield call(getPartner, payload);
+      const responsePartner = yield call(getPartner, payload);
+      const responseOrder = yield call(getOrderList, payload);
 
-      if (response.type && response.type === 'HttpError') {
+      if (
+        (responsePartner.type && responsePartner.type === 'HttpError') ||
+        (responseOrder.type && responseOrder.type === 'HttpError')
+      ) {
         message.error('Something went wrong. Please try again.');
         yield put({
           type: 'handleError',
@@ -54,7 +61,11 @@ const Model = {
       }
       yield put({
         type: 'handleGetPartner',
-        payload: response.data,
+        payload: responsePartner.data,
+      });
+      yield put({
+        type: 'handleGetOrderList',
+        payload: responseOrder.data,
       });
     },
 
@@ -102,6 +113,20 @@ const Model = {
         payload: response.data,
       });
     },
+
+    *handleOpenCloseStore({ payload }, { call, put }) {
+      const response = yield call(handleOpenCloseStore, payload);
+
+      if (response.type && response.type === 'HttpError') {
+        message.error('Something went wrong. Please try again.');
+        return;
+      }
+      message.success('Success!');
+      yield put({
+        type: 'handleHandleOpenCloseStore',
+        payload: response.data,
+      });
+    },
   },
 
   reducers: {
@@ -120,6 +145,21 @@ const Model = {
       };
     },
 
+    handleGetOrderList(state, action) {
+      action.payload.orders.forEach(o => {
+        console.log(`include_done_${o.id}`, ORDER_DONE_STATUS.includes(o.status));
+      });
+      const undoneOrders = action.payload.orders.reduce(
+        (sum, { status }) => (ORDER_DONE_STATUS.includes(status) ? sum + 0 : sum + 1),
+        0,
+      );
+      console.log('undoneOrders', undoneOrders);
+      return {
+        ...state,
+        totalUndoneOrder: undoneOrders,
+      };
+    },
+
     handleGetPartner(state, action) {
       return {
         ...state,
@@ -128,6 +168,10 @@ const Model = {
     },
 
     handleUpdatePartnerStatus(state, action) {
+      return { ...state, partner: action.payload.partner };
+    },
+
+    handleHandleOpenCloseStore(state, action) {
       return { ...state, partner: action.payload.partner };
     },
 

@@ -150,6 +150,8 @@ class OrderInformation extends React.Component {
         partnerName: order.partner.name,
         customerId: order.customer.id,
         partnerId: order.partner.id,
+        customer: order.customer,
+        partner: order.partner,
       },
     });
   };
@@ -159,21 +161,29 @@ class OrderInformation extends React.Component {
     });
   };
   handleCancelOrder = async values => {
-    const convertedReason = Array.from(values.reason, r => {
-      return `${CANCEL_ORDER_REASON.find(tmp => tmp.value === r).label}${
-        values.note && values.note != '' ? ' - ' + values.note : ''
-      }`;
-    });
-    const reason = `[${
+    // const convertedReason = Array.from(values.reason, r => {
+    //   return `${CANCEL_ORDER_REASON.find(tmp => tmp.value === r).label}${
+    //     values.note && values.note != '' ? ' - ' + values.note : ''
+    //   }`;
+    // });
+    const convertedReason = `${values.reason}${
+      values.note && values.note != '' ? ' - ' + values.note : ''
+    }`;
+    const description = `[${
       values.requestBy.includes('PARTNER') ? 'Cửa hàng' : 'Khách'
-    } huỷ] ${convertedReason.toString()}`;
+    } huỷ] ${convertedReason}`;
+    const requestBy = values.requestBy.includes('PARTNER')
+      ? this.state.cancelOrder.partner
+      : this.state.cancelOrder.customer;
     const { dispatch } = this.props;
     await dispatch({
       type: 'order/cancelOrder',
       payload: {
         status: ORDER_STATUS.CANCELLATION,
         id: this.state.cancelOrder.id,
-        description: reason,
+        description: description,
+        requestBy: JSON.stringify(requestBy),
+        reason: values.reason,
       },
     });
     this.hideModalCancelOrder();

@@ -15,10 +15,19 @@ export async function getOrder(params) {
   });
 }
 
+// status, description, requestBy, createdBy, reason
 export async function cancelOrder(params) {
+  const account = localStorage.getItem('account');
+  console.log('account', account);
   return request(`/api/order/${params.id}/status`, {
     method: 'PUT',
-    data: { status: params.status, description: params.description },
+    data: {
+      status: params.status,
+      description: params.description,
+      requestBy: params.requestBy,
+      createdBy: account,
+      reason: params.reason,
+    },
   }).catch(error => error);
 }
 

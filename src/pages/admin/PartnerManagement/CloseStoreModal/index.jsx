@@ -5,9 +5,10 @@ import { Modal, Space, Button } from 'antd';
 class ConfirmationPopup extends React.Component {
   constructor(props) {
     super(props);
+    this.state = { isSubmitted: false };
   }
   render() {
-    const { partnerId, storeName, undoneOrder, isOpen, visible } = this.props;
+    const { storeName, undoneOrder, isOpen, visible } = this.props;
     return (
       <Modal
         title="CONFIRMATION"
@@ -27,14 +28,25 @@ class ConfirmationPopup extends React.Component {
               Close <b> {storeName} </b> store
             </p>
             <p>
-              <b>{storeName}</b> has <b>{undoneOrder} incomplete orders</b>
+              <b>{storeName}</b> has{' '}
+              <b style={{ color: undoneOrder > 0 ? 'red' : 'green' }}>
+                {undoneOrder} incomplete orders
+              </b>
             </p>
             <p>If closing, the system will cancel all incomplete orders</p>
           </div>
         )}
         <Space direction="horizontal">
           <Button onClick={this.props.hideModal}>No</Button>
-          <Button onClick={this.props.hideModal} type="primary">
+          <Button
+            loading={this.state.isSubmitted}
+            onClick={async () => {
+              this.setState({ isSubmitted: true });
+              await this.props.onClickOK(isOpen);
+              this.setState({ isSubmitted: false });
+            }}
+            type="primary"
+          >
             Yes
           </Button>
         </Space>
