@@ -223,20 +223,20 @@ class Dashboard extends React.Component {
         title: 'Customer Phone',
         dataIndex: 'customerPhone',
         key: 'customerPhone',
-        width: '30%',
+        width: '20%',
         align: 'right',
       },
       {
         title: 'Partner Name',
         dataIndex: 'partnerName',
         key: 'partnerName',
-        width: '30%',
+        width: '35%',
       },
       {
-        title: 'Cancelled By',
-        dataIndex: 'requestBy',
-        key: 'requestBy',
-        width: '30%',
+        title: 'Request By',
+        dataIndex: ['requestBy', 'name'],
+        key: ['requestBy', 'name'],
+        width: '35%',
       },
       // {
       //   title: 'Reason',
@@ -272,6 +272,7 @@ class Dashboard extends React.Component {
                   columnList={partnerColumnList}
                   dataList={this.state.partnerDataList}
                   pageSize={3}
+                  mode="partner"
                 />
               </Card>
             ) : null}
@@ -323,7 +324,7 @@ class Dashboard extends React.Component {
           <Col span={16}>
             {this.state.orderColumnListName ? (
               <Card
-                // title={`${this.state.orderColumnListName} Orders Information`}
+                title={`${this.state.orderColumnListName} Orders Information`}
                 style={{ height: '100%' }}
               >
                 <DataTable
@@ -333,8 +334,13 @@ class Dashboard extends React.Component {
                       : cancellationColumnList
                   }
                   dataList={this.state.orderDataList}
-                  pageSize={this.state.orderColumnListName === 'Rejection' ? 3 : 2}
+                  // pageSize={this.state.orderColumnListName === 'Rejection' ? 3 : 2}
                   pageSize={1}
+                  mode={
+                    this.state.orderColumnListName === 'Rejection'
+                      ? 'rejected-order'
+                      : 'canceled-order'
+                  }
                 />
               </Card>
             ) : null}

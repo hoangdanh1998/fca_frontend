@@ -5,83 +5,55 @@ import { connect } from 'dva';
 import { router } from 'umi';
 import styles from './index.less';
 import { PAGE_SIZE } from '../../../../../config/constants';
+import DetailsDrawer from '../DetailsDrawer/index';
 
 class DataTable extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      pageIndex: 1,
-      skip: 0,
-      // pageSize: PAGE_SIZE,
-      pageSize: 3,
+      drawerVisible: false,
+      drawerContent: {},
     };
   }
 
-  async componentWillMount() {
-    this.setState({ loading: true });
-    // const { dispatch } = this.props;
-    // await dispatch({
-    //   type: 'order/getOrderList',
-    //   payload: {
-    //     createdDate: this.state.createdDate,
-    //     status: this.state.status,
-    //     phone: this.state.phone,
-    //     skip: this.state.skip,
-    //     limit: this.state.pageSize,
-    //   },
-    // });
-    this.setState({ loading: false });
-  }
-
-  onChangePaging = async (page, pageSize) => {
-    // const { dispatch } = this.props;
-    // this.setState({
-    //   pageIndex: page,
-    //   pageSize: pageSize,
-    //   loading: true,
-    // });
-    // await dispatch({
-    //   type: 'order/getOrderList',
-    //   payload: {
-    //     createdDate: this.state.createdDate,
-    //     status: this.state.status,
-    //     phone: this.state.phone,
-    //     skip: parseInt((page - 1) * pageSize),
-    //     limit: pageSize,
-    //   },
-    // });
-    // this.setState({ loading: false });
+  onRowClick = record => {
+    this.setState({ drawerVisible: true, drawerContent: record });
+  };
+  hideModal = () => {
+    this.setState({ drawerVisible: false });
   };
 
   render() {
-    const { columnList, dataList, pageSize } = this.props;
+    const { columnList, dataList, pageSize, mode } = this.props;
     return (
       <div>
         <div>
           <div>
             <Table
-              //   loading={this.state.loading}
               className={styles.table}
               dataSource={dataList}
               columns={columnList}
               onRow={(record, rowIndex) => {
                 return {
                   onClick: event => {
-                    // router.push(
-                    //   `/fca-management/order-management/order-information?id=${record.id}`,
-                    // );
+                    event.preventDefault();
+                    this.onRowClick(record);
                   },
                 };
               }}
               pagination={{
-                current: this.state.page,
                 pageSize: pageSize,
                 total: dataList.length,
-                // onChange: this.onChangePaging,
                 showSizeChanger: false,
               }}
               bordered
             ></Table>
+            <DetailsDrawer
+              visible={this.state.drawerVisible}
+              hideModal={this.hideModal}
+              data={this.state.drawerContent}
+              mode={mode}
+            />
           </div>
         </div>
       </div>

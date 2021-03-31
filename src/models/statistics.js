@@ -230,11 +230,13 @@ const Model = {
           const index = rejectionOrderDetailsList.findIndex(r => r.partnerId === o.partner.id);
           if (index >= 0) {
             rejectionOrderDetailsList[index].quantity += 1;
+            rejectionOrderDetailsList[index].orderList.push(o);
           } else {
             rejectionOrderDetailsList.push({
               partnerId: o.partner.id,
               partnerName: o.partner.name,
               quantity: 1,
+              orderList: [o],
             });
           }
         });
