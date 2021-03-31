@@ -16,3 +16,12 @@ export async function getAccount(params) {
     method: 'GET',
   });
 }
+
+export async function getTransactionList(params) {
+  return request(
+    `/api/transaction?skip=${params.skip}&limit=${params.limit}&search=${params.search}`,
+    {
+      method: 'GET',
+    },
+  );
+}

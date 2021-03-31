@@ -128,15 +128,15 @@ class TransactionManagement extends React.Component {
       },
       {
         title: 'Account Phone',
-        dataIndex: 'phone',
-        key: 'phone',
+        dataIndex: ['owner', 'phone'],
+        key: ['owner', 'phone'],
         width: '15%',
         align: 'right',
       },
       {
         title: 'Account Name',
-        dataIndex: 'name',
-        key: 'name',
+        dataIndex: ['owner', 'name'],
+        key: ['owner', 'name'],
         width: '15%',
       },
       {
@@ -169,7 +169,9 @@ class TransactionManagement extends React.Component {
         width: '15%',
       },
     ];
-    return (
+    return this.props.isError ? (
+      <ExceptionBody />
+    ) : (
       <>
         <div direction="horizontal" className={styles.applicationManagementContainer}>
           <div className={styles.applicationHeader}>
