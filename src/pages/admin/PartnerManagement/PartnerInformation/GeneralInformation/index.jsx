@@ -4,6 +4,7 @@ import { connect } from 'dva';
 import { Descriptions, Tag, Image, Space, Switch, Carousel } from 'antd';
 import Button from 'antd-button-color';
 import 'antd-button-color/dist/css/style.less';
+import NumberFormat from 'react-number-format';
 import styles from './index.less';
 import EditProfileModal from '../../EditProfileModal/index.jsx';
 import ConfirmationPopup from '../../../../../components/atom/ConfirmationPopup/index.jsx';
@@ -211,7 +212,11 @@ class GeneralInformation extends React.Component {
             </Tag>
           </Descriptions.Item>
           <Descriptions.Item label="Balance">
-            {partner.account?.balance ? partner.account.balance : '0'}
+            <NumberFormat
+              value={partner.account?.balance ? partner.account.balance : '0'}
+              displayType={'text'}
+              thousandSeparator={true}
+            />
           </Descriptions.Item>
           <Descriptions.Item label="Address">
             {Object.assign({}, partner.address).description}
