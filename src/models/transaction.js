@@ -62,7 +62,7 @@ const Model = {
     handleGetAccount(state, action) {
       return {
         ...state,
-        account: action.payload.account,
+        account: action.payload.value,
       };
     },
   },
