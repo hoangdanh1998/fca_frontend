@@ -45,11 +45,12 @@ class Dashboard extends React.Component {
   async componentWillMount() {
     this.setState({ loading: true });
     const { dispatch } = this.props;
+    const tmpToDate = this.state.calendarEndDate;
     await dispatch({
       type: 'statistics/getReportStatistics',
       payload: {
         fromDate: this.state.calendarStartDate.format(DATE_FORMAT_CALL_API),
-        toDate: this.state.calendarEndDate.add(1, 'day').format(DATE_FORMAT_CALL_API),
+        toDate: tmpToDate.add(1, 'day').format(DATE_FORMAT_CALL_API),
       },
     });
     this.setState({
@@ -226,11 +227,36 @@ class Dashboard extends React.Component {
       },
     ];
     return this.state.loading ? (
-      <Skeleton loading={this.state.loading} />
+      <Skeleton loading={this.state.loading} active />
     ) : this.props.isError ? (
       <ExceptionBody />
     ) : (
       <div className={styles.applicationManagementContainer}>
+        {/* PARTNER */}
+        <Row>
+          <Col span={8}>
+            <StatisticsBox
+              onClick={action => {
+                this.handleClickBox(action);
+              }}
+              subject="partner"
+              data={partnerStatistics}
+            />
+          </Col>
+          <Col span={16}>
+            {this.state.partnerTitle ? (
+              <Card title={this.state.partnerTitle} style={{ height: '100%' }}>
+                <DataTable
+                  columnList={partnerColumnList}
+                  dataList={this.state.partnerDataList}
+                  pageSize={3}
+                />
+              </Card>
+            ) : null}
+          </Col>
+        </Row>
+        <Divider />
+        <br />
         {/* DATE */}
         <Row>
           <Col span={12}></Col>
@@ -262,30 +288,6 @@ class Dashboard extends React.Component {
           </Col>
         </Row>
         <br />
-        {/* PARTNER */}
-        <Row>
-          <Col span={8}>
-            <StatisticsBox
-              onClick={action => {
-                this.handleClickBox(action);
-              }}
-              subject="partner"
-              data={partnerStatistics}
-            />
-          </Col>
-          <Col span={16}>
-            {this.state.partnerTitle ? (
-              <Card title={this.state.partnerTitle} style={{ height: '100%' }}>
-                <DataTable
-                  columnList={partnerColumnList}
-                  dataList={this.state.partnerDataList}
-                  pageSize={3}
-                />
-              </Card>
-            ) : null}
-          </Col>
-        </Row>
-        <Divider />
         {/* ORDER */}
         <Row>
           <Col span={8}>

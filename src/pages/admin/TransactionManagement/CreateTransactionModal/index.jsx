@@ -66,12 +66,12 @@ class CreateTransactionModal extends React.Component {
               allowClear
             />
           </Form.Item>
-          <Form.Item
+          {/* <Form.Item
             name="accountId"
             label="accountId"
             hidden
             value={this.state.actionOnAccount.id}
-          ></Form.Item>
+          ></Form.Item> */}
           <Form.Item name="name" label="Name">
             <Spin spinning={this.state.loadingAccount}>
               <Input placeholder="Account name" value={this.state.actionOnAccount.id} disabled />
@@ -104,7 +104,12 @@ class CreateTransactionModal extends React.Component {
               </Button>
             </Form.Item>
             <Form.Item>
-              <Button type="primary" htmlType="submit" loading={this.state.isSubmitted}>
+              <Button
+                type="primary"
+                htmlType="submit"
+                loading={this.state.isSubmitted}
+                // disabled={this.state.actionOnAccount.id == null}
+              >
                 OK
               </Button>
             </Form.Item>

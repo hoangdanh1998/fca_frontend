@@ -211,7 +211,7 @@ class GeneralInformation extends React.Component {
             </Tag>
           </Descriptions.Item>
           <Descriptions.Item label="Balance">
-            {partner.account ? partner.account.balance : '-'}
+            {partner.account?.balance ? partner.account.balance : '0'}
           </Descriptions.Item>
           <Descriptions.Item label="Address">
             {Object.assign({}, partner.address).description}

@@ -30,8 +30,8 @@ class CreateLicenseModal extends React.Component {
             await onSubmit(values);
           }}
           ref={this.formRef}
-          labelCol={{ span: 5 }}
-          wrapperCol={{ span: 19 }}
+          labelCol={{ span: 6 }}
+          wrapperCol={{ span: 18 }}
         >
           <Form.Item rules={[{ required: true }]} name="name" label="Name">
             <Input placeholder="Enter name" allowClear />
