@@ -1,8 +1,6 @@
-import React from 'react';
+import { Button, Form, Input, InputNumber, Modal, Space, Spin } from 'antd';
 import { connect } from 'dva';
-import moment from 'moment';
-import { Button, DatePicker, Form, Input, InputNumber, Modal, Space, Spin } from 'antd';
-import { DATE_FORMAT } from '../../../../../config/constants';
+import React from 'react';
 
 @connect(({ transaction, loading }) => {
   return {
@@ -48,7 +46,7 @@ class CreateTransactionModal extends React.Component {
         <Form
           onFinish={async values => {
             this.setState({ isSubmitted: true });
-            await onSubmit({ ...values, accountId: this.state.actionOnAccount.id });
+            await onSubmit({ ...values, accountId: this.state.actionOnAccount.account.id });
             this.setState({ actionOnAccount: {} });
           }}
           ref={this.formRef}
@@ -66,15 +64,15 @@ class CreateTransactionModal extends React.Component {
               allowClear
             />
           </Form.Item>
-          <Form.Item
+          {/* <Form.Item
             name="accountId"
             label="accountId"
             hidden
             value={this.state.actionOnAccount.id}
-          ></Form.Item>
+          ></Form.Item> */}
           <Form.Item name="name" label="Name">
             <Spin spinning={this.state.loadingAccount}>
-              <Input placeholder="Account name" value={this.state.actionOnAccount.id} disabled />
+              <Input placeholder="Account name" value={this.state.actionOnAccount.name} disabled />
             </Spin>
           </Form.Item>
           <Form.Item rules={[{ required: true }]} name="amount" label="Amount">
