@@ -14,6 +14,7 @@ import {
 } from '@ant-design/icons';
 import styles from './index.less';
 import { S_APPROVED_PARTNER, S_ORDER, S_ITEM } from '../../../../../config/seedingData';
+import { ORDER_STATUS } from '../../../../../config/constants';
 
 class StatisticsBox extends React.Component {
   state = {};
@@ -226,6 +227,7 @@ class StatisticsBox extends React.Component {
         return data.details.map(order => {
           return (
             <Card.Grid
+              hoverable={order.label !== 'Closure'}
               size="small"
               onClick={() => {
                 this.props.onClick(order.label);

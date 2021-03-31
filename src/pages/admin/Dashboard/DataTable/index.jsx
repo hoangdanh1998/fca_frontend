@@ -30,6 +30,7 @@ class DataTable extends React.Component {
         <div>
           <div>
             <Table
+              size="small"
               className={styles.table}
               dataSource={dataList}
               columns={columnList}
@@ -42,6 +43,8 @@ class DataTable extends React.Component {
                 };
               }}
               pagination={{
+                showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} records`,
+                size: 'small',
                 pageSize: pageSize,
                 total: dataList.length,
                 showSizeChanger: false,
