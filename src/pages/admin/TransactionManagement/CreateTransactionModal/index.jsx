@@ -5,6 +5,7 @@ import React from 'react';
 @connect(({ transaction, loading }) => {
   return {
     account: transaction.account,
+    isError: transaction.isError,
   };
 })
 class CreateTransactionModal extends React.Component {
@@ -46,7 +47,7 @@ class CreateTransactionModal extends React.Component {
         <Form
           onFinish={async values => {
             this.setState({ isSubmitted: true });
-            await onSubmit({ ...values, accountId: this.state.actionOnAccount.account.id });
+            await onSubmit({ ...values, accountId: this.state.actionOnAccount?.account?.id });
             this.setState({ actionOnAccount: {} });
           }}
           ref={this.formRef}
@@ -60,19 +61,16 @@ class CreateTransactionModal extends React.Component {
                   this.handleGetAccount(event.target.value);
                 }
               }}
+              onChange={event => {
+                this.setState({ actionOnAccount: {} });
+              }}
               placeholder="Enter phone"
               allowClear
             />
           </Form.Item>
-          {/* <Form.Item
-            name="accountId"
-            label="accountId"
-            hidden
-            value={this.state.actionOnAccount.id}
-          ></Form.Item> */}
           <Form.Item name="name" label="Name">
             <Spin spinning={this.state.loadingAccount}>
-              <Input placeholder="Account name" value={this.state.actionOnAccount.name} disabled />
+              <Input placeholder="Account name" value={this.state.actionOnAccount?.name} disabled />
             </Spin>
           </Form.Item>
           <Form.Item rules={[{ required: true }]} name="amount" label="Amount">
@@ -106,7 +104,7 @@ class CreateTransactionModal extends React.Component {
                 type="primary"
                 htmlType="submit"
                 loading={this.state.isSubmitted}
-                // disabled={this.state.actionOnAccount.id == null}
+                disabled={this.state.actionOnAccount?.account == null}
               >
                 OK
               </Button>

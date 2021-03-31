@@ -5,12 +5,12 @@ import { Table, Space, Input, DatePicker, Divider } from 'antd';
 import { PAGE_SIZE, DATE_FORMAT } from '../../../../../config/constants';
 import styles from './index.less';
 
-// @connect(({ license, loading }) => {
-//   return {
-//     dataList: license.allFcaLicenseList,
-//     totalFcaLicense: license.totalFcaLicense,
-//   };
-// })
+@connect(({ transaction, loading }) => {
+  return {
+    dataList: transaction.allTransactionList,
+    totalTransaction: transaction.totalTransaction,
+  };
+})
 class DataTable extends React.Component {
   constructor(props) {
     super(props);
@@ -19,42 +19,71 @@ class DataTable extends React.Component {
       skip: 0,
       pageSize: PAGE_SIZE,
       loading: false,
+      search: '',
     };
   }
 
   async componentWillMount() {
-    // const { dispatch } = this.props;
-    // this.setState({ loading: true });
-    // await dispatch({
-    //   type: 'license/getFcaLicenseList',
-    //   payload: {
-    //     skip: this.state.skip,
-    //     limit: this.state.pageSize,
-    //   },
-    // });
-    // this.setState({ loading: false });
+    const { dispatch } = this.props;
+    this.setState({ loading: true });
+    await dispatch({
+      type: 'transaction/getTransactionList',
+      payload: {
+        skip: this.state.skip,
+        limit: this.state.pageSize,
+        search: this.state.search,
+      },
+    });
+    this.setState({ loading: false });
   }
 
+  handlePressSearch = async e => {
+    this.setState({ search: e.target.value, loading: true });
+    const { dispatch } = this.props;
+    await dispatch({
+      type: 'transaction/getTransactionList',
+      payload: {
+        skip: this.state.skip,
+        limit: this.state.pageSize,
+        search: e.target.value,
+      },
+    });
+    this.setState({ loading: false });
+  };
+  handleClickSearch = async (value, event) => {
+    this.setState({ search: value, loading: true });
+    const { dispatch } = this.props;
+    await dispatch({
+      type: 'transaction/getTransactionList',
+      payload: {
+        skip: this.state.skip,
+        limit: this.state.pageSize,
+        search: value,
+      },
+    });
+    this.setState({ loading: false });
+  };
+
   onChangePaging = async (page, pageSize) => {
-    // const { dispatch } = this.props;
-    // this.setState({
-    //   pageIndex: page,
-    //   pageSize: pageSize,
-    //   loading: true,
-    // });
-    // await dispatch({
-    //   type: 'license/getFcaLicenseList',
-    //   payload: {
-    //     skip: parseInt((page - 1) * pageSize),
-    //     limit: pageSize,
-    //   },
-    // });
-    // this.setState({ loading: false });
+    const { dispatch } = this.props;
+    this.setState({
+      pageIndex: page,
+      pageSize: pageSize,
+      loading: true,
+    });
+    await dispatch({
+      type: 'transaction/getTransactionList',
+      payload: {
+        skip: parseInt((page - 1) * pageSize),
+        limit: pageSize,
+        search: this.state.search,
+      },
+    });
+    this.setState({ loading: false });
   };
 
   render() {
-    // const { dataList, totalFcaLicense, columnList } = this.props;
-    const { columnList } = this.props;
+    const { dataList, totalTransaction, columnList } = this.props;
     return (
       <div>
         <div>
@@ -66,34 +95,19 @@ class DataTable extends React.Component {
               allowClear
               placeholder="Enter phone"
             />
-            <DatePicker
-              ref="picker"
-              style={{ width: 300 }}
-              defaultValue={moment()}
-              // onChange={this.handleChangeDate}
-              allowClear={false}
-              format={DATE_FORMAT}
-            />
           </Space>
           <br />
           <br />
           <div>
             <Table
               className={styles.table}
-              dataSource={[]}
+              dataSource={dataList}
               columns={columnList}
-              // onRow={(record, rowIndex) => {
-              //   return {
-              //     onClick: event => {
-              //       this.props.onClickRow(record);
-              //     },
-              //   };
-              // }}
               pagination={{
                 showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} records`,
                 current: this.state.pageIndex,
                 pageSize: this.state.pageSize,
-                // total: totalFcaLicense,
+                total: totalTransaction,
                 onChange: this.onChangePaging,
                 showSizeChanger: true,
               }}
