@@ -102,7 +102,12 @@ class CreateTransactionModal extends React.Component {
               </Button>
             </Form.Item>
             <Form.Item>
-              <Button type="primary" htmlType="submit" loading={this.state.isSubmitted}>
+              <Button
+                type="primary"
+                htmlType="submit"
+                loading={this.state.isSubmitted}
+                // disabled={this.state.actionOnAccount.id == null}
+              >
                 OK
               </Button>
             </Form.Item>

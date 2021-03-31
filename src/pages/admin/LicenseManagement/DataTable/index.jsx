@@ -69,6 +69,7 @@ class DataTable extends React.Component {
                 };
               }}
               pagination={{
+                showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} records`,
                 current: this.state.pageIndex,
                 pageSize: this.state.pageSize,
                 total: totalFcaLicense,

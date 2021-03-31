@@ -7,12 +7,8 @@ import StatisticsBox from './StatisticsBox/index';
 import DataTable from './DataTable/index';
 import ExceptionBody from '../../../components/ExceptionBody/index';
 import styles from './index.less';
+import { convertStringToCamel } from '../../../utils/utils';
 import { DATE_FORMAT, DATE_FORMAT_CALL_API } from '../../../../config/constants';
-import {
-  LINE_CHART_DATA,
-  PIE_CHART_DATA_PARTNER,
-  PIE_CHART_DATA_ORDER,
-} from '../../../../config/seedingData';
 
 @connect(({ statistics, loading }) => {
   return {
@@ -45,11 +41,12 @@ class Dashboard extends React.Component {
   async componentWillMount() {
     this.setState({ loading: true });
     const { dispatch } = this.props;
+    const tmpToDate = this.state.calendarEndDate;
     await dispatch({
       type: 'statistics/getReportStatistics',
       payload: {
         fromDate: this.state.calendarStartDate.format(DATE_FORMAT_CALL_API),
-        toDate: this.state.calendarEndDate.add(1, 'day').format(DATE_FORMAT_CALL_API),
+        toDate: tmpToDate.add(1, 'day').format(DATE_FORMAT_CALL_API),
       },
     });
     this.setState({
@@ -89,6 +86,7 @@ class Dashboard extends React.Component {
       orderColumnListName: '',
       partnerTitle: 'Opening Partners',
       partnerDataList: this.props.openingPartnerList,
+      orderColumnListName: 'Cancellation',
       orderDataList: this.props.cancellationOrderDetailsList,
       loading: false,
     });
@@ -110,7 +108,7 @@ class Dashboard extends React.Component {
         });
         break;
       case 'Closure':
-        this.setState({ orderColumnListName: '' });
+        this.setState({ orderColumnListName: '', orderDataList: [] });
         break;
       case 'OPENING':
         this.setState({
@@ -157,17 +155,25 @@ class Dashboard extends React.Component {
     const { partnerStatistics, orderStatistics } = this.props;
     const partnerColumnList = [
       {
+        title: 'No.',
+        render: (text, record, index) => {
+          return index + 1;
+        },
+        width: '10%',
+        align: 'right',
+      },
+      {
         title: 'Name',
         dataIndex: 'name',
         key: 'name',
-        width: '20%',
+        width: '65%',
       },
-      {
-        title: 'Address',
-        dataIndex: ['address', 'description'],
-        key: ['address', 'description'],
-        width: '50%',
-      },
+      // {
+      //   title: 'Address',
+      //   dataIndex: ['address', 'description'],
+      //   key: ['address', 'description'],
+      //   width: '50%',
+      // },
       {
         title: 'Expiration Date',
         dataIndex: 'expirationDate',
@@ -185,13 +191,21 @@ class Dashboard extends React.Component {
     ];
     const rejectionColumnList = [
       {
+        title: 'No.',
+        render: (text, record, index) => {
+          return index + 1;
+        },
+        width: '10%',
+        align: 'right',
+      },
+      {
         title: 'Partner Name',
         dataIndex: 'partnerName',
         key: 'partnerName',
         width: '70%',
       },
       {
-        title: 'Quantity',
+        title: 'Times',
         dataIndex: 'quantity',
         key: 'quantity',
         width: '20%',
@@ -200,39 +214,76 @@ class Dashboard extends React.Component {
     ];
     const cancellationColumnList = [
       {
+        title: 'No.',
+        render: (text, record, index) => {
+          return index + 1;
+        },
+        with: '10%',
+        align: 'right',
+      },
+      {
         title: 'Customer Phone',
         dataIndex: 'customerPhone',
         key: 'customerPhone',
-        width: '20%',
+        width: '25%',
         align: 'right',
       },
       {
         title: 'Partner Name',
         dataIndex: 'partnerName',
         key: 'partnerName',
-        width: '20%',
+        width: '45%',
       },
       {
-        title: 'Cancelled By',
-        dataIndex: 'requestBy',
-        key: 'requestBy',
+        title: 'Request By',
+        dataIndex: ['requestBy', 'account', 'role'],
+        key: ['requestBy', 'account', 'role'],
+        render: (text, record, index) => {
+          return convertStringToCamel(record.requestBy?.account?.role);
+        },
         width: '20%',
       },
-      {
-        title: 'Reason',
-        dataIndex: 'reason',
-        key: 'reason',
-        width: '35%',
-      },
+      // {
+      //   title: 'Reason',
+      //   dataIndex: 'reason',
+      //   key: 'reason',
+      //   width: '35%',
+      // },
     ];
     return this.state.loading ? (
-      <Skeleton loading={this.state.loading} />
+      <Skeleton loading={this.state.loading} active />
     ) : this.props.isError ? (
       <ExceptionBody />
     ) : (
       <div className={styles.applicationManagementContainer}>
-        {/* DATE */}
+        {/* PARTNER */}
         <Row>
+          <Col span={8}>
+            <StatisticsBox
+              onClick={action => {
+                this.handleClickBox(action);
+              }}
+              subject="partner"
+              data={partnerStatistics}
+            />
+          </Col>
+          <Col span={16}>
+            {this.state.partnerTitle ? (
+              <Card title={this.state.partnerTitle} size="small" style={{ height: '100%' }}>
+                <DataTable
+                  columnList={partnerColumnList}
+                  dataList={this.state.partnerDataList}
+                  pageSize={5}
+                  mode="partner"
+                />
+              </Card>
+            ) : null}
+          </Col>
+        </Row>
+        {/* <Divider style={{ height: '1%' }} /> */}
+        <br />
+        {/* DATE */}
+        {/* <Row>
           <Col span={12}></Col>
           <Col span={12}>
             <DatePicker.RangePicker
@@ -260,32 +311,7 @@ class Dashboard extends React.Component {
               )}
             />
           </Col>
-        </Row>
-        <br />
-        {/* PARTNER */}
-        <Row>
-          <Col span={8}>
-            <StatisticsBox
-              onClick={action => {
-                this.handleClickBox(action);
-              }}
-              subject="partner"
-              data={partnerStatistics}
-            />
-          </Col>
-          <Col span={16}>
-            {this.state.partnerTitle ? (
-              <Card title={this.state.partnerTitle} style={{ height: '100%' }}>
-                <DataTable
-                  columnList={partnerColumnList}
-                  dataList={this.state.partnerDataList}
-                  pageSize={3}
-                />
-              </Card>
-            ) : null}
-          </Col>
-        </Row>
-        <Divider />
+        </Row> */}
         {/* ORDER */}
         <Row>
           <Col span={8}>
@@ -299,11 +325,42 @@ class Dashboard extends React.Component {
             />
           </Col>
           <Col span={16}>
-            {this.state.orderColumnListName ? (
-              <Card
-                title={`${this.state.orderColumnListName} Orders Information`}
-                style={{ height: '100%' }}
-              >
+            <Card
+              size="small"
+              title={`${this.state.orderColumnListName} Orders Information`}
+              style={{ height: '100%' }}
+              extra={
+                <DatePicker.RangePicker
+                  open={this.state.openCalendar}
+                  onFocus={() => {
+                    this.setState({ openCalendar: true });
+                  }}
+                  value={[this.state.calendarStartDate, this.state.calendarEndDate]}
+                  style={{ width: '100%' }}
+                  format={DATE_FORMAT}
+                  onChange={this.handleChangeDate}
+                  renderExtraFooter={() => (
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'flex-end',
+                        marginBottom: '1%',
+                        marginTop: '1%',
+                      }}
+                    >
+                      <Button
+                        onClick={this.handleGetReportWhenChangeDate}
+                        size="small"
+                        type="primary"
+                      >
+                        OK
+                      </Button>
+                    </div>
+                  )}
+                />
+              }
+            >
+              {this.state.orderColumnListName ? (
                 <DataTable
                   columnList={
                     this.state.orderColumnListName === 'Rejection'
@@ -311,13 +368,19 @@ class Dashboard extends React.Component {
                       : cancellationColumnList
                   }
                   dataList={this.state.orderDataList}
-                  pageSize={this.state.orderColumnListName === 'Rejection' ? 3 : 2}
+                  // pageSize={this.state.orderColumnListName === 'Rejection' ? 3 : 2}
+                  pageSize={3}
+                  mode={
+                    this.state.orderColumnListName === 'Rejection'
+                      ? 'rejected-order'
+                      : 'canceled-order'
+                  }
                 />
-              </Card>
-            ) : null}
+              ) : null}
+            </Card>
           </Col>
         </Row>
-        <Divider />
+        {/* <Divider /> */}
         {/* ITEM */}
         {/* <Row>
           <Col span={8}>

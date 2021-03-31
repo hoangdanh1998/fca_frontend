@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import { router } from 'umi';
 import { connect } from 'dva';
-import { Space, Card, Statistic, Row, Col, List } from 'antd';
+import { Space, Card, Statistic, Row, Col, List, Avatar } from 'antd';
 import ScrollMenu from 'react-horizontal-scrolling-menu';
 import {
   ShopOutlined,
@@ -14,16 +14,47 @@ import {
 } from '@ant-design/icons';
 import styles from './index.less';
 import { S_APPROVED_PARTNER, S_ORDER, S_ITEM } from '../../../../../config/seedingData';
+import { ORDER_STATUS } from '../../../../../config/constants';
 
 class StatisticsBox extends React.Component {
   state = {};
 
+  // renderGeneralCardCover = () => {
+  //   switch (this.props.subject) {
+  //     case 'partner':
+  //       return <ShopOutlined style={{ fontSize: 70, marginTop: '10%' }} />;
+  //     case 'order':
+  //       return <FileOutlined style={{ fontSize: 50, marginTop: '10%' }} />;
+  //     case 'item':
+  //       return <CoffeeOutlined style={{ fontSize: 50, marginTop: '10%' }} />;
+  //     default:
+  //       return <EllipsisOutlined style={{ fontSize: 50, marginTop: '10%' }} />;
+  //   }
+  // };
   renderGeneralCardCover = () => {
-    switch (this.props.subject) {
+    const data = this.props.data;
+    const subject = this.props.subject;
+    switch (subject) {
       case 'partner':
-        return <ShopOutlined style={{ fontSize: 50, marginTop: '10%' }} />;
+        // return <ShopOutlined style={{ fontSize: 50, marginTop: '10%' }} />;
+        return (
+          <Statistic
+            prefix={<ShopOutlined style={{ fontSize: 50, marginTop: '10%' }} />}
+            title="Approved Partners"
+            value={data.total}
+            valueStyle={{ color: 'black', fontSize: 40 }}
+          />
+        );
       case 'order':
-        return <FileOutlined style={{ fontSize: 50, marginTop: '10%' }} />;
+        // return <FileOutlined style={{ fontSize: 50, marginTop: '10%' }} />;
+        return (
+          <Statistic
+            prefix={<FileOutlined style={{ fontSize: 50, marginTop: '10%' }} />}
+            title="Orders"
+            value={data.total}
+            valueStyle={{ color: 'black', fontSize: 40 }}
+          />
+        );
       case 'item':
         return <CoffeeOutlined style={{ fontSize: 50, marginTop: '10%' }} />;
       default:
@@ -38,6 +69,7 @@ class StatisticsBox extends React.Component {
       case 'partner':
         return (
           <Statistic
+            prefix={<ShopOutlined style={{ fontSize: 50, marginTop: '10%' }} />}
             title="Approved Partners"
             value={data.total}
             valueStyle={{ color: 'black', fontSize: 40 }}
@@ -46,6 +78,7 @@ class StatisticsBox extends React.Component {
       case 'order':
         return (
           <Statistic
+            prefix={<FileOutlined style={{ fontSize: 50, marginTop: '10%' }} />}
             title="Orders"
             value={data.total}
             valueStyle={{ color: 'black', fontSize: 40 }}
@@ -71,6 +104,7 @@ class StatisticsBox extends React.Component {
       case 'partner': {
         return [
           <Card
+            size="small"
             style={{
               width: '95%',
               marginLeft: '2.5%',
@@ -130,6 +164,7 @@ class StatisticsBox extends React.Component {
             </div>
           </Card>,
           <Card
+            size="small"
             style={{
               width: '95%',
               marginLeft: '2.5%',
@@ -192,6 +227,8 @@ class StatisticsBox extends React.Component {
         return data.details.map(order => {
           return (
             <Card.Grid
+              hoverable={order.label !== 'Closure'}
+              size="small"
               onClick={() => {
                 this.props.onClick(order.label);
               }}
@@ -278,14 +315,16 @@ class StatisticsBox extends React.Component {
     const data = this.props.data;
     return (
       <Card
+        size="small"
         style={{
           // backgroundColor: '#FFF2CC',
           backgroundColor: '#FFE6CC',
           textAlign: 'center',
           width: '95%',
           marginLeft: '2.5%',
+          height: 'auto',
         }}
-        cover={this.renderGeneralCardCover()}
+        // cover={this.renderGeneralCardCover()}
         actions={this.renderActions()}
       >
         {this.renderStatistics()}

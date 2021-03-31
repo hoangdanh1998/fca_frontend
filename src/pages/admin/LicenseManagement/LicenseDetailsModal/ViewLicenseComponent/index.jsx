@@ -34,10 +34,10 @@ class ViewLicense extends React.Component {
         <Descriptions.Item label="Price">
           <NumberFormat value={license.price} displayType={'text'} thousandSeparator={true} />
         </Descriptions.Item>
-        <Descriptions.Item label="Start Date">
+        <Descriptions.Item label="Available From">
           {moment(license.startDate).format(DATE_FORMAT)}
         </Descriptions.Item>
-        <Descriptions.Item label="End Date">
+        <Descriptions.Item label="Available Until">
           {license.endDate ? moment(license.endDate).format(DATE_FORMAT) : '-'}
         </Descriptions.Item>
         <Descriptions.Item span={2} labelStyle={{ width: '20%' }} label="Description">
