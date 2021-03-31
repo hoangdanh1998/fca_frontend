@@ -35,9 +35,25 @@ class StatisticsBox extends React.Component {
     const subject = this.props.subject;
     switch (subject) {
       case 'partner':
-        return <ShopOutlined style={{ fontSize: 50, marginTop: '10%' }} />;
+        // return <ShopOutlined style={{ fontSize: 50, marginTop: '10%' }} />;
+        return (
+          <Statistic
+            prefix={<ShopOutlined style={{ fontSize: 50, marginTop: '10%' }} />}
+            title="Approved Partners"
+            value={data.total}
+            valueStyle={{ color: 'black', fontSize: 40 }}
+          />
+        );
       case 'order':
-        return <FileOutlined style={{ fontSize: 50, marginTop: '10%' }} />;
+        // return <FileOutlined style={{ fontSize: 50, marginTop: '10%' }} />;
+        return (
+          <Statistic
+            prefix={<FileOutlined style={{ fontSize: 50, marginTop: '10%' }} />}
+            title="Orders"
+            value={data.total}
+            valueStyle={{ color: 'black', fontSize: 40 }}
+          />
+        );
       case 'item':
         return <CoffeeOutlined style={{ fontSize: 50, marginTop: '10%' }} />;
       default:
@@ -61,6 +77,7 @@ class StatisticsBox extends React.Component {
       case 'order':
         return (
           <Statistic
+            prefix={<FileOutlined style={{ fontSize: 50, marginTop: '10%' }} />}
             title="Orders"
             value={data.total}
             valueStyle={{ color: 'black', fontSize: 40 }}
@@ -86,6 +103,7 @@ class StatisticsBox extends React.Component {
       case 'partner': {
         return [
           <Card
+            size="small"
             style={{
               width: '95%',
               marginLeft: '2.5%',
@@ -145,6 +163,7 @@ class StatisticsBox extends React.Component {
             </div>
           </Card>,
           <Card
+            size="small"
             style={{
               width: '95%',
               marginLeft: '2.5%',
@@ -207,6 +226,7 @@ class StatisticsBox extends React.Component {
         return data.details.map(order => {
           return (
             <Card.Grid
+              size="small"
               onClick={() => {
                 this.props.onClick(order.label);
               }}
@@ -293,31 +313,18 @@ class StatisticsBox extends React.Component {
     const data = this.props.data;
     return (
       <Card
+        size="small"
         style={{
           // backgroundColor: '#FFF2CC',
           backgroundColor: '#FFE6CC',
           textAlign: 'center',
           width: '95%',
           marginLeft: '2.5%',
+          height: 'auto',
         }}
         // cover={this.renderGeneralCardCover()}
         actions={this.renderActions()}
       >
-        {/* <Card.Meta
-          avatar={
-            this.renderGeneralCardCover()
-          }
-          title={
-            <p style={{ fontSize: 40, fontWeight: 'bold', width: '100%', backgroundColor: 'red' }}>
-              {data.total}
-            </p>
-          }
-          description={
-            <p style={{ fontSize: 15, width: '100%', backgroundColor: 'red', marginTop: '-20%' }}>
-              {data.total}
-            </p>
-          }
-        /> */}
         {this.renderStatistics()}
       </Card>
     );

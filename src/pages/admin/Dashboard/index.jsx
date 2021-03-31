@@ -8,11 +8,6 @@ import DataTable from './DataTable/index';
 import ExceptionBody from '../../../components/ExceptionBody/index';
 import styles from './index.less';
 import { DATE_FORMAT, DATE_FORMAT_CALL_API } from '../../../../config/constants';
-import {
-  LINE_CHART_DATA,
-  PIE_CHART_DATA_PARTNER,
-  PIE_CHART_DATA_ORDER,
-} from '../../../../config/seedingData';
 
 @connect(({ statistics, loading }) => {
   return {
@@ -158,17 +153,25 @@ class Dashboard extends React.Component {
     const { partnerStatistics, orderStatistics } = this.props;
     const partnerColumnList = [
       {
+        title: 'No.',
+        render: (text, record, index) => {
+          return index + 1;
+        },
+        width: '10%',
+        align: 'right',
+      },
+      {
         title: 'Name',
         dataIndex: 'name',
         key: 'name',
-        width: '20%',
+        width: '65%',
       },
-      {
-        title: 'Address',
-        dataIndex: ['address', 'description'],
-        key: ['address', 'description'],
-        width: '50%',
-      },
+      // {
+      //   title: 'Address',
+      //   dataIndex: ['address', 'description'],
+      //   key: ['address', 'description'],
+      //   width: '50%',
+      // },
       {
         title: 'Expiration Date',
         dataIndex: 'expirationDate',
@@ -186,6 +189,14 @@ class Dashboard extends React.Component {
     ];
     const rejectionColumnList = [
       {
+        title: 'No.',
+        render: (text, record, index) => {
+          return index + 1;
+        },
+        width: '10%',
+        align: 'right',
+      },
+      {
         title: 'Partner Name',
         dataIndex: 'partnerName',
         key: 'partnerName',
@@ -201,30 +212,38 @@ class Dashboard extends React.Component {
     ];
     const cancellationColumnList = [
       {
+        title: 'No.',
+        render: (text, record, index) => {
+          return index + 1;
+        },
+        with: '10%',
+        align: 'right',
+      },
+      {
         title: 'Customer Phone',
         dataIndex: 'customerPhone',
         key: 'customerPhone',
-        width: '20%',
+        width: '30%',
         align: 'right',
       },
       {
         title: 'Partner Name',
         dataIndex: 'partnerName',
         key: 'partnerName',
-        width: '20%',
+        width: '30%',
       },
       {
         title: 'Cancelled By',
         dataIndex: 'requestBy',
         key: 'requestBy',
-        width: '20%',
+        width: '30%',
       },
-      {
-        title: 'Reason',
-        dataIndex: 'reason',
-        key: 'reason',
-        width: '35%',
-      },
+      // {
+      //   title: 'Reason',
+      //   dataIndex: 'reason',
+      //   key: 'reason',
+      //   width: '35%',
+      // },
     ];
     return this.state.loading ? (
       <Skeleton loading={this.state.loading} active />
@@ -245,7 +264,10 @@ class Dashboard extends React.Component {
           </Col>
           <Col span={16}>
             {this.state.partnerTitle ? (
-              <Card title={this.state.partnerTitle} style={{ height: '100%' }}>
+              <Card
+                // title={this.state.partnerTitle}
+                style={{ height: '100%' }}
+              >
                 <DataTable
                   columnList={partnerColumnList}
                   dataList={this.state.partnerDataList}
@@ -255,8 +277,7 @@ class Dashboard extends React.Component {
             ) : null}
           </Col>
         </Row>
-        <Divider />
-        <br />
+        {/* <Divider /> */}
         {/* DATE */}
         <Row>
           <Col span={12}></Col>
@@ -287,7 +308,6 @@ class Dashboard extends React.Component {
             />
           </Col>
         </Row>
-        <br />
         {/* ORDER */}
         <Row>
           <Col span={8}>
@@ -303,7 +323,7 @@ class Dashboard extends React.Component {
           <Col span={16}>
             {this.state.orderColumnListName ? (
               <Card
-                title={`${this.state.orderColumnListName} Orders Information`}
+                // title={`${this.state.orderColumnListName} Orders Information`}
                 style={{ height: '100%' }}
               >
                 <DataTable
@@ -314,12 +334,13 @@ class Dashboard extends React.Component {
                   }
                   dataList={this.state.orderDataList}
                   pageSize={this.state.orderColumnListName === 'Rejection' ? 3 : 2}
+                  pageSize={1}
                 />
               </Card>
             ) : null}
           </Col>
         </Row>
-        <Divider />
+        {/* <Divider /> */}
         {/* ITEM */}
         {/* <Row>
           <Col span={8}>
