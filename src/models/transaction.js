@@ -13,6 +13,7 @@ const Model = {
     account: {},
     allTransactionList: [],
     totalTransaction: 0,
+    isError: false,
   },
   effects: {
     *createTransaction({ payload }, { call, put }) {
@@ -38,6 +39,10 @@ const Model = {
 
       if (response.type && response.type === 'HttpError') {
         message.error('This phone does not exist');
+        yield put({
+          type: 'handleGetAccount',
+          payload: {},
+        });
         return;
       }
       yield put({
@@ -72,15 +77,20 @@ const Model = {
     },
 
     handleCreateTransaction(state, action) {
+      const newTransaction = { ...action.payload.transaction, owner: state.account };
+      const newTransactionList = state.allTransactionList;
+      newTransactionList.push(newTransaction);
       return {
         ...state,
-        transaction: {},
+        transaction: action.payload.transaction,
+        allTransactionList: newTransactionList,
+        totalTransaction: newTransactionList.length,
       };
     },
     handleGetAccount(state, action) {
       return {
         ...state,
-        account: action.payload.value,
+        account: action.payload?.value,
       };
     },
     handleGetTransactionList(state, action) {
