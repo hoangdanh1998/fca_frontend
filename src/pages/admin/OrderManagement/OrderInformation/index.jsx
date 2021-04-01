@@ -3,7 +3,7 @@ import moment from 'moment';
 import { router } from 'umi';
 import { connect } from 'dva';
 import NumberFormat from 'react-number-format';
-import { Descriptions, Space, Table, Row, Col, Skeleton, Tag, Timeline } from 'antd';
+import { Descriptions, Space, Table, Row, Col, Skeleton, Tag, Timeline, Divider } from 'antd';
 import Button from 'antd-button-color';
 import 'antd-button-color/dist/css/style.less';
 import {
@@ -56,11 +56,6 @@ class OrderInformation extends React.Component {
     if (this.props.order) {
       const result = Array.from(transaction, t => {
         return (
-          // <Steps.Step
-          //   status="process"
-          //   title={convertStringToCamel(t.toStatus)}
-          //   subTitle={moment(t.createdAt).format(TIME_FORMAT)}
-          // />
           <Timeline.Item label={moment(t.createdAt).format(TIME_FORMAT)}>
             {convertStringToCamel(t.toStatus)}
           </Timeline.Item>
@@ -161,11 +156,6 @@ class OrderInformation extends React.Component {
     });
   };
   handleCancelOrder = async values => {
-    // const convertedReason = Array.from(values.reason, r => {
-    //   return `${CANCEL_ORDER_REASON.find(tmp => tmp.value === r).label}${
-    //     values.note && values.note != '' ? ' - ' + values.note : ''
-    //   }`;
-    // });
     const convertedReason = `${values.reason}${
       values.note && values.note != '' ? ' - ' + values.note : ''
     }`;
@@ -296,9 +286,10 @@ class OrderInformation extends React.Component {
                 <Descriptions.Item label="Reason">{this.handleViewReason(order)}</Descriptions.Item>
               </Descriptions>
             </Space>
-            <Space direction="horizontal" style={{ width: '95%' }}>
-              <Descriptions column={2} title="Order's items">
-                <Descriptions.Item label="">
+            <Row style={{ width: '98%' }}>
+              <Col span={15}>
+                <Space direction="vertical" style={{ width: '100%' }}>
+                  <b style={{ fontSize: 15 }}>Order's items</b>
                   <Table
                     className={styles.table}
                     dataSource={order.items}
@@ -322,54 +313,54 @@ class OrderInformation extends React.Component {
                       );
                     }}
                   />
-                </Descriptions.Item>
-                <Descriptions.Item label="">
-                  <Descriptions
-                    column={1}
-                    title="Order's Transaction"
-                    extra={
-                      <Space direction="horizontal">
-                        {order.status !== ORDER_STATUS.REJECTION &&
-                        order.status !== ORDER_STATUS.CANCELLATION &&
-                        order.status !== ORDER_STATUS.CLOSURE &&
-                        order.status !== ORDER_STATUS.RECEPTION ? (
-                          <>
-                            <Button
-                              style={{ width: '100%' }}
-                              type="success"
-                              with="ghost"
-                              icon={<CheckOutlined style={{ fontSize: 15, color: 'green' }} />}
-                              onClick={() => {
-                                this.handleVisibleCloseOrder(order);
-                              }}
-                            >
-                              Finish
-                            </Button>
-                            <Button
-                              style={{ width: '100%' }}
-                              type="danger"
-                              with="ghost"
-                              icon={<CloseOutlined style={{ fontSize: 20, color: 'red' }} />}
-                              onClick={() => {
-                                this.handleVisibleCancelOrder(order);
-                              }}
-                            >
-                              Cancel
-                            </Button>
-                          </>
-                        ) : null}
-                      </Space>
-                    }
-                  >
-                    <Descriptions.Item>
-                      <Timeline reverse style={{ width: '50%' }} mode="left" reverse>
-                        {this.handleViewTransaction(order?.transaction)}
-                      </Timeline>
-                    </Descriptions.Item>
-                  </Descriptions>
-                </Descriptions.Item>
-              </Descriptions>
-            </Space>
+                </Space>
+              </Col>
+              <Col span={1}>
+                <Divider type="vertical" style={{ height: '100%' }} />
+              </Col>
+              <Col span={8}>
+                <Space direction="vertical" style={{ width: '100%' }}>
+                  <Space direction="horizontal" style={{ width: '100%' }}>
+                    <b style={{ fontSize: 15 }}>Order's transactions</b>
+                    {order.status !== ORDER_STATUS.REJECTION &&
+                    order.status !== ORDER_STATUS.CANCELLATION &&
+                    order.status !== ORDER_STATUS.CLOSURE &&
+                    order.status !== ORDER_STATUS.RECEPTION ? (
+                      <>
+                        <Button
+                          style={{ width: '100%' }}
+                          type="success"
+                          with="ghost"
+                          icon={<CheckOutlined style={{ fontSize: 15, color: 'green' }} />}
+                          onClick={() => {
+                            this.handleVisibleCloseOrder(order);
+                          }}
+                        >
+                          Finish
+                        </Button>
+                        <Button
+                          style={{ width: '100%' }}
+                          type="danger"
+                          with="ghost"
+                          icon={<CloseOutlined style={{ fontSize: 20, color: 'red' }} />}
+                          onClick={() => {
+                            this.handleVisibleCancelOrder(order);
+                          }}
+                        >
+                          Cancel
+                        </Button>
+                      </>
+                    ) : (
+                      <br />
+                    )}
+                  </Space>
+                  <br />
+                  <Timeline reverse style={{ width: '100%' }} mode="left" reverse>
+                    {this.handleViewTransaction(order?.transaction)}
+                  </Timeline>
+                </Space>
+              </Col>
+            </Row>
           </Space>
         )}
         <CancelOrderModal
