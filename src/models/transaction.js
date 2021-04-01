@@ -83,7 +83,7 @@ const Model = {
       return {
         ...state,
         transaction: action.payload.transaction,
-        allTransactionList: newTransactionList,
+        allTransactionList: [...newTransactionList],
         totalTransaction: newTransactionList.length,
       };
     },
