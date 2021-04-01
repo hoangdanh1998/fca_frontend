@@ -369,7 +369,7 @@ class Dashboard extends React.Component {
                   }
                   dataList={this.state.orderDataList}
                   // pageSize={this.state.orderColumnListName === 'Rejection' ? 3 : 2}
-                  pageSize={3}
+                  pageSize={2}
                   mode={
                     this.state.orderColumnListName === 'Rejection'
                       ? 'rejected-order'
