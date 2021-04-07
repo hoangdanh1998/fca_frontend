@@ -79,12 +79,13 @@ const Model = {
     handleCreateTransaction(state, action) {
       const newTransaction = { ...action.payload.transaction, owner: state.account };
       const newTransactionList = state.allTransactionList;
-      newTransactionList.push(newTransaction);
+      newTransactionList.unshift(newTransaction);
+      const newTotal = state.totalTransaction + 1;
       return {
         ...state,
         transaction: action.payload.transaction,
         allTransactionList: [...newTransactionList],
-        totalTransaction: newTransactionList.length,
+        totalTransaction: newTotal,
       };
     },
     handleGetAccount(state, action) {

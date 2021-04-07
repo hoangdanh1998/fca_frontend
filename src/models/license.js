@@ -6,6 +6,7 @@ import {
   updateFcaLicenseStatus,
 } from '@/services/license';
 import { message } from 'antd';
+import moment from 'moment';
 import AdminNotification from '../components/Notification';
 
 const notification = new AdminNotification();
@@ -105,6 +106,7 @@ const Model = {
       const newLicenses = state.allFcaLicenseList.map(license => {
         if (license.id === action.payload.license.id) {
           license.status = action.payload.license.status;
+          license.endDate = moment().toString();
         }
         return license;
       });
