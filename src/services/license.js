@@ -1,9 +1,12 @@
 import request from '@/utils/request';
 
 export async function getFcaLicenseList(params) {
-  return request(`/api/fca-license?skip=${params.skip}&limit=${params.limit}`, {
-    method: 'GET',
-  });
+  return request(
+    `/api/fca-license?skip=${params.skip}&limit=${params.limit}&search=${params.search}&fromPrice=${params.fromPrice}&toPrice=${params.toPrice}&fromDuration=${params.fromDuration}&toDuration=${params.toDuration}`,
+    {
+      method: 'GET',
+    },
+  );
 }
 
 export async function createFcaLicense(params) {

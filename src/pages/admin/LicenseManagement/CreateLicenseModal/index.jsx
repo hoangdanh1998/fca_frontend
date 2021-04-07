@@ -53,9 +53,10 @@ class CreateLicenseModal extends React.Component {
               placeholder="Enter duration"
               min={0}
               max={100}
+              defaultValue={0}
               style={{ width: '100%' }}
-              formatter={value => `${value} month(s)`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-              parser={value => value.replace(/\$\s?|(,*)/g, '')}
+              formatter={value => (value && value != '' ? `${value}month(s)` : '')}
+              parser={value => value.replace('month(s)', '')}
             />
           </Form.Item>
           <Form.Item rules={[{ required: true }]} name="startDate" label="Available from">

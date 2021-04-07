@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import { router } from 'umi';
 import { connect } from 'dva';
-import { Skeleton, DatePicker, Button, Divider, Row, Col, Card } from 'antd';
+import { Skeleton, Input, Row, Col, Card } from 'antd';
 import StatisticsBox from './StatisticsBox/index';
 import DataTable from './DataTable/index';
 import ExceptionBody from '../../../components/ExceptionBody/index';
@@ -269,7 +269,12 @@ class Dashboard extends React.Component {
           </Col>
           <Col span={16}>
             {this.state.partnerTitle ? (
-              <Card title={this.state.partnerTitle} size="small" style={{ height: '100%' }}>
+              <Card
+                title={this.state.partnerTitle}
+                size="small"
+                style={{ height: '100%' }}
+                extra={<Input.Search size="small" placeholder="" />}
+              >
                 <DataTable
                   columnList={partnerColumnList}
                   dataList={this.state.partnerDataList}
@@ -280,38 +285,7 @@ class Dashboard extends React.Component {
             ) : null}
           </Col>
         </Row>
-        {/* <Divider style={{ height: '1%' }} /> */}
         <br />
-        {/* DATE */}
-        {/* <Row>
-          <Col span={12}></Col>
-          <Col span={12}>
-            <DatePicker.RangePicker
-              open={this.state.openCalendar}
-              onFocus={() => {
-                this.setState({ openCalendar: true });
-              }}
-              value={[this.state.calendarStartDate, this.state.calendarEndDate]}
-              style={{ width: '100%' }}
-              format={DATE_FORMAT}
-              onChange={this.handleChangeDate}
-              renderExtraFooter={() => (
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'flex-end',
-                    marginBottom: '1%',
-                    marginTop: '1%',
-                  }}
-                >
-                  <Button onClick={this.handleGetReportWhenChangeDate} size="small" type="primary">
-                    OK
-                  </Button>
-                </div>
-              )}
-            />
-          </Col>
-        </Row> */}
         {/* ORDER */}
         <Row>
           <Col span={8}>
@@ -329,36 +303,7 @@ class Dashboard extends React.Component {
               size="small"
               title={`${this.state.orderColumnListName} Orders Information`}
               style={{ height: '100%' }}
-              // extra={
-              //   <DatePicker.RangePicker
-              //     open={this.state.openCalendar}
-              //     onFocus={() => {
-              //       this.setState({ openCalendar: true });
-              //     }}
-              //     value={[this.state.calendarStartDate, this.state.calendarEndDate]}
-              //     style={{ width: '100%' }}
-              //     format={DATE_FORMAT}
-              //     onChange={this.handleChangeDate}
-              //     renderExtraFooter={() => (
-              //       <div
-              //         style={{
-              //           display: 'flex',
-              //           justifyContent: 'flex-end',
-              //           marginBottom: '1%',
-              //           marginTop: '1%',
-              //         }}
-              //       >
-              //         <Button
-              //           onClick={this.handleGetReportWhenChangeDate}
-              //           size="small"
-              //           type="primary"
-              //         >
-              //           OK
-              //         </Button>
-              //       </div>
-              //     )}
-              //   />
-              // }
+              extra={<Input.Search size="small" placeholder="" />}
             >
               {this.state.orderColumnListName ? (
                 <DataTable

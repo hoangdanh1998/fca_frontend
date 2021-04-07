@@ -80,10 +80,8 @@ class CreateTransactionModal extends React.Component {
               min={-1000000000}
               max={1000000000}
               style={{ width: '100%' }}
-              // formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-              // parser={value => value.replace(/\$\s?|(,*)/g, '')}
-              formatter={value => (value && value != '' ? `${value} month(s)` : '')}
-              parser={value => value.replace('month(s)', '')}
+              formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+              parser={value => value.replace(/\$\s?|(,*)/g, '')}
             />
           </Form.Item>
           <Form.Item rules={[{ required: true }]} name="description" label="Description">
