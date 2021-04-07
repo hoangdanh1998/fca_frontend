@@ -329,36 +329,36 @@ class Dashboard extends React.Component {
               size="small"
               title={`${this.state.orderColumnListName} Orders Information`}
               style={{ height: '100%' }}
-              extra={
-                <DatePicker.RangePicker
-                  open={this.state.openCalendar}
-                  onFocus={() => {
-                    this.setState({ openCalendar: true });
-                  }}
-                  value={[this.state.calendarStartDate, this.state.calendarEndDate]}
-                  style={{ width: '100%' }}
-                  format={DATE_FORMAT}
-                  onChange={this.handleChangeDate}
-                  renderExtraFooter={() => (
-                    <div
-                      style={{
-                        display: 'flex',
-                        justifyContent: 'flex-end',
-                        marginBottom: '1%',
-                        marginTop: '1%',
-                      }}
-                    >
-                      <Button
-                        onClick={this.handleGetReportWhenChangeDate}
-                        size="small"
-                        type="primary"
-                      >
-                        OK
-                      </Button>
-                    </div>
-                  )}
-                />
-              }
+              // extra={
+              //   <DatePicker.RangePicker
+              //     open={this.state.openCalendar}
+              //     onFocus={() => {
+              //       this.setState({ openCalendar: true });
+              //     }}
+              //     value={[this.state.calendarStartDate, this.state.calendarEndDate]}
+              //     style={{ width: '100%' }}
+              //     format={DATE_FORMAT}
+              //     onChange={this.handleChangeDate}
+              //     renderExtraFooter={() => (
+              //       <div
+              //         style={{
+              //           display: 'flex',
+              //           justifyContent: 'flex-end',
+              //           marginBottom: '1%',
+              //           marginTop: '1%',
+              //         }}
+              //       >
+              //         <Button
+              //           onClick={this.handleGetReportWhenChangeDate}
+              //           size="small"
+              //           type="primary"
+              //         >
+              //           OK
+              //         </Button>
+              //       </div>
+              //     )}
+              //   />
+              // }
             >
               {this.state.orderColumnListName ? (
                 <DataTable

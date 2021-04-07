@@ -1,5 +1,6 @@
 import React from 'react';
-import { Table, Dropdown, Menu, Icon } from 'antd';
+import { Table, Space, Input, InputNumber } from 'antd';
+import { SearchOutlined, SwapRightOutlined } from '@ant-design/icons';
 import { connect } from 'dva';
 import { PAGE_SIZE } from '../../../../../config/constants';
 import styles from './index.less';
@@ -56,6 +57,63 @@ class DataTable extends React.Component {
     return (
       <div>
         <div>
+          {/* SEARCH MODAL */}
+          <br />
+          <Space direction="horizontal">
+            <Input.Search
+              // onPressEnter={this.handlePressSearch}
+              // onSearch={this.handleClickSearch}
+              style={{ width: 300 }}
+              allowClear
+              placeholder="Enter name"
+            />
+            <Input.Group>
+              <Input style={{ width: 150, textAlign: 'center' }} placeholder="Duration From" />
+              <Input
+                className="site-input-split"
+                style={{
+                  width: 30,
+                  borderLeft: 0,
+                  borderRight: 0,
+                  pointerEvents: 'none',
+                }}
+                placeholder="~"
+                disabled
+              />
+              <Input.Search
+                className="site-input-right"
+                style={{
+                  width: 180,
+                  textAlign: 'center',
+                }}
+                placeholder="Duration To"
+              />
+            </Input.Group>
+            <Input.Group compact>
+              <Input style={{ width: 150, textAlign: 'center' }} placeholder="Price From" />
+              <Input
+                className="site-input-split"
+                style={{
+                  width: 30,
+                  borderLeft: 0,
+                  borderRight: 0,
+                  pointerEvents: 'none',
+                }}
+                placeholder="~"
+                disabled
+              />
+              <Input.Search
+                className="site-input-right"
+                style={{
+                  width: 180,
+                  textAlign: 'center',
+                }}
+                placeholder="Price To"
+              />
+            </Input.Group>
+          </Space>
+          <br />
+          <br />
           <div>
             <Table
               className={styles.table}
