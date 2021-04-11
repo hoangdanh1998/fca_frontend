@@ -177,8 +177,11 @@ const Model = {
 
     handleCreatePartnerLicense(state, action) {
       const newPartner = state.partner;
+      newPartner.account.balance =
+        newPartner.account.balance.valueOf() - action.payload.license.price.valueOf();
+      console.log('newPartner', newPartner);
       newPartner.licenses = [...state.partner.licenses, action.payload.license];
-      return { ...state, partner: newPartner, createdLicense: action.payload.license };
+      return { ...state, partner: { ...newPartner }, createdLicense: action.payload.license };
     },
 
     handleGetFcaLicenseList(state, action) {

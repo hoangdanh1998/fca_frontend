@@ -39,7 +39,6 @@ class ExpandLicenseModal extends React.Component {
     const selectedDuration = selectedPackage.duration;
     this.setState({
       package: value,
-      // endDate: moment(this.state.startDate, DATE_FORMAT).add(value, 'months'),
       endDate: moment(this.state.startDate, DATE_FORMAT).add(selectedDuration, 'months'),
       price: packagePrice,
     });
@@ -47,9 +46,11 @@ class ExpandLicenseModal extends React.Component {
   };
 
   handleChangeStartDate = value => {
+    const selectedPackage = this.props.packages.find(p => p.value === this.state.package);
+    console.log('this.state.package', selectedPackage.duration);
     this.setState({
       startDate: value,
-      endDate: moment(value, DATE_FORMAT).add(this.state.package, 'months'),
+      endDate: moment(value, DATE_FORMAT).add(selectedPackage.duration, 'months'),
     });
   };
 

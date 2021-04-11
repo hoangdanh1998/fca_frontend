@@ -25,7 +25,7 @@ class DetailsDrawer extends React.Component {
               </Space>
             }
           >
-            <Descriptions.Item label="Phone">{data?.phone}</Descriptions.Item>
+            <Descriptions.Item label="Phone">{data?.account?.phone}</Descriptions.Item>
             <Descriptions.Item label="Expiration Date">
               {moment(data?.expirationDate).format(DATE_FORMAT)}
             </Descriptions.Item>

@@ -49,8 +49,8 @@ const BasicLayout = props => {
   const authority = localStorage.getItem('authority');
   if (!authority || !authority.length) {
     router.push('/admin/signin');
-  } else if (window.location.href.endsWith('/user/signup')) {
-    router.push('/user/signin');
+    // } else if (window.location.href.endsWith('/user/signup')) {
+    //   router.push('/user/signin');
   } else if (window.location.pathname === '/') {
     const authorityJson = JSON.parse(authority);
     if (authorityJson && authorityJson.length && authorityJson[0] === 'admin') {

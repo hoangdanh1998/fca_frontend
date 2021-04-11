@@ -128,7 +128,7 @@ class TransactionManagement extends React.Component {
       },
       {
         title: 'Account Phone',
-        dataIndex: ['owner', 'phone'],
+        dataIndex: ['owner', 'account', 'phone'],
         key: ['owner', 'phone'],
         width: '15%',
         align: 'right',
@@ -137,7 +137,7 @@ class TransactionManagement extends React.Component {
         title: 'Account Name',
         dataIndex: ['owner', 'name'],
         key: ['owner', 'name'],
-        width: '15%',
+        width: '20%',
       },
       {
         title: 'Amount',
@@ -147,7 +147,7 @@ class TransactionManagement extends React.Component {
           <NumberFormat value={record.amount} displayType={'text'} thousandSeparator={true} />
         ),
         align: 'right',
-        width: '15%',
+        width: '10%',
       },
       {
         title: 'Description',

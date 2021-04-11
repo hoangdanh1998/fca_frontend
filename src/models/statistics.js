@@ -208,7 +208,7 @@ const Model = {
         total: order.total,
         details: [
           {
-            label: 'Closure',
+            label: 'Reception',
             total: order.closure.total,
             color: '#82B366',
           },

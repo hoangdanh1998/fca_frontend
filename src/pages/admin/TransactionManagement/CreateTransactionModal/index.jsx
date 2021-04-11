@@ -85,7 +85,7 @@ class CreateTransactionModal extends React.Component {
             />
           </Form.Item>
           <Form.Item rules={[{ required: true }]} name="description" label="Description">
-            <Input.TextArea placeholder="Enter description" allowClear />
+            <Input.TextArea placeholder="Enter description" row={5} allowClear />
           </Form.Item>
           <Space direction="horizontal" style={{ display: 'flex', justifyContent: 'center' }}>
             <Form.Item>

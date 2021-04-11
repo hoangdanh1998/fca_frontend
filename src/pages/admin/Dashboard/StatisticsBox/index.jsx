@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import { router } from 'umi';
 import { connect } from 'dva';
-import { Space, Card, Statistic, Row, Col, List, Avatar } from 'antd';
+import { Card, Statistic, Input } from 'antd';
 import ScrollMenu from 'react-horizontal-scrolling-menu';
 import {
   ShopOutlined,

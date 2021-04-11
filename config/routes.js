@@ -54,7 +54,7 @@ export default [
             authority: ['admin'],
           },
           {
-            name: 'License Management',
+            name: 'FCA License Management',
             path: '/fca-management/license-management',
             component: './admin/LicenseManagement',
             authority: ['admin'],

@@ -35,6 +35,11 @@ class PartnerInformation extends React.Component {
       payload: {
         skip: 0,
         limit: PAGE_SIZE,
+        search: '',
+        fromPrice: '',
+        toPrice: '',
+        fromDuration: '',
+        toDuration: '',
       },
     });
   }
