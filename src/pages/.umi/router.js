@@ -147,7 +147,7 @@ const routes = [
             exact: true,
           },
           {
-            name: 'License Management',
+            name: 'FCA License Management',
             path: '/fca-management/license-management',
             component: __IS_BROWSER
               ? _dvaDynamic({
