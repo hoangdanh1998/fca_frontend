@@ -1,6 +1,7 @@
 import React from 'react';
-import { Table, Space, Input, InputNumber } from 'antd';
+import { Table, Space, Input, InputNumber, Slider, Row, Col } from 'antd';
 import { SearchOutlined, SwapRightOutlined } from '@ant-design/icons';
+import NumberFormat from 'react-number-format';
 import { connect } from 'dva';
 import { PAGE_SIZE } from '../../../../../config/constants';
 import styles from './index.less';
@@ -154,9 +155,61 @@ class DataTable extends React.Component {
     this.setState({ loading: false });
   };
 
-  handlePressSearchDuration = async e => {
+  // handlePressSearchDuration = async e => {
+  //   const { dispatch } = this.props;
+  //   this.setState({ toDuration: e.target.value, loading: true });
+  //   await dispatch({
+  //     type: 'license/getFcaLicenseList',
+  //     payload: {
+  //       skip: this.state.skip,
+  //       limit: this.state.pageSize,
+  //       search: this.state.search,
+  //       fromPrice: this.state.fromPrice,
+  //       toPrice: this.state.toPrice,
+  //       fromDuration: this.state.fromDuration,
+  //       toDuration: e.target.value,
+  //     },
+  //   });
+  //   this.setState({ loading: false });
+  // };
+  // handlePressSearchFromDuration = async e => {
+  //   const { dispatch } = this.props;
+  //   this.setState({ fromDuration: e.target.value, loading: true });
+  //   await dispatch({
+  //     type: 'license/getFcaLicenseList',
+  //     payload: {
+  //       skip: this.state.skip,
+  //       limit: this.state.pageSize,
+  //       search: this.state.search,
+  //       fromPrice: this.state.fromPrice,
+  //       toPrice: this.state.toPrice,
+  //       fromDuration: e.target.value,
+  //       toDuration: this.state.toDuration,
+  //     },
+  //   });
+  //   this.setState({ loading: false });
+  // };
+  // handleClickSearchDuration = async (value, event) => {
+  //   this.setState({ toDuration: value, loading: true });
+  //   const { dispatch } = this.props;
+  //   await dispatch({
+  //     type: 'license/getFcaLicenseList',
+  //     payload: {
+  //       skip: this.state.skip,
+  //       limit: this.state.pageSize,
+  //       search: this.state.search,
+  //       fromPrice: this.state.fromPrice,
+  //       toPrice: this.state.toPrice,
+  //       fromDuration: this.state.fromDuration,
+  //       toDuration: value,
+  //     },
+  //   });
+  //   this.setState({ loading: false });
+  // };
+
+  handleSearchDuration = async value => {
+    this.setState({ fromDuration: value[0], toDuration: value[1], loading: true });
     const { dispatch } = this.props;
-    this.setState({ toDuration: e.target.value, loading: true });
     await dispatch({
       type: 'license/getFcaLicenseList',
       payload: {
@@ -165,47 +218,29 @@ class DataTable extends React.Component {
         search: this.state.search,
         fromPrice: this.state.fromPrice,
         toPrice: this.state.toPrice,
-        fromDuration: this.state.fromDuration,
-        toDuration: e.target.value,
+        fromDuration: value[0],
+        toDuration: value[1],
       },
     });
     this.setState({ loading: false });
   };
-  handlePressSearchFromDuration = async e => {
+  handleSearchPrice = async value => {
+    this.setState({ fromPrice: value[0], toPrice: value[1], loading: true });
     const { dispatch } = this.props;
-    this.setState({ fromDuration: e.target.value, loading: true });
     await dispatch({
       type: 'license/getFcaLicenseList',
       payload: {
         skip: this.state.skip,
         limit: this.state.pageSize,
         search: this.state.search,
-        fromPrice: this.state.fromPrice,
-        toPrice: this.state.toPrice,
-        fromDuration: e.target.value,
+        fromPrice: value[0],
+        toPrice: value[1],
+        fromDuration: this.state.fromDuration,
         toDuration: this.state.toDuration,
       },
     });
     this.setState({ loading: false });
   };
-  handleClickSearchDuration = async (value, event) => {
-    this.setState({ toDuration: value, loading: true });
-    const { dispatch } = this.props;
-    await dispatch({
-      type: 'license/getFcaLicenseList',
-      payload: {
-        skip: this.state.skip,
-        limit: this.state.pageSize,
-        search: this.state.search,
-        fromPrice: this.state.fromPrice,
-        toPrice: this.state.toPrice,
-        fromDuration: this.state.fromDuration,
-        toDuration: value,
-      },
-    });
-    this.setState({ loading: false });
-  };
-
   render() {
     const { dataList, totalFcaLicense, columnList } = this.props;
     return (
@@ -213,71 +248,99 @@ class DataTable extends React.Component {
         <div>
           {/* SEARCH MODAL */}
           <br />
-          <Space direction="horizontal">
-            <Input.Search
-              onPressEnter={this.handlePressSearchName}
-              onSearch={this.handleClickSearchName}
-              style={{ width: 300 }}
-              allowClear
-              placeholder="Enter name"
-            />
-            <Input.Group>
-              <Input
-                style={{ width: 150, textAlign: 'center' }}
-                placeholder="Duration From"
-                onPressEnter={this.handlePressSearchFromDuration}
-              />
-              <Input
-                className="site-input-split"
-                style={{
-                  width: 30,
-                  borderLeft: 0,
-                  borderRight: 0,
-                  pointerEvents: 'none',
-                }}
-                placeholder="~"
-                disabled
-              />
+          <Row className={styles.search}>
+            <Col span={8}>
               <Input.Search
-                className="site-input-right"
-                style={{
-                  width: 180,
-                  textAlign: 'center',
-                }}
-                placeholder="Duration To"
-                onPressEnter={this.handlePressSearchDuration}
-                onSearch={this.handleClickSearchDuration}
+                onPressEnter={this.handlePressSearchName}
+                onSearch={this.handleClickSearchName}
+                style={{ width: '100%' }}
+                allowClear
+                placeholder="Enter name"
               />
-            </Input.Group>
-            <Input.Group compact>
-              <Input
-                style={{ width: 150, textAlign: 'center' }}
-                placeholder="Price From"
-                onPressEnter={this.handlePressSearchFromPrice}
-              />
-              <Input
-                className="site-input-split"
-                style={{
-                  width: 30,
-                  borderLeft: 0,
-                  borderRight: 0,
-                  pointerEvents: 'none',
-                }}
-                placeholder="~"
-                disabled
-              />
-              <Input.Search
-                className="site-input-right"
-                style={{
-                  width: 180,
-                  textAlign: 'center',
-                }}
-                placeholder="Price To"
-                onPressEnter={this.handlePressSearchPrice}
-                onSearch={this.handleClickSearchPrice}
-              />
-            </Input.Group>
-          </Space>
+            </Col>
+            <Col span={16}>
+              <Row>
+                <Col span={2}></Col>
+                <Col span={8}>
+                  <Slider
+                    tipFormatter={value => {
+                      return `${value} month(s)`;
+                    }}
+                    min={1}
+                    max={12}
+                    range
+                    defaultValue={[1, 12]}
+                    marks={{
+                      1: {
+                        style: {
+                          color: '#1890ff',
+                        },
+                        label: <strong>1 month(s)</strong>,
+                      },
+                      12: {
+                        style: {
+                          color: '#1890ff',
+                          width: '100%',
+                        },
+                        label: <strong>12 month(s)</strong>,
+                      },
+                    }}
+                    onChange={value => {
+                      this.handleSearchDuration(value);
+                    }}
+                  />
+                </Col>
+                <Col span={3}></Col>
+                <Col span={8}>
+                  <Slider
+                    tipFormatter={value => {
+                      return (
+                        <NumberFormat value={value} displayType={'text'} thousandSeparator={true} />
+                      );
+                    }}
+                    min={0}
+                    max={1000000}
+                    step={10000}
+                    range
+                    defaultValue={[0, 1000000]}
+                    marks={{
+                      0: {
+                        style: {
+                          color: '#1890ff',
+                        },
+                        label: (
+                          <strong>
+                            <NumberFormat value={0} displayType={'text'} thousandSeparator={true} />{' '}
+                            VND
+                          </strong>
+                        ),
+                      },
+                      1000000: {
+                        style: {
+                          color: '#1890ff',
+                          width: '100%',
+                        },
+                        label: (
+                          <strong>
+                            <NumberFormat
+                              value={1000000}
+                              displayType={'text'}
+                              thousandSeparator={true}
+                            />{' '}
+                            VND
+                          </strong>
+                        ),
+                      },
+                    }}
+                    onChange={value => {
+                      this.handleSearchPrice(value);
+                    }}
+                  />
+                </Col>
+                <Col span={2}></Col>
+              </Row>
+            </Col>
+          </Row>
           <br />
           <br />
           <div>
