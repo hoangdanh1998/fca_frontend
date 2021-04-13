@@ -188,6 +188,7 @@ class OrderInformation extends React.Component {
           return index + 1;
         },
         align: 'right',
+        width: '5%',
       },
       {
         title: 'Item',
@@ -205,12 +206,14 @@ class OrderInformation extends React.Component {
           );
         },
         align: 'right',
+        width: '15%',
       },
       {
         title: 'Quantity',
         dataIndex: 'quantity',
         key: 'quantity',
         align: 'right',
+        width: '15%',
       },
       {
         title: 'Sub-total',
@@ -224,6 +227,7 @@ class OrderInformation extends React.Component {
           );
         },
         align: 'right',
+        width: '15%',
       },
     ];
     return this.props.isError ? (

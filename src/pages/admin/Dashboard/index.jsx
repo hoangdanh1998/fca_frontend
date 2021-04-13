@@ -36,6 +36,8 @@ class Dashboard extends React.Component {
     partnerDataList: this.props.openingPartnerList,
     orderDataList: this.props.cancellationOrderDetailsList,
     openCalendar: false,
+    lastOrderAction: 'Cancellation',
+    lastPartnerAction: 'OPENING_NORMAL_PARTNER',
   };
 
   async componentWillMount() {
@@ -91,6 +93,28 @@ class Dashboard extends React.Component {
       loading: false,
     });
   };
+  handleSearch = (search, mode) => {
+    if (mode === 'partner') {
+      if (!search) {
+        this.handleClickBox(this.state.lastPartnerAction);
+        return;
+      }
+      const searchList = this.state.partnerDataList.filter(element => {
+        return element.name.toLowerCase().search(search.toLowerCase()) >= 0;
+      });
+      this.setState({ partnerDataList: searchList });
+    } else {
+      if (!search) {
+        this.handleClickBox(this.state.lastOrderAction);
+        return;
+      }
+      const searchList = this.state.orderDataList.filter(element => {
+        console.log('order-element', element);
+        return element.customerPhone.search(search) >= 0;
+      });
+      this.setState({ orderDataList: searchList });
+    }
+  };
 
   handleClickBox = action => {
     // alert(action);
@@ -117,6 +141,7 @@ class Dashboard extends React.Component {
         });
         break;
       case 'OPENING_NORMAL_PARTNER':
+        console.log('OPENING_NORMAL_PARTNER', this.props.openingNormalPartnerList.length);
         this.setState({
           partnerTitle: 'Normal Opening Partners',
           partnerDataList: this.props.openingNormalPartnerList,
@@ -261,6 +286,7 @@ class Dashboard extends React.Component {
           <Col span={8}>
             <StatisticsBox
               onClick={action => {
+                this.setState({ lastPartnerAction: action });
                 this.handleClickBox(action);
               }}
               subject="partner"
@@ -273,7 +299,19 @@ class Dashboard extends React.Component {
                 title={this.state.partnerTitle}
                 size="small"
                 style={{ height: '100%' }}
-                extra={<Input.Search size="small" placeholder="" />}
+                extra={
+                  <Input.Search
+                    allowClear
+                    size="small"
+                    placeholder="Enter name"
+                    onPressEnter={e => {
+                      this.handleSearch(e.target.value, 'partner');
+                    }}
+                    onSearch={(value, event) => {
+                      this.handleSearch(value, 'partner');
+                    }}
+                  />
+                }
               >
                 <DataTable
                   columnList={partnerColumnList}
@@ -303,7 +341,19 @@ class Dashboard extends React.Component {
               size="small"
               title={`${this.state.orderColumnListName} Orders Information`}
               style={{ height: '100%' }}
-              extra={<Input.Search size="small" placeholder="" />}
+              extra={
+                <Input.Search
+                  allowClear
+                  size="small"
+                  placeholder="Enter phone"
+                  onPressEnter={e => {
+                    this.handleSearch(e.target.value, 'order');
+                  }}
+                  onSearch={(value, event) => {
+                    this.handleSearch(value, 'order');
+                  }}
+                />
+              }
             >
               {this.state.orderColumnListName ? (
                 <DataTable

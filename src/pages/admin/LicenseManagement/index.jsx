@@ -187,12 +187,12 @@ class LicenseManagement extends React.Component {
       {
         title: 'No.',
         render: (text, record, index) => (
-          // return index + 1;
           <Dropdown overlay={menu} placement="bottomLeft" trigger={['click']}>
             <div style={{ textAlign: 'right', width: '100%' }}>{index + 1}</div>
           </Dropdown>
         ),
         align: 'right',
+        width: '5%',
       },
       {
         title: 'Name',
@@ -213,6 +213,7 @@ class LicenseManagement extends React.Component {
             <div style={{ display: 'flex', flex: 1 }}>{`${record.duration} month(s)`}</div>
           </Dropdown>
         ),
+        width: '15%',
       },
       {
         title: 'Price',
@@ -224,6 +225,7 @@ class LicenseManagement extends React.Component {
           </Dropdown>
         ),
         align: 'right',
+        width: '15%',
       },
       {
         title: 'Status',
@@ -247,6 +249,7 @@ class LicenseManagement extends React.Component {
             </Dropdown>
           );
         },
+        width: '10%',
       },
       {
         title: 'Available From',
@@ -263,6 +266,7 @@ class LicenseManagement extends React.Component {
           </Dropdown>
         ),
         align: 'right',
+        width: '15%',
       },
     ];
     return this.props.isError ? (
