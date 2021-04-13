@@ -12,6 +12,7 @@ import React from 'react';
 import NumberFormat from 'react-number-format';
 import {
   DATE_FORMAT,
+  DATE_TIME_FORMAT,
   DATE_TIME_FORMAT_CALL_API,
   LICENSE_STATUS,
 } from '../../../../config/constants';
@@ -160,10 +161,10 @@ class TransactionManagement extends React.Component {
         dataIndex: 'createdDate',
         key: 'createdDate',
         sorter: (a, b) =>
-          moment(a.createdDate, DATE_TIME_FORMAT_CALL_API) -
-          moment(b.createdDate, DATE_TIME_FORMAT_CALL_API),
+          moment(a.createdAt, DATE_TIME_FORMAT_CALL_API) -
+          moment(b.createdAt, DATE_TIME_FORMAT_CALL_API),
         render: (text, record, index) => {
-          return moment(record.createdDate).format(DATE_FORMAT);
+          return moment(record.createdAt).format(DATE_TIME_FORMAT);
         },
         align: 'right',
         width: '15%',
