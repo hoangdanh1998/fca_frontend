@@ -155,58 +155,6 @@ class DataTable extends React.Component {
     this.setState({ loading: false });
   };
 
-  // handlePressSearchDuration = async e => {
-  //   const { dispatch } = this.props;
-  //   this.setState({ toDuration: e.target.value, loading: true });
-  //   await dispatch({
-  //     type: 'license/getFcaLicenseList',
-  //     payload: {
-  //       skip: this.state.skip,
-  //       limit: this.state.pageSize,
-  //       search: this.state.search,
-  //       fromPrice: this.state.fromPrice,
-  //       toPrice: this.state.toPrice,
-  //       fromDuration: this.state.fromDuration,
-  //       toDuration: e.target.value,
-  //     },
-  //   });
-  //   this.setState({ loading: false });
-  // };
-  // handlePressSearchFromDuration = async e => {
-  //   const { dispatch } = this.props;
-  //   this.setState({ fromDuration: e.target.value, loading: true });
-  //   await dispatch({
-  //     type: 'license/getFcaLicenseList',
-  //     payload: {
-  //       skip: this.state.skip,
-  //       limit: this.state.pageSize,
-  //       search: this.state.search,
-  //       fromPrice: this.state.fromPrice,
-  //       toPrice: this.state.toPrice,
-  //       fromDuration: e.target.value,
-  //       toDuration: this.state.toDuration,
-  //     },
-  //   });
-  //   this.setState({ loading: false });
-  // };
-  // handleClickSearchDuration = async (value, event) => {
-  //   this.setState({ toDuration: value, loading: true });
-  //   const { dispatch } = this.props;
-  //   await dispatch({
-  //     type: 'license/getFcaLicenseList',
-  //     payload: {
-  //       skip: this.state.skip,
-  //       limit: this.state.pageSize,
-  //       search: this.state.search,
-  //       fromPrice: this.state.fromPrice,
-  //       toPrice: this.state.toPrice,
-  //       fromDuration: this.state.fromDuration,
-  //       toDuration: value,
-  //     },
-  //   });
-  //   this.setState({ loading: false });
-  // };
-
   handleSearchDuration = async value => {
     this.setState({ fromDuration: value[0], toDuration: value[1], loading: true });
     const { dispatch } = this.props;
