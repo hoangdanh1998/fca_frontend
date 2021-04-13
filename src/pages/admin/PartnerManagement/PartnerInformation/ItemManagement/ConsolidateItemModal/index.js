@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'dva';
 import { Modal, Space, Button, Radio } from 'antd';
+import { CloseOutlined, CheckOutlined } from '@ant-design/icons';
 import { REQUESTED_ITEM_STATUS, PARTNER_ITEM_STATUS } from '../../../../../../../config/constants';
 
 class ConsolidateItemModal extends React.Component {
@@ -39,16 +40,19 @@ class ConsolidateItemModal extends React.Component {
         <Space direction="vertical">
           <Space direction="horizontal">
             <Radio.Group
-              options={[
-                { label: 'Active', value: PARTNER_ITEM_STATUS.ACTIVE },
-                { label: 'Archive', value: PARTNER_ITEM_STATUS.ARCHIVE },
-              ]}
               onChange={event => {
                 this.setState({ consolidateResult: event.target.value });
               }}
-              buttonStyle="solid"
+              value={this.state.consolidateResult}
               optionType="button"
-            />
+            >
+              <Radio.Button value={PARTNER_ITEM_STATUS.ARCHIVE} style={{ color: 'red' }}>
+                <CloseOutlined /> Archive
+              </Radio.Button>
+              <Radio.Button value={PARTNER_ITEM_STATUS.ACTIVE} style={{ color: 'green' }}>
+                <CheckOutlined /> Active
+              </Radio.Button>
+            </Radio.Group>
           </Space>
           {this.state.consolidateResult !== '' ? (
             <Space direction="horizontal">

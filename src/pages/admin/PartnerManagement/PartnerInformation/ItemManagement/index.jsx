@@ -10,7 +10,6 @@ import {
   ClockCircleOutlined,
   EyeOutlined,
   EditOutlined,
-  CloseOutlined,
   EllipsisOutlined,
 } from '@ant-design/icons';
 import { convertStringToCamel } from '../../../../../utils/utils';
@@ -23,7 +22,6 @@ import {
   REQUESTED_ITEM_STATUS,
   DATE_FORMAT,
   SHOW_ITEMS_OPTIONS,
-  PARTNER_STATUS_ITEM_OPTIONS,
 } from '../../../../../../config/constants';
 import styles from './index.less';
 import UpdateItemModal from './UpdateItemModal';
@@ -199,7 +197,7 @@ class ItemManagement extends React.Component {
           </Dropdown>
         ),
         align: 'right',
-        width: '1%',
+        width: '5%',
       },
       {
         title: 'Item Name',
@@ -210,34 +208,33 @@ class ItemManagement extends React.Component {
             <div style={{ display: 'flex', flex: 1 }}>{record.name}</div>
           </Dropdown>
         ),
-        width: '20%',
+      },
+      {
+        title: 'FCA Group',
+        render: (text, record, index) => (
+          <Dropdown overlay={menu} placement="bottomLeft" trigger={['click']}>
+            <div style={{ display: 'flex', flex: 1 }}>{Object.assign({}, record.fcaItem).name}</div>
+          </Dropdown>
+        ),
+        width: '25%',
       },
       {
         title: 'Item Price',
         dataIndex: 'price',
         key: 'price',
-        width: '10%',
         render: (text, record, index) => (
           <Dropdown overlay={menu} placement="bottomLeft" trigger={['click']}>
             <NumberFormat value={record.price} displayType={'text'} thousandSeparator={true} />
           </Dropdown>
         ),
         align: 'right',
-      },
-      {
-        title: 'FCA Group',
         width: '10%',
-        render: (text, record, index) => (
-          <Dropdown overlay={menu} placement="bottomLeft" trigger={['click']}>
-            <div style={{ display: 'flex', flex: 1 }}>{Object.assign({}, record.fcaItem).name}</div>
-          </Dropdown>
-        ),
       },
+
       {
         title: 'Item Status',
         dataIndex: 'status',
         key: 'status',
-        width: '10%',
         render: (text, record, index) => (
           <Dropdown overlay={menu} placement="bottomLeft" trigger={['click']}>
             <Tag
@@ -248,6 +245,7 @@ class ItemManagement extends React.Component {
             </Tag>
           </Dropdown>
         ),
+        width: '10%',
       },
       {
         title: 'Register Date',
@@ -263,6 +261,7 @@ class ItemManagement extends React.Component {
           </Dropdown>
         ),
         align: 'right',
+        width: '15%',
       },
     ];
 
