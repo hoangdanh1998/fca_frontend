@@ -43,3 +43,12 @@ export async function handleOpenCloseStore(params) {
     },
   }).catch(error => error);
 }
+
+export async function updatePartnerItemStatus(params) {
+  return request(`/api/partner/${params.partnerId}/partner-item/${params.partnerItemId}/status`, {
+    method: 'PUT',
+    data: {
+      status: params.status,
+    },
+  }).catch(error => error);
+}
