@@ -6,6 +6,7 @@ import {
   getOrderList,
   createPartnerLicense,
   handleOpenCloseStore,
+  updatePartnerItemStatus,
 } from '@/services/partner';
 import { getFcaLicenseList } from '@/services/license';
 import { message } from 'antd';
@@ -127,6 +128,20 @@ const Model = {
         payload: response.data,
       });
     },
+
+    *updatePartnerItemStatus({ payload }, { call, put }) {
+      const response = yield call(updatePartnerItemStatus, payload);
+
+      if (response.type && response.type === 'HttpError') {
+        message.error('Something went wrong. Please try again.');
+        return;
+      }
+      message.success('Success!');
+      yield put({
+        type: 'handleUpdatePartnerItemStatus',
+        payload: response.data,
+      });
+    },
   },
 
   reducers: {
@@ -203,6 +218,10 @@ const Model = {
         allFcaLicenseList: convertedLicenses,
         totalFcaLicense: action.payload.count,
       };
+    },
+
+    handleUpdatePartnerItemStatus(state, action) {
+      return { ...state, partner: action.payload.partner };
     },
   },
 };

@@ -10,22 +10,25 @@ import {
   ClockCircleOutlined,
   EyeOutlined,
   EditOutlined,
-  CloseOutlined,
+  EllipsisOutlined,
 } from '@ant-design/icons';
 import { convertStringToCamel } from '../../../../../utils/utils';
 import DataTable from './DataTable/index.jsx';
 import ConfirmationPopup from '../../../../../components/atom/ConfirmationPopup/index.jsx';
 import ItemDetailsModal from './ItemDetailsModal/index.jsx';
+import ConsolidateItemModal from './ConsolidateItemModal/index';
 import {
   PARTNER_ITEM_STATUS,
   REQUESTED_ITEM_STATUS,
   DATE_FORMAT,
   SHOW_ITEMS_OPTIONS,
-  PARTNER_STATUS_ITEM_OPTIONS,
 } from '../../../../../../config/constants';
 import styles from './index.less';
 import UpdateItemModal from './UpdateItemModal';
 
+@connect(({ partner, loading }) => ({
+  isError: partner.isError,
+}))
 class ItemManagement extends React.Component {
   state = {
     visibleChangeStatus: false,
@@ -83,11 +86,27 @@ class ItemManagement extends React.Component {
   handleUpdateItem = values => {
     alert(JSON.stringify(values));
   };
+  handleConsolidateItem = (partnerItemId, status) => {
+    const url = window.location.href;
+    const id = url.substring(url.indexOf('=') + 1);
+    const params = {
+      partnerId: id,
+      partnerItemId: partnerItemId,
+      status: status,
+    };
+    this.handleHideModal();
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'partner/updatePartnerItemStatus',
+      payload: params,
+    });
+  };
 
   handleVisibleChangeStatus = () => {
     this.setState({
       visibleChangeStatus: true,
       message: {
+        id: this.state.partnerItem.id,
         name: this.state.partnerItem.name,
         property: "item's status",
         from: this.state.partnerItem.status,
@@ -125,7 +144,7 @@ class ItemManagement extends React.Component {
             <span style={{ color: 'black' }}>View details</span>
           </Space>
         </Menu.Item>
-        <Menu.Item key="2">
+        {/* <Menu.Item key="2">
           <Space
             onClick={() => {
               this.handleVisibleEditItemInformation();
@@ -136,28 +155,34 @@ class ItemManagement extends React.Component {
             <EditOutlined style={{ color: 'blue' }} />
             <span style={{ color: 'blue' }}>Update item</span>
           </Space>
-        </Menu.Item>
+        </Menu.Item> */}
         <Menu.Item key="3">
           <Space
             onClick={() => {
-              this.handleVisibleChangeStatus();
+              this.state.partnerItem.status === REQUESTED_ITEM_STATUS.PROCESS
+                ? this.handleVisibleChangeStatus()
+                : null;
             }}
             direction="horizontal"
             style={{ display: 'flex' }}
           >
-            <CloseOutlined
+            <EllipsisOutlined
               style={{
                 color:
-                  this.state.partnerItem.status === PARTNER_ITEM_STATUS.ARCHIVE ? 'green' : 'red',
+                  this.state.partnerItem.status === REQUESTED_ITEM_STATUS.PROCESS
+                    ? '#1890ff'
+                    : 'grey',
               }}
             />
             <span
               style={{
                 color:
-                  this.state.partnerItem.status === PARTNER_ITEM_STATUS.ARCHIVE ? 'green' : 'red',
+                  this.state.partnerItem.status === REQUESTED_ITEM_STATUS.PROCESS
+                    ? '#1890ff'
+                    : 'grey',
               }}
             >
-              Archive item
+              Consolidate item
             </span>
           </Space>
         </Menu.Item>
@@ -167,13 +192,12 @@ class ItemManagement extends React.Component {
       {
         title: 'No.',
         render: (text, record, index) => (
-          // return index + 1;
           <Dropdown overlay={menu} placement="bottomLeft" trigger={['click']}>
             <div style={{ textAlign: 'right', width: '100%' }}>{index + 1}</div>
           </Dropdown>
         ),
         align: 'right',
-        width: '1%',
+        width: '5%',
       },
       {
         title: 'Item Name',
@@ -184,34 +208,33 @@ class ItemManagement extends React.Component {
             <div style={{ display: 'flex', flex: 1 }}>{record.name}</div>
           </Dropdown>
         ),
-        width: '20%',
+      },
+      {
+        title: 'FCA Group',
+        render: (text, record, index) => (
+          <Dropdown overlay={menu} placement="bottomLeft" trigger={['click']}>
+            <div style={{ display: 'flex', flex: 1 }}>{Object.assign({}, record.fcaItem).name}</div>
+          </Dropdown>
+        ),
+        width: '25%',
       },
       {
         title: 'Item Price',
         dataIndex: 'price',
         key: 'price',
-        width: '10%',
         render: (text, record, index) => (
           <Dropdown overlay={menu} placement="bottomLeft" trigger={['click']}>
             <NumberFormat value={record.price} displayType={'text'} thousandSeparator={true} />
           </Dropdown>
         ),
         align: 'right',
-      },
-      {
-        title: 'FCA Group',
         width: '10%',
-        render: (text, record, index) => (
-          <Dropdown overlay={menu} placement="bottomLeft" trigger={['click']}>
-            <div style={{ display: 'flex', flex: 1 }}>{Object.assign({}, record.fcaItem).name}</div>
-          </Dropdown>
-        ),
       },
+
       {
         title: 'Item Status',
         dataIndex: 'status',
         key: 'status',
-        width: '10%',
         render: (text, record, index) => (
           <Dropdown overlay={menu} placement="bottomLeft" trigger={['click']}>
             <Tag
@@ -222,6 +245,7 @@ class ItemManagement extends React.Component {
             </Tag>
           </Dropdown>
         ),
+        width: '10%',
       },
       {
         title: 'Register Date',
@@ -237,6 +261,7 @@ class ItemManagement extends React.Component {
           </Dropdown>
         ),
         align: 'right',
+        width: '15%',
       },
     ];
 
@@ -253,16 +278,14 @@ class ItemManagement extends React.Component {
             />
             <br />
           </div>
-          <ConfirmationPopup
+          <ConsolidateItemModal
             visible={this.state.visibleChangeStatus}
             message={this.state.message}
             hideModal={this.handleHideModal}
+            onClickOK={(partnerId, partnerItemId, status) => {
+              this.handleConsolidateItem(partnerId, partnerItemId, status);
+            }}
           />
-          {/* <ConfirmationPopup
-            visible={this.state.visibleFCAGroupChange}
-            message={this.state.itemFCAGroup}
-            hideModal={this.hideModalFCAGroup}
-          /> */}
           <ItemDetailsModal
             visible={this.state.visibleItemModal}
             item={this.state.partnerItem}
@@ -281,23 +304,20 @@ class ItemManagement extends React.Component {
             columnList={allColumns}
             dataList={
               this.state.showItemOption === 'Requested items'
-                ? partner.requestItems
-                  ? partner.requestItems
+                ? partner.items
+                  ? partner.items.filter(item => {
+                      return item.status !== PARTNER_ITEM_STATUS.ACTIVE;
+                    })
                   : []
                 : this.state.showItemOption === 'Usable items'
                 ? partner.items
-                  ? partner.items
+                  ? partner.items.filter(item => {
+                      return item.status === PARTNER_ITEM_STATUS.ACTIVE;
+                    })
                   : []
-                : partner.items && partner.requestItems
-                ? partner.items.concat(partner.requestItems)
+                : partner.items
+                ? partner.items
                 : []
-            }
-            totalRecords={
-              this.state.showItemOption === 'Requested items'
-                ? partner?.requestItems?.length
-                : this.state.showItemOption === 'Usable items'
-                ? partner?.items?.length
-                : partner?.items?.concat(partner?.requestItems)?.length
             }
           />
         </div>

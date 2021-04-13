@@ -35,7 +35,6 @@ class DataTable extends React.Component {
                 current: this.state.page,
                 pageSize: this.state.PAGE_SIZE,
                 total: dataList.length,
-                // onChange: this.onChangePaging,
               }}
               bordered
             />
