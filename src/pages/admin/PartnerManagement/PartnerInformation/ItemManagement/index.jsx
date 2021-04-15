@@ -182,7 +182,7 @@ class ItemManagement extends React.Component {
                     : 'grey',
               }}
             >
-              Consolidate item
+              Verify item
             </span>
           </Space>
         </Menu.Item>

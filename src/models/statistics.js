@@ -209,7 +209,7 @@ const Model = {
         details: [
           {
             label: 'Reception',
-            total: order.closure.total,
+            total: order.reception.total,
             color: '#82B366',
           },
           {
