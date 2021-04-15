@@ -49,7 +49,8 @@ class ViewItem extends React.Component {
               display: 'flex',
             }}
           >
-            {item.status === PARTNER_ITEM_STATUS.ACTIVE ? (
+            {item.status === REQUESTED_ITEM_STATUS.PROCESS ? null : item.status ===
+              PARTNER_ITEM_STATUS.ACTIVE ? (
               <CheckCircleOutlined style={{ color: 'green' }} />
             ) : (
               <CloseCircleOutlined style={{ color: 'red' }} />
