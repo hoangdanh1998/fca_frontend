@@ -245,7 +245,7 @@ class ItemManagement extends React.Component {
             </Tag>
           </Dropdown>
         ),
-        width: '10%',
+        width: '15%',
       },
       {
         title: 'Register Date',
