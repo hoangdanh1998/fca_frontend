@@ -9,6 +9,7 @@ import ItemManagement from '../PartnerInformation/ItemManagement/index.jsx';
 import ExceptionBody from '../../../../components/ExceptionBody/index';
 import styles from './index.less';
 import { PAGE_SIZE } from '../../../../../config/constants';
+import TransactionManagement from './TransactionManagement/index.jsx';
 
 @connect(({ partner, loading }) => ({
   partner: partner.partner,
@@ -72,6 +73,9 @@ class PartnerInformation extends React.Component {
             </Tabs.TabPane>
             <Tabs.TabPane tab="License Management" key="3">
               <LicenseManagement partner={partner} packages={allFcaLicenseList} />
+            </Tabs.TabPane>
+            <Tabs.TabPane tab="Transaction Management" key="4">
+              <TransactionManagement partner={partner} />
             </Tabs.TabPane>
           </Tabs>
         )}

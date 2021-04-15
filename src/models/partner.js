@@ -8,6 +8,7 @@ import {
   handleOpenCloseStore,
   updatePartnerItemStatus,
 } from '@/services/partner';
+import { createTransaction, getTransactionList } from '@/services/transaction';
 import { getFcaLicenseList } from '@/services/license';
 import { message } from 'antd';
 import AdminNotification from '../components/Notification';
@@ -26,6 +27,9 @@ const Model = {
     createdLicense: {},
     isError: false,
     totalUndoneOrder: 0,
+    createdTransaction: {},
+    allTransactionList: [],
+    totalTransaction: 0,
   },
   effects: {
     *getPartnerList({ payload }, { call, put }) {
@@ -41,6 +45,23 @@ const Model = {
       }
       yield put({
         type: 'handleGetPartnerList',
+        payload: response.data,
+      });
+    },
+
+    *getTransactionList({ payload }, { call, put }) {
+      const response = yield call(getTransactionList, payload);
+
+      if (response.type && response.type === 'HttpError') {
+        message.error('Something went wrong. Please try again.');
+        yield put({
+          type: 'handleError',
+          payload: 'true',
+        });
+        return;
+      }
+      yield put({
+        type: 'handleGetTransactionList',
         payload: response.data,
       });
     },
@@ -94,6 +115,20 @@ const Model = {
       message.success('Success!');
       yield put({
         type: 'handleCreatePartnerLicense',
+        payload: response.data,
+      });
+    },
+
+    *createTransaction({ payload }, { call, put }) {
+      const response = yield call(createTransaction, payload);
+
+      if (response.type && response.type === 'HttpError') {
+        message.error('Something went wrong. Please try again.');
+        return;
+      }
+      message.success('Success!');
+      yield put({
+        type: 'handleCreateTransaction',
         payload: response.data,
       });
     },
@@ -160,6 +195,14 @@ const Model = {
       };
     },
 
+    handleGetTransactionList(state, action) {
+      return {
+        ...state,
+        allTransactionList: action.payload.transactions,
+        totalTransaction: action.payload.count,
+      };
+    },
+
     handleGetOrderList(state, action) {
       action.payload.orders.forEach(o => {
         console.log(`include_done_${o.id}`, ORDER_DONE_STATUS.includes(o.status));
@@ -197,6 +240,22 @@ const Model = {
       console.log('newPartner', newPartner);
       newPartner.licenses = [...state.partner.licenses, action.payload.license];
       return { ...state, partner: { ...newPartner }, createdLicense: action.payload.license };
+    },
+
+    handleCreateTransaction(state, action) {
+      const newPartner = state.partner;
+      newPartner.account.balance =
+        parseInt(newPartner.account.balance) + parseInt(action.payload.transaction.amount);
+      const newTransactionList = state.allTransactionList;
+      newTransactionList.unshift({ ...action.payload.transaction, owner: state.partner });
+      const newTotalTransaction = state.totalTransaction + 1;
+      return {
+        ...state,
+        partner: { ...newPartner },
+        createdTransaction: { ...action.payload.transaction },
+        allTransactionList: [...newTransactionList],
+        totalTransaction: newTotalTransaction,
+      };
     },
 
     handleGetFcaLicenseList(state, action) {
