@@ -363,7 +363,6 @@ class Dashboard extends React.Component {
                       : cancellationColumnList
                   }
                   dataList={this.state.orderDataList}
-                  // pageSize={this.state.orderColumnListName === 'Rejection' ? 3 : 2}
                   pageSize={2}
                   mode={
                     this.state.orderColumnListName === 'Rejection'
