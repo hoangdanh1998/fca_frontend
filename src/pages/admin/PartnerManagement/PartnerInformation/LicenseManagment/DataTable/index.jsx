@@ -8,8 +8,9 @@ class DataTable extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      skip: 1,
+      skip: 0,
       PAGE_SIZE: PAGE_SIZE,
+      page: 1,
     };
   }
 

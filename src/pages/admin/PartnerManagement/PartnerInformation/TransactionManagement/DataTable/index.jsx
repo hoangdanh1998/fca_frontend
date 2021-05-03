@@ -14,7 +14,7 @@ class DataTable extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      skip: 1,
+      skip: 0,
       pageSize: PAGE_SIZE,
       loading: false,
     };

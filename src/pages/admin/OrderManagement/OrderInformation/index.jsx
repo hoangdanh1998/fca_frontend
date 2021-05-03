@@ -3,7 +3,7 @@ import moment from 'moment';
 import { router } from 'umi';
 import { connect } from 'dva';
 import NumberFormat from 'react-number-format';
-import { Descriptions, Space, Table, Row, Col, Skeleton, Tag, Timeline, Divider } from 'antd';
+import { Descriptions, Space, Table, Row, Col, Skeleton, Tag, Timeline, Divider, Rate } from 'antd';
 import Button from 'antd-button-color';
 import 'antd-button-color/dist/css/style.less';
 import {
@@ -12,6 +12,7 @@ import {
   CheckOutlined,
   CloseOutlined,
   SyncOutlined,
+  StarOutlined,
 } from '@ant-design/icons';
 import CancelOrderModal from '../CancelOrderModal/index';
 import ConfirmationPopup from '../../../../components/atom/ConfirmationPopup/index';
@@ -73,6 +74,32 @@ class OrderInformation extends React.Component {
         return cancelledTransaction.description;
       } else {
         return '-';
+      }
+    }
+  };
+  handleViewFeedback = (order = {}) => {
+    if (order && order != {} && order != null) {
+      if (order.feedback) {
+        return order.feedback.description;
+      } else {
+        return '-';
+      }
+    }
+  };
+  handleViewAdvanceInformation = (order = {}) => {
+    if (order && order != {} && order != null) {
+      if (order.status === ORDER_STATUS.CANCELLATION) {
+        return <Descriptions.Item label="Reason">{this.handleViewReason(order)}</Descriptions.Item>;
+      }
+      if (order.status === ORDER_STATUS.CLOSURE) {
+        return (
+          <>
+            <Descriptions.Item label="Rating">
+              <Rate allowHalf disabled defaultValue={parseFloat(order?.feedback?.star)} />
+            </Descriptions.Item>
+            <Descriptions.Item label="Feedback">{this.handleViewFeedback(order)}</Descriptions.Item>
+          </>
+        );
       }
     }
   };
@@ -287,7 +314,8 @@ class OrderInformation extends React.Component {
                     {convertStringToCamel(order.status)}
                   </Tag>
                 </Descriptions.Item>
-                <Descriptions.Item label="Reason">{this.handleViewReason(order)}</Descriptions.Item>
+                {/* <Descriptions.Item label="Reason">{this.handleViewReason(order)}</Descriptions.Item> */}
+                {this.handleViewAdvanceInformation(order)}
               </Descriptions>
             </Space>
             <Row style={{ width: '98%' }}>
